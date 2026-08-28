@@ -76,6 +76,7 @@ export default function Home() {
           <p className="font-serif text-foreground">关于这份清单</p>
           <p className="max-w-3xl">
             入选标准有三条：有可考的原始出处；在互不相通的文明或学科中被独立提出过；到今天仍能被证伪、也仍未被证伪。
+            每条原则附有背后逻辑（从进化、科学或人性做第一性原理推导），以及正反两面的历史故事，用来加深而非替代判断。
             引文尽量注明篇目，转述与流传语则标明「归于」「常引作」。
           </p>
           <p className="max-w-3xl">

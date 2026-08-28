@@ -2,10 +2,14 @@
 
 import {
   ArrowRightLeftIcon,
+  BookOpenIcon,
   CheckCircle2Icon,
   GlobeIcon,
+  LightbulbIcon,
   QuoteIcon,
   ScaleIcon,
+  ThumbsDownIcon,
+  ThumbsUpIcon,
   TriangleAlertIcon,
 } from "lucide-react";
 
@@ -14,6 +18,7 @@ import { Separator } from "@/components/ui/separator";
 import {
   categoryById,
   principleById,
+  type HistoricalStory,
   type Principle,
 } from "@/data/principles";
 
@@ -49,6 +54,46 @@ function Bullets({ items }: { items: string[] }) {
         </li>
       ))}
     </ul>
+  );
+}
+
+function StoryList({
+  stories,
+  tone,
+}: {
+  stories: HistoricalStory[];
+  tone: "positive" | "negative";
+}) {
+  const Icon = tone === "positive" ? ThumbsUpIcon : ThumbsDownIcon;
+  const label = tone === "positive" ? "正面：遵循而受益" : "反面：违背而代价";
+
+  return (
+    <div className="space-y-3">
+      <p className="flex items-center gap-1.5 text-xs font-medium tracking-wide text-muted-foreground">
+        <Icon className="size-3.5 text-primary" />
+        {label}
+      </p>
+      <ul className="space-y-3">
+        {stories.map((s) => (
+          <li
+            key={s.title}
+            className="rounded-lg bg-muted/50 px-3.5 py-3 ring-1 ring-border"
+          >
+            <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
+              <span className="text-sm font-medium text-foreground">
+                {s.title}
+              </span>
+              <span className="font-mono text-[11px] text-muted-foreground">
+                {s.era}
+              </span>
+            </div>
+            <p className="mt-1.5 text-sm leading-7 text-muted-foreground">
+              {s.summary}
+            </p>
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 }
 
@@ -95,6 +140,22 @@ export function PrincipleDetail({
               </figcaption>
             </figure>
           ))}
+        </div>
+      </Section>
+
+      <Section icon={LightbulbIcon} title="背后逻辑">
+        <p className="text-[0.9375rem] leading-7 text-muted-foreground">
+          {principle.logic}
+        </p>
+      </Section>
+
+      <Section icon={BookOpenIcon} title="历史故事">
+        <p className="text-sm leading-7 text-muted-foreground">
+          正面是遵循这条原则后受益的经典案例；反面是违背它——或把它推到极端——后付出代价的教训。
+        </p>
+        <div className="grid gap-5 sm:grid-cols-2">
+          <StoryList stories={principle.stories.positive} tone="positive" />
+          <StoryList stories={principle.stories.negative} tone="negative" />
         </div>
       </Section>
 

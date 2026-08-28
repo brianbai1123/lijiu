@@ -31,12 +31,15 @@ function haystack(id: string) {
     p.title,
     p.essence,
     p.why,
+    p.logic,
     p.misreading,
     p.limits,
     ...p.tags,
     ...p.practices,
     ...p.corroborations,
     ...p.quotes.flatMap((q) => [q.text, q.source, q.era]),
+    ...p.stories.positive.flatMap((s) => [s.title, s.era, s.summary]),
+    ...p.stories.negative.flatMap((s) => [s.title, s.era, s.summary]),
   ]
     .join(" ")
     .toLowerCase();

@@ -1,3 +1,5 @@
+import { enrichments } from "./enrichments";
+
 export type CategoryId =
   | "cognition"
   | "character"
@@ -29,6 +31,14 @@ export type Quote = {
   era: string;
 };
 
+export type HistoricalStory = {
+  /** 事件或人物的短标题 */
+  title: string;
+  era: string;
+  /** 一两句话说明它如何印证（或反证）这条原则 */
+  summary: string;
+};
+
 export type Principle = {
   id: string;
   title: string;
@@ -48,12 +58,24 @@ export type Principle = {
   misreading: string;
   /** 它在什么情况下会失效——真理也有适用范围 */
   limits: string;
+  /**
+   * 历史故事：正面是遵循后受益，反面是违背后付出代价
+   * （或把原则推到极端后翻车）
+   */
+  stories: {
+    positive: HistoricalStory[];
+    negative: HistoricalStory[];
+  };
+  /**
+   * 背后逻辑：用第一性原理，从进化、科学或人性推导驱动力
+   */
+  logic: string;
   /** 与之互相制衡的原则 id，任何单独一条走到极端都会出问题 */
   tensions?: string[];
   tags: string[];
 };
 
-export const principles: Principle[] = [
+const principlesBase: Omit<Principle, "stories" | "logic">[] = [
   // ───────────────────────── 认知与判断 ─────────────────────────
   {
     id: "dichotomy-of-control",
@@ -1391,6 +1413,14 @@ export const principles: Principle[] = [
     tags: ["利他", "长期主义", "网络"],
   },
 ];
+
+export const principles: Principle[] = principlesBase.map((p) => {
+  const extra = enrichments[p.id];
+  if (!extra) {
+    throw new Error(`缺少 enrichment：${p.id}`);
+  }
+  return { ...p, ...extra };
+});
 
 export const principleById = new Map(principles.map((p) => [p.id, p]));
 

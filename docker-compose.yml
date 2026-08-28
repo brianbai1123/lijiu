@@ -5,6 +5,9 @@
 #   销毁  docker compose down
 #
 # 源码目录挂载到容器，Cursor 里改文件后浏览器自动热更新。
+# 固定项目名，Docker Desktop 里显示为 lijiu（而不是目录名）
+
+name: lijiu
 
 services:
   web:

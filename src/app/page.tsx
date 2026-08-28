@@ -2,12 +2,6 @@ import { Explorer } from "@/components/explorer";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { categories, principles } from "@/data/principles";
 
-/** 按 UTC 日期取一条，同一天服务端与客户端拿到的是同一条 */
-function pickDaily() {
-  const dayNumber = Math.floor(Date.now() / 86_400_000);
-  return principles[dayNumber % principles.length].id;
-}
-
 const oldest = Math.max(...principles.map((p) => p.ageYears));
 
 export default function Home() {
@@ -74,7 +68,7 @@ export default function Home() {
           </dl>
         </section>
 
-        <Explorer dailyId={pickDaily()} />
+        <Explorer />
       </main>
 
       <footer className="border-t border-border">

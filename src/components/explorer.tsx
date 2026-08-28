@@ -44,10 +44,23 @@ function haystack(id: string) {
 
 const searchIndex = new Map(principles.map((p) => [p.id, haystack(p.id)]));
 
-export function Explorer({ dailyId }: { dailyId: string }) {
+/** 静态导出下按「今天」取一则；服务端快照固定，避免水合不一致 */
+function useDailyId() {
+  return React.useSyncExternalStore(
+    () => () => {},
+    () => {
+      const dayNumber = Math.floor(Date.now() / 86_400_000);
+      return principles[dayNumber % principles.length].id;
+    },
+    () => principles[0].id
+  );
+}
+
+export function Explorer() {
   const [query, setQuery] = React.useState("");
   const [filter, setFilter] = React.useState<Filter>("all");
   const [openId, setOpenId] = React.useState<string | null>(null);
+  const dailyId = useDailyId();
 
   const daily = principleById.get(dailyId) ?? principles[0];
 

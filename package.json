@@ -4,12 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev --port 43127",
-    "dev:docker": "next dev --hostname 0.0.0.0 --port 43127 --webpack",
-    "docker:up": "docker compose up -d --build",
-    "docker:down": "docker compose stop",
-    "docker:logs": "docker compose logs -f web",
-    "docker:restart": "docker compose restart web",
     "build": "next build",
+    "build:gh": "GITHUB_PAGES=true next build",
     "start": "next start",
     "lint": "eslint"
   },

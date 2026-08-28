@@ -22,14 +22,56 @@
 2. 在互不相通的文明或学科中被独立提出过
 3. 到今天仍能被证伪，也仍未被证伪
 
-## 本地运行
+## 用 Docker Desktop 启停（推荐）
+
+前提：本机已安装并启动 [Docker Desktop](https://www.docker.com/products/docker-desktop/)。
+
+在项目根目录执行：
+
+```bash
+# 首次或依赖变更后：构建并后台启动
+docker compose up -d --build
+
+# 或用 npm 脚本
+npm run docker:up
+```
+
+浏览器打开 [http://127.0.0.1:43127](http://127.0.0.1:43127)。
+
+| 你想做的事 | 命令 | 也可用 Docker Desktop |
+|---|---|---|
+| 启动 | `docker compose up -d --build` 或 `npm run docker:up` | Containers 里点 Start |
+| 停止 | `docker compose stop` 或 `npm run docker:down` | 点 Stop |
+| 看日志 | `docker compose logs -f` 或 `npm run docker:logs` | 点容器看 Logs |
+| 重启 | `docker compose restart` 或 `npm run docker:restart` | Stop 再 Start |
+| 彻底删除容器（保留镜像） | `docker compose down` | Delete container |
+
+容器名是 `lijiu`，在 Docker Desktop 的 Containers 列表里一眼能找到。
+
+### Cursor 里改代码，浏览器自动更新
+
+`docker-compose.yml` 把当前项目目录挂进容器，并开启文件轮询（`WATCHPACK_POLLING`）。因此：
+
+1. 在 Cursor 里改 `src/`、样式、数据等
+2. 保存后，容器内的 Next.js 会检测到变化并热更新
+3. 浏览器刷新或自动 HMR 即可看到结果
+
+无需重建镜像。只有改了 `package.json` / `package-lock.json`（加依赖）时，容器启动入口会自动 `npm ci`；若已在跑，执行一次 `docker compose restart` 即可。
+
+改了 `Dockerfile` 或 `docker-compose.yml` 本身时，才需要：
+
+```bash
+docker compose up -d --build
+```
+
+## 不用 Docker、直接本机跑
 
 ```bash
 npm install
 npm run dev
 ```
 
-默认监听 <http://localhost:43127>（端口在 `package.json` 的 `dev` 脚本里指定，避开常见端口冲突）。
+同样监听 [http://127.0.0.1:43127](http://127.0.0.1:43127)。不要和 Docker 容器同时占用同一端口。
 
 其他命令：
 
@@ -46,12 +88,17 @@ npx tsc --noEmit # 类型检查
 - Tailwind CSS v4，配色是为长篇中文阅读调过的宣纸／墨色两套主题
 - shadcn/ui（Radix 底座）+ lucide 图标
 - next-themes 负责浅色／深色切换
+- Docker Compose 开发容器（源码挂载 + 热更新）
 
 无后端、无数据库、无需任何密钥，全部内容是静态数据。
 
 ## 目录结构
 
 ```
+Dockerfile               开发镜像
+docker-compose.yml       启停、端口、卷挂载、热更新环境变量
+docker-entrypoint.sh     依赖变更时自动 npm ci
+.dockerignore
 src/
   app/
     layout.tsx           根布局、主题 Provider、元信息

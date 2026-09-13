@@ -114,11 +114,14 @@ export function PrincipleDetail({
       <header className="space-y-4">
         <div className="flex flex-wrap items-center gap-2">
           <Badge variant="secondary">{category?.name}</Badge>
+          <Badge variant="outline">{principle.trigger}</Badge>
           <Badge variant="outline">
             已被检验约 {principle.ageYears.toLocaleString("zh-CN")} 年
           </Badge>
         </div>
-        <p className="font-serif text-[1.0625rem] leading-8 text-foreground/90">
+        <p className="text-[0.9375rem] leading-7 text-muted-foreground">
+          <span className="font-medium text-foreground/90">{principle.title}</span>
+          {" · "}
           {principle.essence}
         </p>
       </header>

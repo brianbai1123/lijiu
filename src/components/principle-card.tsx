@@ -13,7 +13,6 @@ export function PrincipleCard({
   onOpen: () => void;
 }) {
   const category = categoryById.get(principle.category);
-  const firstQuote = principle.quotes[0];
 
   return (
     <button
@@ -29,25 +28,20 @@ export function PrincipleCard({
         <span className="font-mono text-xs text-muted-foreground/70">
           {String(index).padStart(2, "0")}
         </span>
-        <span className="text-xs text-muted-foreground">{category?.name}</span>
+        <span className="rounded-full bg-secondary px-2 py-0.5 text-[11px] text-secondary-foreground">
+          {principle.trigger}
+        </span>
       </div>
 
-      <h3 className="font-serif text-xl leading-snug font-semibold text-foreground transition-colors group-hover:text-primary">
-        {principle.title}
+      {/* 主表达：检视问题，不是抽象标题 */}
+      <h3 className="font-serif text-lg leading-8 font-semibold text-balance text-foreground transition-colors group-hover:text-primary sm:text-xl">
+        {principle.check}
       </h3>
 
-      <p className="flex-1 text-sm leading-7 text-muted-foreground">
-        {principle.essence}
+      <p className="mt-auto flex items-center justify-between gap-3 border-t border-border/70 pt-3 text-xs text-muted-foreground">
+        <span className="line-clamp-1">{principle.title}</span>
+        <span className="shrink-0">{category?.name}</span>
       </p>
-
-      <div className="flex items-end justify-between gap-3 border-t border-border/70 pt-3">
-        <span className="line-clamp-1 text-xs text-muted-foreground/85">
-          {firstQuote.source}
-        </span>
-        <span className="shrink-0 font-mono text-xs whitespace-nowrap text-primary/75">
-          {principle.ageYears.toLocaleString("zh-CN")} 年
-        </span>
-      </div>
     </button>
   );
 }

@@ -1,3 +1,4 @@
+import { checks } from "./checks";
 import { enrichments } from "./enrichments";
 
 export type CategoryId =
@@ -70,12 +71,19 @@ export type Principle = {
    * 背后逻辑：用第一性原理，从进化、科学或人性推导驱动力
    */
   logic: string;
+  /** 何时想起：情境开关，方便大脑在现场被触发 */
+  trigger: string;
+  /** 第一人称检视问题——原则的本质是问题，不是口号 */
+  check: string;
   /** 与之互相制衡的原则 id，任何单独一条走到极端都会出问题 */
   tensions?: string[];
   tags: string[];
 };
 
-const principlesBase: Omit<Principle, "stories" | "logic">[] = [
+const principlesBase: Omit<
+  Principle,
+  "stories" | "logic" | "trigger" | "check"
+>[] = [
   // ───────────────────────── 认知与判断 ─────────────────────────
   {
     id: "dichotomy-of-control",
@@ -1416,10 +1424,14 @@ const principlesBase: Omit<Principle, "stories" | "logic">[] = [
 
 export const principles: Principle[] = principlesBase.map((p) => {
   const extra = enrichments[p.id];
+  const cue = checks[p.id];
   if (!extra) {
     throw new Error(`缺少 enrichment：${p.id}`);
   }
-  return { ...p, ...extra };
+  if (!cue) {
+    throw new Error(`缺少 check：${p.id}`);
+  }
+  return { ...p, ...extra, ...cue };
 });
 
 export const principleById = new Map(principles.map((p) => [p.id, p]));

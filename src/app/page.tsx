@@ -44,8 +44,8 @@ export default function Home() {
             得出过，并且在此后数百上千年里没有被推翻。
           </p>
           <p className="mt-4 max-w-2xl text-base leading-8 text-muted-foreground">
-            但真理不是口号。所以每条原则除了出处和实践方法，还写清了两件很少有人讲的事——
-            它最常被怎样误读，以及它在什么情况下会失效。
+            原则的本质是一道检视问题，不是一句口号。每条都以「何时想起」和第一人称问题开场，方便在具体情境里被大脑认出；
+            此外还有出处、实践方法、最常见的误读，以及它在什么情况下会失效。
           </p>
 
           <dl className="mt-12 grid max-w-2xl grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-4">
@@ -76,7 +76,7 @@ export default function Home() {
           <p className="font-serif text-foreground">关于这份清单</p>
           <p className="max-w-3xl">
             入选标准有三条：有可考的原始出处；在互不相通的文明或学科中被独立提出过；到今天仍能被证伪、也仍未被证伪。
-            每条原则附有背后逻辑（从进化、科学或人性做第一性原理推导），以及正反两面的历史故事，用来加深而非替代判断。
+            每条原则的主表达是一道检视问题——附触发情境——而不是抽象命题；另有背后逻辑（从进化、科学或人性做第一性原理推导），以及正反两面的历史故事。
             引文尽量注明篇目，转述与流传语则标明「归于」「常引作」。
           </p>
           <p className="max-w-3xl">

@@ -29,6 +29,8 @@ function haystack(id: string) {
   const p = principleById.get(id)!;
   return [
     p.title,
+    p.trigger,
+    p.check,
     p.essence,
     p.why,
     p.logic,
@@ -98,19 +100,24 @@ export function Explorer() {
     <>
       {/* ── 今日一则 ───────────────────────────────────────── */}
       <section className="mx-auto w-full max-w-6xl px-5 pb-14">
-        <div className="mb-3 flex items-center gap-2 text-xs tracking-widest text-muted-foreground uppercase">
+          <div className="mb-3 flex items-center gap-2 text-xs tracking-widest text-muted-foreground uppercase">
           <SparklesIcon className="size-3.5 text-primary" />
           今日一则
+          <span className="rounded-full bg-secondary px-2 py-0.5 text-[11px] normal-case tracking-normal text-secondary-foreground">
+            {daily.trigger}
+          </span>
         </div>
         <button
           type="button"
           onClick={() => setOpenId(daily.id)}
           className="group block w-full rounded-2xl bg-card p-6 text-left ring-1 ring-foreground/10 transition-all hover:ring-primary/45 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:p-9"
         >
-          <h2 className="font-serif text-2xl leading-tight font-semibold text-balance transition-colors group-hover:text-primary sm:text-4xl">
-            {daily.title}
+          <h2 className="font-serif text-2xl leading-snug font-semibold text-balance transition-colors group-hover:text-primary sm:text-3xl">
+            {daily.check}
           </h2>
-          <p className="mt-4 max-w-3xl text-[0.9375rem] leading-8 text-muted-foreground sm:text-base">
+          <p className="mt-4 max-w-3xl text-sm leading-7 text-muted-foreground sm:text-[0.9375rem]">
+            <span className="text-foreground/85">{daily.title}</span>
+            {" · "}
             {daily.essence}
           </p>
           <figure className="mt-6 border-l-2 border-primary/35 pl-4">
@@ -236,11 +243,11 @@ export function Explorer() {
           {open && (
             <>
               <DialogHeader className="pb-1">
-                <DialogTitle className="font-serif text-2xl leading-snug">
-                  {open.title}
+                <DialogTitle className="font-serif text-xl leading-snug text-balance sm:text-2xl">
+                  {open.check}
                 </DialogTitle>
-                <DialogDescription className="sr-only">
-                  {open.essence}
+                <DialogDescription>
+                  {open.trigger} · {open.title}
                 </DialogDescription>
               </DialogHeader>
               <div className="pt-4">

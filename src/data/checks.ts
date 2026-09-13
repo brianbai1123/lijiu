@@ -10,142 +10,142 @@ export type CheckFields = {
 export const checks: Record<string, CheckFields> = {
   "dichotomy-of-control": {
     trigger: "焦虑时",
-    check: "这件事，我是在解决，还是在空转？",
+    check: "我在解决它，还是只是陪它焦虑？",
   },
   "know-what-you-dont-know": {
     trigger: "觉得懂了时",
-    check: "我讲不清的地方，是不是其实还不懂？",
+    check: "这话是我想明白的，还是我背下来的？",
   },
   "listen-to-both-sides": {
     trigger: "要拍板时",
-    check: "我听到的，是真相，还是回声？",
+    check: "谁在我面前不敢说真话？",
   },
   invert: {
     trigger: "定目标时",
-    check: "怎样一定会失败？我避开了吗？",
+    check: "想搞砸这件事，最快的办法是什么？",
   },
   "occams-razor": {
     trigger: "解释变复杂时",
-    check: "更无聊的那个解释，为什么不行？",
+    check: "我加了多少假设，才圆得上这个故事？",
   },
   incentives: {
     trigger: "看人做事时",
-    check: "他靠什么吃饭？别听他靠什么信仰。",
+    check: "他的钱从哪来，他的话就往哪去。",
   },
   "golden-rule": {
-    trigger: "要对别人动手时",
-    check: "换我挨这一下，我还觉得公平吗？",
+    trigger: "想反击时",
+    check: "这一下落在我身上，我还说公平吗？",
   },
   "know-thyself": {
-    trigger: "又在评判别人时",
-    check: "我最看不惯的，是不是我自己？",
+    trigger: "看不惯谁时",
+    check: "我讨厌他这一点，是不是太眼熟了？",
   },
   "integrity-alone": {
     trigger: "没人看见时",
-    check: "没人看见时，我还是同一个人吗？",
+    check: "如果这一幕正在直播，我会改吗？",
   },
   "virtue-is-habit": {
-    trigger: "立志却做不到时",
-    check: "我想成为的那种人，今天重复了哪个动作？",
+    trigger: "又立flag时",
+    check: "我是那种人，还是只想当那种人？",
   },
   "humility-gains": {
     trigger: "刚赢了一把时",
-    check: "这次赢，有多少是我厉害，有多少是运气？",
+    check: "风停了，我还飞得起来吗？",
   },
   "know-when-enough": {
-    trigger: "还想再多一点时",
-    check: "「够了」长什么样？我写下来了吗？",
+    trigger: "还想再多点时",
+    check: "多少算够？答不上来，就永远不够。",
   },
   reciprocity: {
     trigger: "关系变冷时",
-    check: "这段关系，还在流动吗？还是只剩单向？",
+    check: "上一次是我先伸手，是什么时候？",
   },
   "reputation-compounds": {
     trigger: "想走捷径时",
-    check: "这件事，我敢署自己的名吗？",
+    check: "攒了十年的名声，值这一次省事吗？",
   },
   "seek-first-to-understand": {
     trigger: "争执起来时",
-    check: "我是在听懂他，还是在等着反驳？",
+    check: "我在听他说，还是在装子弹？",
   },
   "hanlons-razor": {
     trigger: "感到被冒犯时",
-    check: "一定是针对我吗？会不会只是疏忽？",
+    check: "他是在针对我，还是压根没想起我？",
   },
   "choose-company": {
     trigger: "耗完社交后",
-    check: "靠近我的人，把我拉高了，还是拉低了？",
+    check: "刚才那一小时，把我抬高了，还是磨钝了？",
   },
   compounding: {
     trigger: "想放弃坚持时",
-    check: "再熬三年，是开花，还是认错方向？",
+    check: "今天断这一次，三年后还接得上吗？",
   },
   "now-is-all-you-have": {
     trigger: "又在刷手机时",
-    check: "这一小时，是我过的，还是溜走的？",
+    check: "这一小时，我是活过了，还是被划走了？",
   },
   "start-small": {
     trigger: "拖延启动时",
-    check: "五分钟能开始的那一步，我迈了吗？",
+    check: "这件事的五分钟版本，长什么样？",
   },
   "vital-few": {
     trigger: "清单太长时",
-    check: "真正能动结果的，是不是只有那一两件？",
+    check: "只许做一件，我做哪件？",
   },
   "do-hard-things": {
     trigger: "想躲困难时",
-    check: "我躲开的，是困难，还是成长本身？",
+    check: "这道坎绕过去，要绕多少年？",
   },
   "survive-first": {
     trigger: "想加杠杆时",
-    check: "最坏的情况，我还有下一局吗？",
+    check: "这一把输光，我还能上牌桌吗？",
   },
   diversify: {
     trigger: "押注过重时",
-    check: "我以为散了的风险，是不是其实捆在一起？",
+    check: "我这几个篮子，是不是放在同一辆车上？",
   },
   "prepare-in-peace": {
     trigger: "一切顺利时",
-    check: "雨天的伞，我是晴天备的，还是淋着再找？",
+    check: "现在是晴天，我的伞在哪？",
   },
   "irreversible-first": {
     trigger: "纠结决策时",
-    check: "这扇门，走出去还能回来吗？",
+    check: "这扇门关上，还推得开吗？",
   },
   "sunk-cost": {
     trigger: "不甘心放弃时",
-    check: "如果从今天才开始，我还会选这条路吗？",
+    check: "我是在救这件事，还是在救自己的面子？",
   },
   impermanence: {
     trigger: "情绪很满时",
-    check: "我是不是把「暂时」说成了「永远」？",
+    check: "这一阵，我是不是当成了一辈子？",
   },
   "judgment-not-events": {
-    trigger: "被情绪带着跑时",
-    check: "伤我的，是这件事，还是我对它的说法？",
+    trigger: "越想越气时",
+    check: "扎我的是这件事，还是我给它配的旁白？",
   },
   "blessing-in-disguise": {
-    trigger: "刚接到坏消息时",
-    check: "盖章太早了吗？结局真的已经写死了？",
+    trigger: "坏消息来时",
+    check: "故事才刚开头，我急着写结局？",
   },
   "meaning-in-suffering": {
     trigger: "处境改不了时",
-    check: "疼改不了，我还能决定怎么扛吗？",
+    check: "这份苦，就让它白疼吗？",
   },
   "memento-mori": {
     trigger: "为小事内耗时",
-    check: "临终时，这件事还值得我今晚内耗吗？",
+    check: "这件事，配写进我的墓志铭吗？",
   },
   "relationships-are-the-answer": {
-    trigger: "又在加班换成就时",
-    check: "真正能托底的人，我有几个？",
+    trigger: "深夜加班时",
+    check: "凌晨三点，我能打给谁？",
   },
   "golden-mean": {
     trigger: "把优点加码时",
-    check: "我的优点，再加一档，会不会变成缺陷？",
+    check: "这份优点，再拧一格会不会就断了？",
   },
   "give-more": {
-    trigger: "只想着交换时",
-    check: "我是在给予，还是在暗中记账？",
+    trigger: "算得太清时",
+    check: "我是在给，还是在记账？",
   },
 };

@@ -84,7 +84,7 @@ export default function Home() {
             這不是清單的缺陷，恰恰是它誠實的地方：能用一條原則解決的人生，還沒開始。
           </p>
           <p className="max-w-3xl text-xs">
-            卡片字型為教育部隸書；其餘為思源黑體（Noto Sans TC）。教育部隸書由中華民國教育部以創用 CC「姓名標示—禁止改作」3.0 臺灣版授權。
+            卡片字型為教育部隸書；其餘為思源宋體（Noto Serif TC）。教育部隸書由中華民國教育部以創用 CC「姓名標示—禁止改作」3.0 臺灣版授權。
           </p>
         </div>
       </footer>

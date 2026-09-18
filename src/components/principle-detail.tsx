@@ -135,7 +135,7 @@ export function PrincipleDetail({
               key={quote.source}
               className="border-l-2 border-primary/35 py-0.5 pl-4"
             >
-              <blockquote className="font-serif text-[0.9375rem] leading-8 text-foreground/85">
+              <blockquote className="text-[0.9375rem] leading-8 text-foreground/85">
                 {quote.text}
               </blockquote>
               <figcaption className="mt-1.5 text-xs text-muted-foreground">

@@ -19,7 +19,7 @@ export function PrincipleCard({
       type="button"
       onClick={onOpen}
       className={cn(
-        "group flex h-full flex-col gap-3 rounded-xl bg-card p-5 text-left ring-1 ring-foreground/10 transition-all",
+        "group flex h-full flex-col gap-3 rounded-xl bg-card p-5 text-left font-serif ring-1 ring-foreground/10 transition-all",
         "hover:-translate-y-0.5 hover:ring-primary/45 hover:shadow-[0_8px_24px_-12px_var(--color-primary)]",
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
       )}

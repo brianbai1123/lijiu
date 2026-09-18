@@ -30,6 +30,8 @@ npx serve out
 
 仓库设置里 Pages 源应为 **GitHub Actions**（首次推送后若未自动启用，在 Settings → Pages 中选中即可）。
 
+画面使用中华民国教育部「教育部隸書」（创用 CC 姓名标示—禁止改作 3.0 台湾版），正文为繁体中文。字型说明见 `src/fonts/NOTICE.md`。
+
 ## 技术栈
 
 Next.js 16（`output: 'export'`）+ React 19 + TypeScript + Tailwind CSS v4 + shadcn/ui。无后端、无数据库。

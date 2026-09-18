@@ -65,7 +65,7 @@ function StoryList({
   tone: "positive" | "negative";
 }) {
   const Icon = tone === "positive" ? ThumbsUpIcon : ThumbsDownIcon;
-  const label = tone === "positive" ? "正面：遵循而受益" : "反面：违背而代价";
+  const label = tone === "positive" ? "正面：遵循而受益" : "反面：違背而代價";
 
   return (
     <div className="space-y-3">
@@ -116,7 +116,7 @@ export function PrincipleDetail({
           <Badge variant="secondary">{category?.name}</Badge>
           <Badge variant="outline">{principle.trigger}</Badge>
           <Badge variant="outline">
-            已被检验约 {principle.ageYears.toLocaleString("zh-CN")} 年
+            已被檢驗約 {principle.ageYears.toLocaleString("zh-Hant")} 年
           </Badge>
         </div>
         <p className="text-[0.9375rem] leading-7 text-muted-foreground">
@@ -146,15 +146,15 @@ export function PrincipleDetail({
         </div>
       </Section>
 
-      <Section icon={LightbulbIcon} title="背后逻辑">
+      <Section icon={LightbulbIcon} title="背後邏輯">
         <p className="text-[0.9375rem] leading-7 text-muted-foreground">
           {principle.logic}
         </p>
       </Section>
 
-      <Section icon={BookOpenIcon} title="历史故事">
+      <Section icon={BookOpenIcon} title="歷史故事">
         <p className="text-sm leading-7 text-muted-foreground">
-          正面是遵循这条原则后受益的经典案例；反面是违背它——或把它推到极端——后付出代价的教训。
+          正面是遵循這條原則後受益的經典案例；反面是違背它——或把它推到極端——後付出代價的教訓。
         </p>
         <div className="grid gap-5 sm:grid-cols-2">
           <StoryList stories={principle.stories.positive} tone="positive" />
@@ -162,17 +162,17 @@ export function PrincipleDetail({
         </div>
       </Section>
 
-      <Section icon={CheckCircle2Icon} title="它为什么没有被时间淘汰">
+      <Section icon={CheckCircle2Icon} title="它為什麼沒有被時間淘汰">
         <p className="text-[0.9375rem] leading-7 text-muted-foreground">
           {principle.why}
         </p>
       </Section>
 
-      <Section icon={GlobeIcon} title="独立来源的印证">
+      <Section icon={GlobeIcon} title="獨立來源的印證">
         <Bullets items={principle.corroborations} />
       </Section>
 
-      <Section icon={ScaleIcon} title="可以今天就开始做的">
+      <Section icon={ScaleIcon} title="可以今天就開始做的">
         <Bullets items={principle.practices} />
       </Section>
 
@@ -180,7 +180,7 @@ export function PrincipleDetail({
         <div className="rounded-lg bg-muted/60 p-4 ring-1 ring-border">
           <h3 className="flex items-center gap-2 text-sm font-semibold">
             <TriangleAlertIcon className="size-4 text-primary" />
-            常见误读
+            常見誤讀
           </h3>
           <p className="mt-2 text-sm leading-7 text-muted-foreground">
             {principle.misreading}
@@ -189,7 +189,7 @@ export function PrincipleDetail({
         <div className="rounded-lg bg-muted/60 p-4 ring-1 ring-border">
           <h3 className="flex items-center gap-2 text-sm font-semibold">
             <TriangleAlertIcon className="size-4 text-primary" />
-            它在什么时候失效
+            它在什麼時候失效
           </h3>
           <p className="mt-2 text-sm leading-7 text-muted-foreground">
             {principle.limits}
@@ -198,9 +198,9 @@ export function PrincipleDetail({
       </div>
 
       {tensions.length > 0 && (
-        <Section icon={ArrowRightLeftIcon} title="与它互相制衡的原则">
+        <Section icon={ArrowRightLeftIcon} title="與它互相制衡的原則">
           <p className="text-sm leading-7 text-muted-foreground">
-            任何一条原则单独推到极致都会出问题。下面这些和它拉扯的方向相反，需要一起读。
+            任何一條原則單獨推到極致都會出問題。下面這些和它拉扯的方向相反，需要一起讀。
           </p>
           <div className="flex flex-wrap gap-2 pt-1">
             {tensions.map((t) => (

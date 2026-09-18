@@ -10,9 +10,9 @@ export default function Home() {
       <header className="sticky top-0 z-30 border-b border-border bg-background/85 backdrop-blur-md">
         <div className="mx-auto flex w-full max-w-6xl items-center justify-between gap-4 px-5 py-3">
           <div className="flex items-baseline gap-2.5">
-            <span className="font-serif text-lg font-semibold">历久</span>
+            <span className="font-serif text-lg font-semibold">歷久</span>
             <span className="hidden text-xs text-muted-foreground sm:inline">
-              经时间检验的人生原则
+              經時間檢驗的人生原則
             </span>
           </div>
           <div className="flex items-center gap-1">
@@ -20,7 +20,7 @@ export default function Home() {
               href="#all"
               className="rounded-md px-3 py-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
             >
-              全部 {principles.length} 条
+              全部 {principles.length} 條
             </a>
             <ThemeToggle />
           </div>
@@ -36,24 +36,24 @@ export default function Home() {
           <h1 className="mt-5 max-w-3xl font-serif text-4xl leading-[1.15] font-semibold text-balance sm:text-6xl">
             哪些道理，
             <br className="hidden sm:block" />
-            真的扛住了时间
+            真的扛住了時間
           </h1>
           <p className="mt-6 max-w-2xl text-base leading-8 text-muted-foreground">
-            这里收录的每一条，都满足同一个标准：它被至少两个互不相通的文明或学科{" "}
-            <em className="not-italic text-foreground">各自独立地</em>
-            得出过，并且在此后数百上千年里没有被推翻。
+            這裡收錄的每一條，都滿足同一個標準：它被至少兩個互不相通的文明或學科{" "}
+            <em className="not-italic text-foreground">各自獨立地</em>
+            得出過，並且在此後數百上千年裡沒有被推翻。
           </p>
           <p className="mt-4 max-w-2xl text-base leading-8 text-muted-foreground">
-            原则的本质是一道检视问题，不是一句口号。每条都以「何时想起」和第一人称问题开场，方便在具体情境里被大脑认出；
-            此外还有出处、实践方法、最常见的误读，以及它在什么情况下会失效。
+            原則的本質是一道檢視問題，不是一句口號。每條都以「何時想起」和第一人稱問題開場，方便在具體情境裡被大腦認出；
+            此外還有出處、實踐方法、最常見的誤讀，以及它在什麼情況下會失效。
           </p>
 
           <dl className="mt-12 grid max-w-2xl grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-4">
             {[
-              { k: "收录原则", v: String(principles.length), u: "条" },
-              { k: "覆盖领域", v: String(categories.length), u: "个" },
-              { k: "最早可追溯", v: oldest.toLocaleString("zh-CN"), u: "年前" },
-              { k: "标注失效边界", v: "100", u: "%" },
+              { k: "收錄原則", v: String(principles.length), u: "條" },
+              { k: "覆蓋領域", v: String(categories.length), u: "個" },
+              { k: "最早可追溯", v: oldest.toLocaleString("zh-Hant"), u: "年前" },
+              { k: "標註失效邊界", v: "100", u: "%" },
             ].map((s) => (
               <div key={s.k}>
                 <dt className="text-xs text-muted-foreground">{s.k}</dt>
@@ -73,15 +73,18 @@ export default function Home() {
 
       <footer className="border-t border-border">
         <div className="mx-auto w-full max-w-6xl space-y-3 px-5 py-10 text-sm leading-7 text-muted-foreground">
-          <p className="font-serif text-foreground">关于这份清单</p>
+          <p className="font-serif text-foreground">關於這份清單</p>
           <p className="max-w-3xl">
-            入选标准有三条：有可考的原始出处；在互不相通的文明或学科中被独立提出过；到今天仍能被证伪、也仍未被证伪。
-            每条原则的主表达是一道检视问题——附触发情境——而不是抽象命题；另有背后逻辑（从进化、科学或人性做第一性原理推导），以及正反两面的历史故事。
-            引文尽量注明篇目，转述与流传语则标明「归于」「常引作」。
+            入選標準有三條：有可考的原始出處；在互不相通的文明或學科中被獨立提出過；到今天仍能被證偽、也仍未被證偽。
+            每條原則的主表達是一道檢視問題——附觸發情境——而不是抽象命題；另有背後邏輯（從進化、科學或人性做第一性原理推導），以及正反兩面的歷史故事。
+            引文儘量註明篇目，轉述與流傳語則標明「歸於」「常引作」。
           </p>
           <p className="max-w-3xl">
-            这些原则彼此并不总是相容——「知足」和「复利」拉向相反的方向，「先活下来」和「做难而正确的事」也是。
-            这不是清单的缺陷，恰恰是它诚实的地方：能用一条原则解决的人生，还没开始。
+            這些原則彼此並不總是相容——「知足」和「複利」拉向相反的方向，「先活下來」和「做難而正確的事」也是。
+            這不是清單的缺陷，恰恰是它誠實的地方：能用一條原則解決的人生，還沒開始。
+          </p>
+          <p className="max-w-3xl text-xs">
+            畫面字型為教育部隸書，由中華民國教育部以創用 CC「姓名標示—禁止改作」3.0 臺灣版授權。
           </p>
         </div>
       </footer>

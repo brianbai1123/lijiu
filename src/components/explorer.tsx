@@ -24,7 +24,7 @@ import { cn } from "@/lib/utils";
 
 type Filter = CategoryId | "all";
 
-/** 把一条原则的所有文本拼起来，让搜索也能命中引文、印证和标签 */
+/** 把一條原則的所有文本拼起來，讓搜索也能命中引文、印證和標籤 */
 function haystack(id: string) {
   const p = principleById.get(id)!;
   return [
@@ -49,7 +49,7 @@ function haystack(id: string) {
 
 const searchIndex = new Map(principles.map((p) => [p.id, haystack(p.id)]));
 
-/** 静态导出下按「今天」取一则；服务端快照固定，避免水合不一致 */
+/** 靜態導出下按「今天」取一則；服務端快照固定，避免水合不一致 */
 function useDailyId() {
   return React.useSyncExternalStore(
     () => () => {},
@@ -98,11 +98,11 @@ export function Explorer() {
 
   return (
     <>
-      {/* ── 今日一则 ───────────────────────────────────────── */}
+      {/* ── 今日一則 ───────────────────────────────────────── */}
       <section className="mx-auto w-full max-w-6xl px-5 pb-14">
           <div className="mb-3 flex items-center gap-2 text-xs tracking-widest text-muted-foreground uppercase">
           <SparklesIcon className="size-3.5 text-primary" />
-          今日一则
+          今日一則
           <span className="rounded-full bg-secondary px-2 py-0.5 text-[11px] normal-case tracking-normal text-secondary-foreground">
             {daily.trigger}
           </span>
@@ -129,12 +129,12 @@ export function Explorer() {
             </figcaption>
           </figure>
           <span className="mt-6 inline-block text-sm text-primary">
-            展开完整解读 →
+            展開完整解讀 →
           </span>
         </button>
       </section>
 
-      {/* ── 检索与筛选 ─────────────────────────────────────── */}
+      {/* ── 檢索與篩選 ─────────────────────────────────────── */}
       <section
         id="all"
         className="sticky top-0 z-20 border-y border-border bg-background/85 backdrop-blur-md"
@@ -146,9 +146,9 @@ export function Explorer() {
               <Input
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder="搜索原则、出处、关键词，比如「风险」「论语」「习惯」"
+                placeholder="搜索原則、出處、關鍵詞，比如「風險」「論語」「習慣」"
                 className="pl-9"
-                aria-label="搜索原则"
+                aria-label="搜索原則"
               />
               {query && (
                 <button
@@ -163,7 +163,7 @@ export function Explorer() {
             </div>
             <Button variant="outline" onClick={openRandom} className="shrink-0">
               <ShuffleIcon />
-              <span className="hidden sm:inline">随机一条</span>
+              <span className="hidden sm:inline">隨機一條</span>
             </Button>
           </div>
 
@@ -205,9 +205,9 @@ export function Explorer() {
 
         {visible.length === 0 ? (
           <div className="rounded-xl border border-dashed border-border py-20 text-center">
-            <p className="font-serif text-lg">没有匹配「{query}」的原则</p>
+            <p className="font-serif text-lg">沒有匹配「{query}」的原則</p>
             <p className="mt-2 text-sm text-muted-foreground">
-              换个词试试，或者直接抽一条来看。
+              換個詞試試，或者直接抽一條來看。
             </p>
             <Button
               variant="outline"
@@ -217,7 +217,7 @@ export function Explorer() {
                 setFilter("all");
               }}
             >
-              清空筛选
+              清空篩選
             </Button>
           </div>
         ) : (
@@ -234,7 +234,7 @@ export function Explorer() {
         )}
       </section>
 
-      {/* ── 详情 ───────────────────────────────────────────── */}
+      {/* ── 詳情 ───────────────────────────────────────────── */}
       <Dialog
         open={Boolean(open)}
         onOpenChange={(next) => !next && setOpenId(null)}

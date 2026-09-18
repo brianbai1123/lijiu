@@ -21,6 +21,7 @@ import {
   type HistoricalStory,
   type Principle,
 } from "@/data/principles";
+import { AnxietyDispositionModel } from "@/components/anxiety-disposition-model";
 
 function Section({
   icon: Icon,
@@ -167,6 +168,10 @@ export function PrincipleDetail({
           {principle.why}
         </p>
       </Section>
+
+      {principle.id === "dichotomy-of-control" && (
+        <AnxietyDispositionModel />
+      )}
 
       <Section icon={GlobeIcon} title="独立来源的印证">
         <Bullets items={principle.corroborations} />

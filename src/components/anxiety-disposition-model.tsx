@@ -3,8 +3,11 @@ import { Grid2X2Icon } from "lucide-react";
 import {
   anxietyAxes,
   anxietyDispositionSummary,
+  anxietyDispositionTable,
   anxietyModelIntro,
   anxietyQuadrants,
+  anxietyTransitions,
+  anxietyVisualSummary,
   type AnxietyQuadrant,
 } from "@/data/anxiety-model";
 
@@ -109,6 +112,14 @@ export function AnxietyDispositionModel() {
 
             <div className="mt-3 space-y-3 text-sm leading-7 text-muted-foreground">
               <div>
+                <h5 className="font-medium text-foreground">典型情境</h5>
+                <ul className="mt-1 list-disc space-y-1 pl-5">
+                  {quadrant.examples.map((example) => (
+                    <li key={example}>{example}</li>
+                  ))}
+                </ul>
+              </div>
+              <div>
                 <h5 className="font-medium text-foreground">逻辑维度</h5>
                 <p>{quadrant.logic}</p>
               </div>
@@ -137,9 +148,48 @@ export function AnxietyDispositionModel() {
         ))}
       </div>
 
-      <p className="rounded-lg bg-foreground px-4 py-3 text-sm leading-7 text-background">
+      <div className="space-y-4 rounded-xl border border-border p-4">
+        <div>
+          <h4 className="font-semibold text-foreground">
+            四个象限真正要解决的问题
+          </h4>
+          <p className="mt-2 text-sm leading-7 text-muted-foreground">
+            这套矩阵不是教人“少在乎”，而是让在乎与影响重新匹配。
+          </p>
+        </div>
+
+        <dl className="grid gap-2 sm:grid-cols-2">
+          {anxietyDispositionTable.map((item) => (
+            <div key={item.quadrant} className="rounded-lg bg-muted/55 p-3">
+              <dt className="text-sm font-medium text-foreground">
+                {item.quadrant}
+              </dt>
+              <dd className="mt-1 text-xs leading-5 text-muted-foreground">
+                {item.action}
+              </dd>
+            </div>
+          ))}
+        </dl>
+
+        <div>
+          <p className="text-sm leading-7 text-muted-foreground">
+            最理想的状态不是永远待在某一个象限，而是不断完成三种迁移：
+          </p>
+          <ol className="mt-2 list-decimal space-y-1 pl-5 text-sm leading-7 text-muted-foreground">
+            {anxietyTransitions.map((transition) => (
+              <li key={transition}>{transition}</li>
+            ))}
+          </ol>
+        </div>
+      </div>
+
+      <blockquote className="rounded-lg bg-foreground px-4 py-3 text-sm leading-7 text-background">
         {anxietyDispositionSummary}
-      </p>
+      </blockquote>
+
+      <blockquote className="border-l-2 border-primary/40 pl-4 text-sm leading-7 font-medium text-foreground">
+        {anxietyVisualSummary}
+      </blockquote>
     </section>
   );
 }

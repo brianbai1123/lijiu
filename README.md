@@ -30,7 +30,7 @@ npx serve out
 
 仓库设置里 Pages 源应为 **GitHub Actions**（首次推送后若未自动启用，在 Settings → Pages 中选中即可）。
 
-畫面卡片使用教育部隸書，其餘界面為思源宋體繁體（Noto Serif TC）。字型說明見 `src/fonts/NOTICE.md`。
+畫面卡片使用教育部隸書，其餘界面為思源黑体简体（Noto Sans SC）。字型说明见 `src/fonts/NOTICE.md`。
 
 ## 技术栈
 

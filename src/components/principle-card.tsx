@@ -33,7 +33,7 @@ export function PrincipleCard({
         </span>
       </div>
 
-      {/* 主表達：檢視問題，不是抽象標題 */}
+      {/* 主表达：检视问题，不是抽象标题 */}
       <h3 className="font-serif text-lg leading-8 font-semibold text-balance text-foreground transition-colors group-hover:text-primary sm:text-xl">
         {principle.check}
       </h3>

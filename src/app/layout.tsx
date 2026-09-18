@@ -1,14 +1,14 @@
 import type { Metadata } from "next";
-import { Geist_Mono, Noto_Serif_TC } from "next/font/google";
+import { Geist_Mono, Noto_Sans_SC } from "next/font/google";
 import localFont from "next/font/local";
 import { ThemeProvider } from "@/components/theme-provider";
 import "./globals.css";
 
-const sourceHanSerif = Noto_Serif_TC({
+const sourceHanSans = Noto_Sans_SC({
   subsets: ["latin"],
   weight: ["400", "500", "700"],
   display: "swap",
-  variable: "--font-source-serif",
+  variable: "--font-source-han",
 });
 
 const moeLi = localFont({
@@ -25,17 +25,17 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "歷久 · 經時間檢驗的人生原則",
+  title: "历久 · 经时间检验的人生原则",
   description:
-    "35 條被不同文明、不同學科反覆獨立驗證的人生原則。每一條都附原典出處、跨文明印證、實踐方法、常見誤讀，以及它的失效邊界。",
+    "35 条被不同文明、不同学科反复独立验证的人生原则。每一条都附原典出处、跨文明印证、实践方法、常见误读，以及它的失效边界。",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
-      lang="zh-Hant"
+      lang="zh-CN"
       suppressHydrationWarning
-      className={`${sourceHanSerif.variable} ${sourceHanSerif.className} ${moeLi.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${sourceHanSans.variable} ${sourceHanSans.className} ${moeLi.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col">
         <ThemeProvider

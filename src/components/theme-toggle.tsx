@@ -12,10 +12,10 @@ export function ThemeToggle() {
     <Button
       variant="ghost"
       size="icon"
-      aria-label="切換深淺主題"
+      aria-label="切换深浅主题"
       onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
     >
-      {/* 用 CSS 而不是 state 決定顯示哪個圖標，避免首屏水合不一致 */}
+      {/* 用 CSS 而不是 state 决定显示哪个图标，避免首屏水合不一致 */}
       <MoonIcon className="dark:hidden" />
       <SunIcon className="hidden dark:block" />
     </Button>

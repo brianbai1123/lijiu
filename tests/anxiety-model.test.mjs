@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import {
+  anxietyMatchingNote,
   anxietyDispositionSummary,
   anxietyDispositionTable,
   anxietyQuadrants,
@@ -34,6 +35,7 @@ test("每个象限都包含逻辑、问题、方法和提醒", () => {
 
   assert.equal(anxietyDispositionTable.length, 4);
   assert.equal(anxietyTransitions.length, 3);
+  assert.match(anxietyMatchingNote, /匹配问题/);
   assert.match(anxietyDispositionSummary, /尽力/);
   assert.match(anxietyDispositionSummary, /接纳/);
   assert.match(anxietyDispositionSummary, /负责/);

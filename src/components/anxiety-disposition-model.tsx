@@ -4,6 +4,7 @@ import {
   anxietyAxes,
   anxietyDispositionSummary,
   anxietyDispositionTable,
+  anxietyMatchingNote,
   anxietyModelIntro,
   anxietyQuadrants,
   anxietyTransitions,
@@ -50,8 +51,10 @@ export function AnxietyDispositionModel() {
         焦虑处置模型
       </h3>
 
-      <blockquote className="rounded-lg bg-primary/7 px-4 py-3 text-sm leading-7 text-foreground ring-1 ring-primary/15">
-        {anxietyModelIntro}
+      <blockquote className="space-y-3 rounded-lg bg-primary/7 px-4 py-3 text-sm leading-7 text-foreground ring-1 ring-primary/15">
+        {anxietyModelIntro.split(/\n\n+/).map((paragraph) => (
+          <p key={paragraph}>{paragraph}</p>
+        ))}
       </blockquote>
 
       <div className="grid gap-3 sm:grid-cols-2">
@@ -154,7 +157,7 @@ export function AnxietyDispositionModel() {
             四个象限真正要解决的问题
           </h4>
           <p className="mt-2 text-sm leading-7 text-muted-foreground">
-            这套矩阵不是教人“少在乎”，而是让在乎与影响重新匹配。
+            {anxietyMatchingNote}
           </p>
         </div>
 

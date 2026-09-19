@@ -5,6 +5,7 @@ import {
   BookOpenIcon,
   CheckCircle2Icon,
   GlobeIcon,
+  KeyRoundIcon,
   LightbulbIcon,
   QuoteIcon,
   ScaleIcon,
@@ -40,6 +41,28 @@ function Section({
       </h3>
       {children}
     </section>
+  );
+}
+
+function Prose({
+  text,
+  className = "text-[0.9375rem] leading-7 text-muted-foreground",
+}: {
+  text: string;
+  className?: string;
+}) {
+  const paragraphs = text.split(/\n\n+/).filter(Boolean);
+  if (paragraphs.length <= 1) {
+    return <p className={className}>{paragraphs[0] ?? text}</p>;
+  }
+  return (
+    <div className="space-y-3">
+      {paragraphs.map((paragraph) => (
+        <p key={paragraph} className={className}>
+          {paragraph}
+        </p>
+      ))}
+    </div>
   );
 }
 
@@ -148,9 +171,7 @@ export function PrincipleDetail({
       </Section>
 
       <Section icon={LightbulbIcon} title="背后逻辑">
-        <p className="text-[0.9375rem] leading-7 text-muted-foreground">
-          {principle.logic}
-        </p>
+        <Prose text={principle.logic} />
       </Section>
 
       <Section icon={BookOpenIcon} title="历史故事">
@@ -164,10 +185,14 @@ export function PrincipleDetail({
       </Section>
 
       <Section icon={CheckCircle2Icon} title="它为什么没有被时间淘汰">
-        <p className="text-[0.9375rem] leading-7 text-muted-foreground">
-          {principle.why}
-        </p>
+        <Prose text={principle.why} />
       </Section>
+
+      {principle.readings?.map((reading) => (
+        <Section key={reading.title} icon={KeyRoundIcon} title={reading.title}>
+          <Prose text={reading.body} />
+        </Section>
+      ))}
 
       {principle.id === "dichotomy-of-control" && (
         <AnxietyDispositionModel />
@@ -179,6 +204,11 @@ export function PrincipleDetail({
 
       <Section icon={ScaleIcon} title="可以今天就开始做的">
         <Bullets items={principle.practices} />
+        {principle.coda ? (
+          <blockquote className="rounded-lg bg-foreground px-4 py-3 text-sm leading-7 text-background">
+            {principle.coda}
+          </blockquote>
+        ) : null}
       </Section>
 
       <div className="grid gap-4 sm:grid-cols-2">
@@ -187,18 +217,24 @@ export function PrincipleDetail({
             <TriangleAlertIcon className="size-4 text-primary" />
             常见误读
           </h3>
-          <p className="mt-2 text-sm leading-7 text-muted-foreground">
-            {principle.misreading}
-          </p>
+          <div className="mt-2">
+            <Prose
+              text={principle.misreading}
+              className="text-sm leading-7 text-muted-foreground"
+            />
+          </div>
         </div>
         <div className="rounded-lg bg-muted/60 p-4 ring-1 ring-border">
           <h3 className="flex items-center gap-2 text-sm font-semibold">
             <TriangleAlertIcon className="size-4 text-primary" />
             它在什么时候失效
           </h3>
-          <p className="mt-2 text-sm leading-7 text-muted-foreground">
-            {principle.limits}
-          </p>
+          <div className="mt-2">
+            <Prose
+              text={principle.limits}
+              className="text-sm leading-7 text-muted-foreground"
+            />
+          </div>
         </div>
       </div>
 

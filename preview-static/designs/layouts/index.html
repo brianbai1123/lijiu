@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>历久 · 排版实验室</title>
+  <meta name="description" content="长卷、开本、一条。不用卡片格子的三种排法。" />
+  <style>
+    :root { color-scheme: light; }
+    html, body { margin: 0; min-height: 100%; }
+    body {
+      font-family: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+    }
+    .layout-lab {
+      min-height: 100dvh;
+      background: #fff3b0;
+      background-image:
+        radial-gradient(900px 420px at 0% -10%, #ffb3d4 0%, transparent 55%),
+        radial-gradient(720px 380px at 100% 0%, #9effe0 0%, transparent 50%);
+      color: #1b1149;
+    }
+    .layout-lab * { box-sizing: border-box; }
+    .layout-bar {
+      position: sticky; top: 0; z-index: 30;
+      border-bottom: 2px solid #ffd0e0;
+      background: color-mix(in oklab, #fff3b0 88%, #fff);
+    }
+    .layout-bar-inner {
+      display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between;
+      gap: 1rem; max-width: 1120px; margin: 0 auto; padding: 1rem 1.25rem;
+    }
+    .layout-bar h1 { margin: 0; font-size: 0.95rem; }
+    .layout-bar p {
+      margin: 0.25rem 0 0; max-width: 36em; font-size: 0.75rem; line-height: 1.6; color: #5a4d8a;
+    }
+    .layout-picks { display: flex; flex-wrap: wrap; gap: 0.45rem; }
+    .layout-picks button {
+      font: inherit; min-width: 8.5rem; padding: 0.5rem 0.75rem;
+      border: 2px solid #ffd0e0; border-radius: 999px; background: #fff; color: #1b1149;
+      cursor: pointer; text-align: left;
+    }
+    .layout-picks button[aria-pressed="true"] {
+      border-color: #ff3d7f; background: #ff3d7f; color: #fff; box-shadow: 0 4px 0 #1b1149;
+    }
+    .layout-picks .k { display: block; font-size: 0.62rem; letter-spacing: 0.14em; opacity: 0.75; }
+    .layout-picks .n { display: block; margin-top: 0.12rem; font-size: 0.88rem; font-weight: 700; }
+    .layout-spec {
+      max-width: 1120px; margin: 0 auto; padding: 1rem 1.25rem 0;
+      font-size: 0.86rem; line-height: 1.7; color: #5a4d8a;
+    }
+    .layout-spec strong { color: #1b1149; }
+    .layout-stage { max-width: 1120px; margin: 0 auto; padding: 1rem 1.25rem 3rem; }
+    .scroll-list { display: flex; flex-direction: column; }
+    .scroll-row {
+      display: grid; grid-template-columns: 3.6rem minmax(0, 1fr) auto;
+      gap: 0.85rem 1.1rem; align-items: start; width: 100%;
+      padding: 1.15rem 0.2rem; border: 0; border-bottom: 1px solid #1b114922;
+      background: transparent; color: inherit; text-align: left; cursor: pointer; font: inherit;
+    }
+    .scroll-row:first-child { border-top: 1px solid #1b114922; }
+    .scroll-row[aria-pressed="true"], .scroll-row:hover {
+      background: color-mix(in oklab, #fff 70%, transparent);
+    }
+    .scroll-row .no {
+      font-family: "Noto Serif SC", "Songti SC", "STSong", serif;
+      font-size: 1.55rem; font-weight: 600; color: #ff3d7f; line-height: 1;
+    }
+    .scroll-row h2 {
+      margin: 0; font-family: "Noto Serif SC", "Songti SC", "STSong", serif;
+      font-size: clamp(1.15rem, 2.2vw, 1.45rem); font-weight: 500; line-height: 1.5;
+    }
+    .scroll-row .meta { margin-top: 0.4rem; font-size: 0.75rem; color: #5a4d8a; }
+    .scroll-row .trig {
+      justify-self: end; padding: 0.2rem 0.6rem; border-radius: 999px;
+      background: #ffe566; font-size: 0.75rem; font-weight: 600; white-space: nowrap;
+    }
+    @media (max-width: 700px) {
+      .scroll-row { grid-template-columns: 2.4rem minmax(0, 1fr); }
+      .scroll-row .trig { grid-column: 2; justify-self: start; }
+    }
+    .spread {
+      display: grid; gap: 1.25rem; min-height: 70dvh; padding: 1.2rem;
+      border: 2px solid #ffd0e0; border-radius: 1.5rem; background: #fff; box-shadow: 0 8px 0 #4d8dff;
+    }
+    @media (min-width: 860px) { .spread { grid-template-columns: 220px minmax(0, 1fr); } }
+    .spread-nav {
+      display: flex; flex-direction: column; gap: 0.2rem; padding-right: 0.4rem; border-right: 1px solid #ffd0e0;
+    }
+    .spread-nav .cat {
+      margin: 0.7rem 0 0.2rem; font-size: 0.68rem; letter-spacing: 0.14em; color: #ff3d7f;
+    }
+    .spread-nav button {
+      padding: 0.55rem 0.65rem; border: 0; border-radius: 0.7rem; background: transparent;
+      color: #5a4d8a; text-align: left; cursor: pointer; font: inherit; font-size: 0.88rem;
+    }
+    .spread-nav button[aria-pressed="true"] { background: #fff3b0; color: #1b1149; font-weight: 700; }
+    .spread-page { padding: 0.4rem 0.6rem 0.8rem; }
+    .spread-page .trig, .film .trig {
+      display: inline-block; padding: 0.15rem 0.55rem; border-radius: 999px;
+      background: #b8ffe6; font-size: 0.75rem; font-weight: 600;
+    }
+    .spread-page h2 {
+      margin: 1rem 0 0; font-family: "Noto Serif SC", "Songti SC", "STSong", serif;
+      font-size: clamp(1.6rem, 3.4vw, 2.35rem); font-weight: 500; line-height: 1.4;
+    }
+    .spread-page .essence {
+      margin: 1.1rem 0 0; max-width: 38em; color: #5a4d8a; font-size: 0.95rem; line-height: 1.8;
+    }
+    .spread-page .quote {
+      margin: 1.4rem 0 0; padding-left: 1rem; border-left: 4px solid #19d4b2;
+      font-family: "Noto Serif SC", "Songti SC", "STSong", serif; font-size: 1.05rem; line-height: 1.75;
+    }
+    .spread-page .foot { margin-top: 1.6rem; font-size: 0.78rem; color: #5a4d8a; }
+    .film {
+      display: flex; min-height: 72dvh; flex-direction: column; justify-content: center;
+      padding: 2.5rem 1.5rem 2rem; border: 2px solid #ffd0e0; border-radius: 1.6rem;
+      background: #fff; box-shadow: 0 10px 0 #ff3d7f;
+    }
+    .film .trig { background: transparent; color: #ff3d7f; letter-spacing: 0.18em; padding: 0; }
+    .film h2 {
+      margin: 1.1rem 0 0; max-width: 14em;
+      font-family: "Noto Serif SC", "Songti SC", "STSong", serif;
+      font-size: clamp(1.8rem, 4.4vw, 2.8rem); font-weight: 500; line-height: 1.35;
+    }
+    .film .essence { margin: 1.2rem 0 0; max-width: 36em; color: #5a4d8a; font-size: 1rem; line-height: 1.8; }
+    .film-nav { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-top: 2.4rem; }
+    .film-nav button {
+      padding: 0.55rem 1rem; border: 2px solid #1b1149; border-radius: 999px;
+      background: #ffe566; color: #1b1149; cursor: pointer; font: inherit; font-size: 0.88rem; font-weight: 700;
+    }
+    .film-nav .count { font-variant-numeric: tabular-nums; font-size: 0.9rem; color: #5a4d8a; }
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+  <div class="layout-lab">
+    <header class="layout-bar">
+      <div class="layout-bar-inner">
+        <div>
+          <h1>历久 · 排版实验室</h1>
+          <p>配色沿用丁款。这里只换排版：不用卡片格子。现站未改。选定 A / B / C 后再落地。</p>
+        </div>
+        <div class="layout-picks" id="picks"></div>
+      </div>
+    </header>
+    <p class="layout-spec" id="spec"></p>
+    <div class="layout-stage">
+      <div class="scroll-list" id="scroll"></div>
+      <div class="spread hidden" id="spread">
+        <nav class="spread-nav" id="spread-nav" aria-label="领域目录"></nav>
+        <article class="spread-page" id="spread-page"></article>
+      </div>
+      <div class="film hidden" id="film"></div>
+    </div>
+  </div>
+  <script>
+    const LAYOUTS = [
+      { id: "scroll", kicker: "A · 推荐", name: "长卷", rec: "去掉盒子。序号、检视句、何时想起排成一条通栏，像杂志目录或碑阴题名。35 条仍然扫得完，「焦虑时」也找得到。现有卡片的问题是每张都长得一样，句子反而被框吃掉。" },
+      { id: "spread", kicker: "B", name: "开本", rec: "左边是领域目录，右边一次摊开一条。适合读，不适合逛。原则从「商品货架」变成「一本书翻开的那一页」。" },
+      { id: "film", kicker: "C", name: "一条", rec: "一次只给一句，字开到接近海报。最不像工具站，也最吃阅读耐心。当展览成立，当手册就慢。" },
+    ];
+    const SAMPLES = [
+      { id: "dichotomy-of-control", title: "分清可控与不可控", check: "命运负责发牌，人只负责出牌；烂牌不是乱打的理由，好牌也不保证必赢。", trigger: "焦虑时", essence: "把精力全部投向你能决定的那部分，对不能决定的部分保持坦然——这是几乎所有情绪管理方法的共同祖先。", categoryName: "认知与判断", quoteText: "在我们能力之内的有：判断、动机、欲望、厌恶，一句话，凡是我们自己的作为。不在我们能力之内的有：身体、财产、名声、地位，一句话，凡不是我们自己的作为。", quoteSource: "爱比克泰德《手册》第一章 · 约公元 125 年" },
+      { id: "know-what-you-dont-know", title: "知道自己不知道", check: "不知道，只是房间还空著；自以为知道，才会把求知的门焊死。", trigger: "觉得懂了时", essence: "「我不知道」是一个合法答案，也是唯一开著的那扇门；难的不是说出它，是先发现自己该说它。", categoryName: "认知与判断", quoteText: "知之为知之，不知为不知，是知也。", quoteSource: "《论语·为政》 · 约公元前 5 世纪" },
+      { id: "listen-to-both-sides", title: "兼听则明，偏信则暗", check: "会议室里一旦只剩回声，坐得最高的人往往最先失明。", trigger: "要拍板时", essence: "顺耳的信息会自己找上门，逆耳的不会。所以兼听不是一种态度，是一笔你得先付的钱。", categoryName: "认知与判断", quoteText: "兼听则明，偏信则暗。", quoteSource: "魏征答唐太宗问，《资治通鉴·唐纪》 · 公元 7 世纪" },
+      { id: "invert", title: "反过来想", check: "造桥前先找它会从哪里塌；成功没有配方，灾难通常有清单。", trigger: "定目标时", essence: "别问「怎样才能赢」，先问「怎样一定会出局」——然后不去那里。赢法千奇百怪，死法总是那几种。", categoryName: "认知与判断", quoteText: "反过来想，总是反过来想。（Man muss immer umkehren.）", quoteSource: "数学家卡尔·雅各比 · 19 世纪" },
+      { id: "occams-razor", title: "如无必要，勿增实体", check: "给理论装太多后门，事实永远抓不住它；不会输的解释，也赢不了真相。", trigger: "解释变复杂时", essence: "同一组事实，两个解释都说得通，选假设更少的那个。不是因为简单更可能对，而是因为简单更容易被抓住——肯露出脖子的解释，才经得起刀。", categoryName: "认知与判断", quoteText: "如无必要，勿增实体。（Entia non sunt multiplicanda praeter necessitatem.）", quoteSource: "归于奥卡姆的威廉 · 14 世纪" },
+      { id: "incentives", title: "看激励，而不是看承诺", check: "公司文化写在墙上，真实文化写在奖金里。", trigger: "看人做事时", essence: "想知道一个人或一个组织会怎么做，别问他信什么。去查他做对了拿到什么，做错了赔掉什么，以及他赔不掉的那部分由谁来赔。承诺告诉你他想被怎样看见；激励告诉你，他最后会往哪里走。", categoryName: "认知与判断", quoteText: "天下熙熙，皆为利来；天下攘攘，皆为利往。", quoteSource: "《史记·货殖列传》 · 约公元前 91 年" },
+      { id: "golden-rule", title: "己所不欲，勿施于人", check: "规则是一只回旋镖：飞回来时不敢接，扔出去时就不配叫公平。", trigger: "想还手时", essence: "把「我不愿被这样对待」当作行为下限——这是被最多互不相干的文明各自独立写下来的一条规则。", categoryName: "品格与自我", quoteText: "子贡问曰：「有一言而可以终身行之者乎？」子曰：「其恕乎！己所不欲，勿施于人。」", quoteSource: "《论语·卫灵公》 · 约公元前 5 世纪" },
+      { id: "know-thyself", title: "认识你自己", check: "自我是用来丈量世界的尺，也是唯一看不见自己刻度的尺。", trigger: "看不惯谁时", essence: "你对自己的判断往往是所有判断里最不准的一个，而它却是其他所有判断的基础。", categoryName: "品格与自我", quoteText: "认识你自己。（γνῶθι σεαυτόν）", quoteSource: "刻于德尔斐阿波罗神庙 · 约公元前 6 世纪" },
+      { id: "integrity-alone", title: "慎独", check: "聚光灯下的人品可能只是戏服；散场以后不脱，才算长在身上。", trigger: "没人看见时", essence: "没有人看见的时候你怎么做，才是你真正的标准；被看见时的表现只是表演。", categoryName: "品格与自我", quoteText: "莫见乎隐，莫显乎微，故君子慎其独也。", quoteSource: "《礼记·中庸》 · 约公元前 3 世纪" },
+    ];
+
+    let layout = "scroll";
+    let openId = SAMPLES[0].id;
+
+    const $ = (id) => document.getElementById(id);
+    const open = () => SAMPLES.find((s) => s.id === openId) || SAMPLES[0];
+
+    function renderPicks() {
+      $("picks").innerHTML = LAYOUTS.map((item) =>
+        `<button type="button" data-layout="${item.id}" aria-pressed="${layout === item.id}">
+          <span class="k">${item.kicker}</span><span class="n">${item.name}</span>
+        </button>`
+      ).join("");
+    }
+    function renderSpec() {
+      const spec = LAYOUTS.find((item) => item.id === layout);
+      $("spec").innerHTML = `<strong>${spec.kicker} ${spec.name}。</strong> ${spec.rec}`;
+    }
+    function renderScroll() {
+      $("scroll").innerHTML = SAMPLES.map((p, i) =>
+        `<button type="button" class="scroll-row" data-id="${p.id}" aria-pressed="${openId === p.id}">
+          <span class="no">${String(i + 1).padStart(2, "0")}</span>
+          <div><h2>${p.check}</h2><p class="meta">${p.title} · ${p.categoryName}</p></div>
+          <span class="trig">${p.trigger}</span>
+        </button>`
+      ).join("");
+    }
+    function renderSpread() {
+      const grouped = [];
+      for (const item of SAMPLES) {
+        const last = grouped[grouped.length - 1];
+        if (!last || last.name !== item.categoryName) grouped.push({ name: item.categoryName, items: [item] });
+        else last.items.push(item);
+      }
+      const p = open();
+      $("spread-nav").innerHTML = grouped.map((g) =>
+        `<p class="cat">${g.name}</p>` +
+        g.items.map((item) =>
+          `<button type="button" data-id="${item.id}" aria-pressed="${p.id === item.id}">${item.title}</button>`
+        ).join("")
+      ).join("");
+      $("spread-page").innerHTML =
+        `<span class="trig">${p.trigger}</span>
+         <h2>${p.check}</h2>
+         <p class="essence">${p.essence}</p>
+         <p class="quote">${p.quoteText}<br><span style="color:#5a4d8a;font-size:0.8rem">${p.quoteSource}</span></p>
+         <p class="foot">${p.title}</p>`;
+    }
+    function renderFilm() {
+      const p = open();
+      const idx = SAMPLES.findIndex((s) => s.id === p.id);
+      $("film").innerHTML =
+        `<p class="trig">${p.trigger}</p>
+         <h2>${p.check}</h2>
+         <p class="essence">${p.essence}</p>
+         <div class="film-nav">
+           <button type="button" data-delta="-1">上一条</button>
+           <span class="count">${String(idx + 1).padStart(2, "0")} / ${SAMPLES.length}</span>
+           <button type="button" data-delta="1">下一条</button>
+         </div>`;
+    }
+    function render() {
+      renderPicks();
+      renderSpec();
+      $("scroll").classList.toggle("hidden", layout !== "scroll");
+      $("spread").classList.toggle("hidden", layout !== "spread");
+      $("film").classList.toggle("hidden", layout !== "film");
+      if (layout === "scroll") renderScroll();
+      if (layout === "spread") renderSpread();
+      if (layout === "film") renderFilm();
+    }
+
+    document.addEventListener("click", (e) => {
+      const pick = e.target.closest("[data-layout]");
+      if (pick) { layout = pick.getAttribute("data-layout"); render(); return; }
+      const row = e.target.closest("[data-id]");
+      if (row) { openId = row.getAttribute("data-id"); render(); return; }
+      const nav = e.target.closest("[data-delta]");
+      if (nav) {
+        const idx = SAMPLES.findIndex((s) => s.id === openId);
+        const next = SAMPLES[(idx + Number(nav.getAttribute("data-delta")) + SAMPLES.length) % SAMPLES.length];
+        openId = next.id;
+        render();
+      }
+    });
+
+    render();
+  </script>
+</body>
+</html>

@@ -66,6 +66,14 @@ test("STEM 模型写进详情：函数、无用功、催化、爱比克泰德 MD
   assert.match(dichotomyStemBlocks[2].body, /推不动的墙/);
   assert.match(dichotomyStemBlocks[3].body, /炼金/);
   assert.match(enrichmentsSrc, /你永远不选状态/);
+  const detailSrc = readFileSync(
+    new URL("../src/components/principle-detail.tsx", import.meta.url),
+    "utf8",
+  );
+  const corroborationsAt = detailSrc.indexOf("独立来源的印证");
+  const stemAt = detailSrc.indexOf("<DichotomyStemModels");
+  const practicesAt = detailSrc.indexOf("可以今天就开始做的");
+  assert.ok(corroborationsAt > 0 && stemAt > corroborationsAt && practicesAt > stemAt);
 });
 
 test("四象限同时打中焦虑空转和失职逃避", () => {

@@ -196,15 +196,14 @@ export function PrincipleDetail({
       ))}
 
       {principle.id === "dichotomy-of-control" && (
-        <>
-          <DichotomyStemModels />
-          <AnxietyDispositionModel />
-        </>
+        <AnxietyDispositionModel />
       )}
 
       <Section icon={GlobeIcon} title="独立来源的印证">
         <Bullets items={principle.corroborations} />
       </Section>
+
+      {principle.id === "dichotomy-of-control" && <DichotomyStemModels />}
 
       <Section icon={ScaleIcon} title="可以今天就开始做的">
         <Bullets items={principle.practices} />

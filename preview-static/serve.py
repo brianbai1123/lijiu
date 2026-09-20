@@ -29,7 +29,10 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         super().end_headers()
 
     def log_message(self, fmt, *args):
-        sys.stderr.write("%s - %s\n" % (self.address_string(), fmt % args))
+        import datetime
+
+        ts = datetime.datetime.now().strftime("%H:%M:%S.%f")[:-3]
+        sys.stderr.write("[%s] %s - %s\n" % (ts, self.address_string(), fmt % args))
 
     def handle_one_request(self):
         try:

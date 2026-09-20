@@ -8,6 +8,7 @@ import {
 import {
   dichotomyStemBlocks,
   dichotomyStemClose,
+  dichotomyStemHeading,
   dichotomyStemIntro,
   type StemBlock,
 } from "@/data/dichotomy-stem";
@@ -102,9 +103,9 @@ function StemArticle({ block }: { block: StemBlock }) {
 export function DichotomyStemModels() {
   return (
     <section className="space-y-5">
-      <h3 className="flex items-center gap-2 text-sm font-semibold tracking-wide text-foreground">
+      <h3 className="flex items-center gap-2 text-base font-semibold tracking-wide text-foreground">
         <LightbulbIcon className="size-4 text-primary" />
-        STEM模型：你只能努力改变自变量
+        {dichotomyStemHeading}
       </h3>
       <p className="text-[0.9375rem] leading-7 text-muted-foreground">
         {dichotomyStemIntro}

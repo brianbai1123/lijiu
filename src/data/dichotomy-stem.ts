@@ -19,8 +19,10 @@ export type StemBlock = {
   close?: string;
 };
 
+export const dichotomyStemHeading = "STEM模型：你只能努力改变自变量";
+
 export const dichotomyStemIntro =
-  "结果是函数，你只能选其中一部分自变量。这条原则不是劝你少在乎结果，而是：只优化你能选的动作，停止假装自己能改世界的扰动。";
+  "结果是函数，你只能努力改变自变量。这条原则不是劝你少在乎结果，而是：只优化你能选的动作，停止假装自己能改世界的扰动。";
 
 export const dichotomyStemBlocks: StemBlock[] = [
   {
@@ -78,6 +80,7 @@ export const dichotomyStemClose =
   "在乎可以很大。力只用在 |∂Y/∂A| 不为零的地方。";
 
 export const dichotomyStemHaystack = [
+  dichotomyStemHeading,
   dichotomyStemIntro,
   dichotomyStemClose,
   ...dichotomyStemBlocks.flatMap((block) => [

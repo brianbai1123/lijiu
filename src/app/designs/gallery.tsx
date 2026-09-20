@@ -31,7 +31,7 @@ const QUAD: Record<(typeof SAMPLE_IDS)[number], [string, string][]> = {
   ],
 };
 
-type Proposal = "xuan" | "stele" | "edit";
+type Proposal = "xuan" | "stele" | "edit" | "dopamine";
 type Scheme = "light" | "dark";
 type Width = "wide" | "narrow";
 
@@ -94,10 +94,27 @@ const PROPOSALS: {
       { hex: "#B42318", label: "朱栏" },
     ],
   },
+  {
+    id: "dopamine",
+    kicker: "丁 · 新试",
+    name: "多巴胺",
+    lede: "高饱和、多色块、圆角和硬投影。柠檬黄底、品红强调、薄荷标签、天空蓝描边，字仍用可长读的宋体与黑体——颜色在闹，句子还要能读完。",
+    fonts: "站名：黑体圆角胶囊。主标题与卡片主句：Noto Serif SC。正文与导航：Noto Sans SC。隶书不进阅读面，避免和糖果色抢戏。",
+    sizes: "站名 16px。主标题 36–56px 宋体。卡片主句 19px 宋体 / 行高 1.55。正文 16px / 行高 1.7。卡片圆角 22px。",
+    color: "浅色：柠檬黄 #FFF3B0，品红 #FF3D7F，薄荷 #19D4B2，天空蓝 #4D8DFF，字色靛紫 #1B1149。深色：紫夜 #16082B 上的霓虹粉，不是把浅色反相。",
+    lishu: "这款把隶书拿掉。多巴胺靠色块建立情绪，再叠碑额体容易又花又糊。",
+    swatches: [
+      { hex: "#FFF3B0", label: "柠檬" },
+      { hex: "#FF3D7F", label: "品红" },
+      { hex: "#19D4B2", label: "薄荷" },
+      { hex: "#4D8DFF", label: "天空" },
+      { hex: "#1B1149", label: "靛紫" },
+    ],
+  },
 ];
 
 export function DesignGallery() {
-  const [proposal, setProposal] = React.useState<Proposal>("xuan");
+  const [proposal, setProposal] = React.useState<Proposal>("dopamine");
   const [scheme, setScheme] = React.useState<Scheme>("light");
   const [width, setWidth] = React.useState<Width>("wide");
   const [openId, setOpenId] = React.useState<(typeof SAMPLE_IDS)[number]>(
@@ -114,9 +131,9 @@ export function DesignGallery() {
       <header className="design-chrome">
         <div className="design-chrome-inner">
           <div>
-            <h1>历久 · 三款视觉提案</h1>
+            <h1>历久 · 视觉提案</h1>
             <p>
-              现站未改。下面是用真实文案、真实字体渲出来的完整界面，不是色板。选定后告诉我甲 / 乙 / 丙。
+              现站未改。甲乙丙之外加了丁「多巴胺」。用真实文案渲染，选定后再改现站。
             </p>
           </div>
           <div className="design-picks">

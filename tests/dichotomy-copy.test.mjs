@@ -7,6 +7,7 @@ import {
   anxietyModelIntro,
   anxietyQuadrants,
 } from "../src/data/anxiety-model.ts";
+import { dichotomyStemBlocks, dichotomyStemIntro } from "../src/data/dichotomy-stem.ts";
 import { checks } from "../src/data/checks.ts";
 
 const principlesSrc = readFileSync(
@@ -49,6 +50,22 @@ test("承认、口子、认命、失职对偶按区块落位", () => {
   assert.match(principlesSrc, /不想承担那部分可控/);
   assert.match(principlesSrc, /提前撤退/);
   assert.match(enrichmentsSrc, /不是在认命，是在聚焦/);
+});
+
+test("STEM 模型写进详情：函数、无用功、催化、爱比克泰德 MDP", () => {
+  assert.match(dichotomyStemIntro, /结果是函数/);
+  const titles = dichotomyStemBlocks.map((block) => block.id);
+  assert.deepEqual(titles, ["math", "epictetus", "physics", "chemistry"]);
+  assert.equal(dichotomyStemBlocks[0].formula, "Y = f(A, W)");
+  assert.match(dichotomyStemBlocks[0].body, /∂Y\/∂A/);
+  assert.match(dichotomyStemBlocks[1].body, /马尔可夫决策/);
+  assert.ok(
+    dichotomyStemBlocks[1].mapping?.some((row) => row.card.includes("烂牌")),
+  );
+  assert.match(dichotomyStemBlocks[2].formula, /F/);
+  assert.match(dichotomyStemBlocks[2].body, /推不动的墙/);
+  assert.match(dichotomyStemBlocks[3].body, /炼金/);
+  assert.match(enrichmentsSrc, /你永远不选状态/);
 });
 
 test("四象限同时打中焦虑空转和失职逃避", () => {

@@ -20,6 +20,7 @@ import {
   principles,
   type CategoryId,
 } from "@/data/principles";
+import { dichotomyStemHaystack } from "@/data/dichotomy-stem";
 import { cn } from "@/lib/utils";
 
 type Filter = CategoryId | "all";
@@ -44,6 +45,7 @@ function haystack(id: string) {
     ...p.quotes.flatMap((q) => [q.text, q.source, q.era]),
     ...p.stories.positive.flatMap((s) => [s.title, s.era, s.summary]),
     ...p.stories.negative.flatMap((s) => [s.title, s.era, s.summary]),
+    ...(id === "dichotomy-of-control" ? [dichotomyStemHaystack] : []),
   ]
     .join(" ")
     .toLowerCase();

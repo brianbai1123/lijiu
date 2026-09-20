@@ -23,6 +23,7 @@ import {
   type Principle,
 } from "@/data/principles";
 import { AnxietyDispositionModel } from "@/components/anxiety-disposition-model";
+import { DichotomyStemModels } from "@/components/dichotomy-stem-models";
 
 function Section({
   icon: Icon,
@@ -195,7 +196,10 @@ export function PrincipleDetail({
       ))}
 
       {principle.id === "dichotomy-of-control" && (
-        <AnxietyDispositionModel />
+        <>
+          <DichotomyStemModels />
+          <AnxietyDispositionModel />
+        </>
       )}
 
       <Section icon={GlobeIcon} title="独立来源的印证">

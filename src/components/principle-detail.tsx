@@ -9,6 +9,7 @@ import {
   LightbulbIcon,
   QuoteIcon,
   ScaleIcon,
+  SproutIcon,
   ThumbsDownIcon,
   ThumbsUpIcon,
   TriangleAlertIcon,
@@ -23,7 +24,9 @@ import {
   type Principle,
 } from "@/data/principles";
 import { AnxietyDispositionModel } from "@/components/anxiety-disposition-model";
-import { DichotomyStemModels } from "@/components/dichotomy-stem-models";
+import { KnowingQuadrantModel } from "@/components/knowing-quadrant-model";
+import { StemModels } from "@/components/stem-models";
+import { stemSections } from "@/data/stem-models";
 
 function Section({
   icon: Icon,
@@ -195,15 +198,40 @@ export function PrincipleDetail({
         </Section>
       ))}
 
-      {principle.id === "dichotomy-of-control" && (
-        <AnxietyDispositionModel />
-      )}
+      {principle.id === "dichotomy-of-control" && <AnxietyDispositionModel />}
+      {principle.id === "know-what-you-dont-know" && <KnowingQuadrantModel />}
 
       <Section icon={GlobeIcon} title="独立来源的印证">
         <Bullets items={principle.corroborations} />
       </Section>
 
-      {principle.id === "dichotomy-of-control" && <DichotomyStemModels />}
+      {principle.firstPrinciples ? (
+        <Section
+          icon={SproutIcon}
+          title={principle.firstPrinciples.title}
+        >
+          <ol className="space-y-2">
+            {principle.firstPrinciples.steps.map((step, index) => (
+              <li
+                key={step}
+                className="flex gap-3 text-[0.9375rem] leading-7 text-muted-foreground"
+              >
+                <span className="mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full bg-secondary font-mono text-[11px] text-secondary-foreground">
+                  {index + 1}
+                </span>
+                <span>{step}</span>
+              </li>
+            ))}
+          </ol>
+          <p className="border-l-2 border-primary/40 pl-4 text-[0.9375rem] leading-7 font-medium text-foreground">
+            {principle.firstPrinciples.conclusion}
+          </p>
+        </Section>
+      ) : null}
+
+      {stemSections[principle.id] ? (
+        <StemModels section={stemSections[principle.id]} />
+      ) : null}
 
       <Section icon={ScaleIcon} title="可以今天就开始做的">
         <Bullets items={principle.practices} />

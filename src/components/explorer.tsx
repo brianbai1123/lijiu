@@ -20,7 +20,8 @@ import {
   principles,
   type CategoryId,
 } from "@/data/principles";
-import { dichotomyStemHaystack } from "@/data/dichotomy-stem";
+import { knowingHaystack } from "@/data/knowing-model";
+import { stemHaystack } from "@/data/stem-models";
 import { cn } from "@/lib/utils";
 
 type Filter = CategoryId | "all";
@@ -45,7 +46,11 @@ function haystack(id: string) {
     ...p.quotes.flatMap((q) => [q.text, q.source, q.era]),
     ...p.stories.positive.flatMap((s) => [s.title, s.era, s.summary]),
     ...p.stories.negative.flatMap((s) => [s.title, s.era, s.summary]),
-    ...(id === "dichotomy-of-control" ? [dichotomyStemHaystack] : []),
+    ...(p.firstPrinciples
+      ? [p.firstPrinciples.title, ...p.firstPrinciples.steps, p.firstPrinciples.conclusion]
+      : []),
+    stemHaystack(id),
+    ...(id === "know-what-you-dont-know" ? [knowingHaystack] : []),
   ]
     .join(" ")
     .toLowerCase();

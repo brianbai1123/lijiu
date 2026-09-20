@@ -1,0 +1,204 @@
+/** 详情页的 STEM 区块：只给真正同构的模型，不做比喻堆砌 */
+
+export type StemSymbol = {
+  symbol: string;
+  meaning: string;
+};
+
+export type StemTable = {
+  /** 两列表头 */
+  head: [string, string];
+  rows: [string, string][];
+  /** 读表要点，写在表下 */
+  note?: string;
+};
+
+export type StemBlock = {
+  id: string;
+  field: string;
+  title: string;
+  formula: string;
+  symbols?: StemSymbol[];
+  /** 可含空行分段 */
+  body: string;
+  table?: StemTable;
+  close?: string;
+};
+
+export type StemSection = {
+  heading: string;
+  intro: string;
+  blocks: StemBlock[];
+  close: string;
+};
+
+export const stemSections: Record<string, StemSection> = {
+  "dichotomy-of-control": {
+    heading: "STEM模型：你只能努力改变自变量",
+    intro:
+      "结果是函数，你只能努力改变自变量。这条原则不是劝你少在乎结果，而是：只优化你能选的动作，停止假装自己能改世界的扰动。",
+    blocks: [
+      {
+        id: "math",
+        field: "数学",
+        title: "你不选结果，只选动作",
+        formula: "Y = f(A, W)",
+        symbols: [
+          { symbol: "Y", meaning: "结果：签不签得下、病不病、裁不裁员。" },
+          { symbol: "A", meaning: "你能选的动作。" },
+          {
+            symbol: "W",
+            meaning: "世界的扰动：别人、运气、历史、身体里你动不了的部分。",
+          },
+        ],
+        body: "四象限里的「影响」，就是 |∂Y/∂A|——你的手往下按，结果会不会动。它不是开关，是连续的灵敏度。还能推动 30%，就是还有梯度；把这件事划进不可控，等于把梯度扔掉。\n\n口子不是鸡汤。它是：找到梯度最大、且你真能改的那个坐标，把全部力气压上去。只走这一步：argmax_A E[Y | A]。",
+      },
+      {
+        id: "epictetus",
+        field: "控制论",
+        title: "爱比克泰德不选状态，只选策略",
+        formula: "P(Sₜ₊₁ | Sₜ, Aₜ)",
+        body: "随机控制里这叫马尔可夫决策：你选动作 Aₜ，世界按概率转移到下一状态，你拿奖励。你永远不选状态本身。锁链、主人、身体是 S；判断、态度、言行是 A。他和算法说的是同一句话。",
+        table: {
+          head: ["第一卡", "控制论"],
+          rows: [
+            ["能决定的", "决策变量 A"],
+            ["能影响的（中间那栏）", "A 能推动转移概率，但 Y 仍随机"],
+            ["不能影响的", "过程噪声 W，再算也变不了分布"],
+            ["把手伸进口子", "只在可控方向走一步：argmax_A E[Y | A]"],
+            ["焦虑空转", "在脑子里反复采样 W，不更新 A"],
+            ["失职", "A 能改概率，你却把 A 留在默认值"],
+            ["烂牌不是乱打的理由", "坏状态也有最优策略；策略差和牌差是两件事"],
+          ],
+        },
+        close: "牌是发来的状态。人负责的是策略。",
+      },
+      {
+        id: "physics",
+        field: "物理",
+        title: "力存在，不等于做功",
+        formula: "功 = F⃗ · ds⃗",
+        body: "位移为 0，功率就是 0。焦虑是用力按一堵推不动的墙：代谢在烧，世界的状态不变。失职则相反——有位移方向，力却是 0。",
+      },
+      {
+        id: "chemistry",
+        field: "化学",
+        title: "你改不了平衡，你改路径",
+        formula: "K 常常不归你；k、Ea 才归你",
+        body: "平衡常数 K 决定最终能走到哪，你常常动不了。你能改的是路径和速率：活化能、催化剂。口子就是把活化能降低的那一步。假装能改 K，是炼金；找到催化剂，是化学。",
+      },
+    ],
+    close: "在乎可以很大。力只用在 |∂Y/∂A| 不为零的地方。",
+  },
+
+  "know-what-you-dont-know": {
+    heading: "STEM模型：「不知道」是可以量出来的",
+    intro:
+      "一句「我不懂」听上去像态度。放进下面四个模型，它是一个有大小、有代价、有更新规则的量。量得出来，才管得住。",
+    blocks: [
+      {
+        id: "bayes",
+        field: "概率论",
+        title: "先验写成 0，证据再多也翻不了案",
+        formula: "P(H|E) = P(E|H)·P(H) / P(E)",
+        symbols: [
+          { symbol: "H", meaning: "某个假设。" },
+          { symbol: "E", meaning: "新拿到的证据。" },
+          { symbol: "P(H)", meaning: "你事先给它的可能性，先验。" },
+          { symbol: "P(H|E)", meaning: "看过证据之后的可能性，后验。" },
+        ],
+        body: "先验写成 0，分子恒为 0，证据再强，后验永远是 0；写成 1 则锁死在另一端。所以「绝对不可能」和「毫无疑问」在数学上不是很强的判断，它们是两个开关，作用是关掉更新。\n\n这条原则翻译过来只有一句硬话：任何先验都别写成 0 或 1，留 1%。1% 和 0 的差距不是一个百分点，是「能被事实改变」和「不能」之间的差距。",
+        table: {
+          head: ["你的先验", "3 条强证据之后"],
+          rows: [
+            ["0（绝无可能）", "0 —— 再多证据也不动"],
+            ["0.01（不太可能）", "约 91% —— 三步就翻案"],
+            ["0.5（两可）", "约 99.9%"],
+            ["1（毫无疑问）", "100% —— 反证同样进不来"],
+          ],
+          note: "按每条证据似然比 10 估算。前两行起点只差一个百分点，三步之后差了一个世界。",
+        },
+      },
+      {
+        id: "entropy",
+        field: "信息论",
+        title: "确定是舒服的，也是免疫信息的",
+        formula: "H(X) = −Σ p·log₂p",
+        symbols: [
+          { symbol: "H", meaning: "熵：你手上还剩多少不确定，单位是比特。" },
+        ],
+        body: "你认定「就是 A」，p=1，H=0。熵为 0 时，任何观测的信息增益也是 0——不是世界没给你信息，是你没有可以被填的位置。「我已经懂了」的字面意思，是「这里容量已满」。\n\n所以学习速度的上限，不取决于你多聪明，取决于你肯留多少熵。别停在「反正不清楚」，继续问：不知道的是哪几种可能？各占多大？哪条信息最能把它们分开？",
+        table: {
+          head: ["你的状态", "一次观测最多拿到"],
+          rows: [
+            ["「肯定是 A」", "0 bit"],
+            ["「A、B 五五开」", "1 bit"],
+            ["「四种可能都不排除」", "2 bit"],
+          ],
+          note: "高质量的无知不是空白，是一张标出缺口的地图。",
+        },
+      },
+      {
+        id: "calibration",
+        field: "统计",
+        title: "信心也要参加考试",
+        formula: "Brier = (1/N)·Σ(pᵢ − oᵢ)²",
+        symbols: [
+          { symbol: "pᵢ", meaning: "你当时说的把握，比如 0.7。" },
+          { symbol: "oᵢ", meaning: "后来的结果：发生是 1，没发生是 0。" },
+        ],
+        body: "总说「肯定」的人，可能只是语气强。校准良好的人，说七成把握的事，长期就该有七成发生。\n\n所以别只查自己猜对多少，要查信心配不配得上准确率。声称九成把握却只对六成，你缺的不是自信，是对自己误差的认识。",
+        table: {
+          head: ["你说的把握", "实际发生率 60% 时说明"],
+          rows: [
+            ["「七成」", "略微高估，基本可用"],
+            ["「九成」", "高估三成，语气在替证据撑场"],
+            ["「肯定」", "无法对账——这不是判断，是表态"],
+          ],
+        },
+      },
+      {
+        id: "overfitting",
+        field: "统计学习",
+        title: "自以为懂，是有精确定义的",
+        formula: "泛化误差 = 偏差² + 方差 + σ²",
+        symbols: [
+          { symbol: "σ²", meaning: "不可约噪声：再好的模型也消不掉的那部分。" },
+        ],
+        body: "σ² 的存在意味着，总有一部分世界本来就不可解释。模型越复杂，越容易连噪声一起解释掉：训练集上漂亮得吓人，换个场景立刻崩。\n\n人完全一样。把三次巧合总结成一条规律，讲得头头是道，那不是知识，是方差。检验只有一个办法：拿没见过的情况试。",
+        table: {
+          head: ["模型复杂度", "对应的人"],
+          rows: [
+            ["太低：训练误差高、测试误差高", "真的不懂"],
+            ["适中：测试误差最低", "懂了"],
+            ["太高：训练接近 0、测试爆表", "自以为懂"],
+          ],
+          note: "解释力最强的那个人，和错得最离谱的那个人，常常是同一个。",
+        },
+        close: "量不出来的确定，就是没有刻度的确定。",
+      },
+    ],
+    close: "把每一句「我懂」换算成一个数字。换算不出来的，先退回「我不知道」。",
+  },
+};
+
+export function stemHaystack(id: string) {
+  const section = stemSections[id];
+  if (!section) return "";
+  return [
+    section.heading,
+    section.intro,
+    section.close,
+    ...section.blocks.flatMap((block) => [
+      block.field,
+      block.title,
+      block.formula,
+      block.body,
+      block.close ?? "",
+      ...(block.symbols ?? []).flatMap((item) => [item.symbol, item.meaning]),
+      ...(block.table
+        ? [...block.table.head, block.table.note ?? "", ...block.table.rows.flat()]
+        : []),
+    ]),
+  ].join(" ");
+}

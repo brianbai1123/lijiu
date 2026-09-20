@@ -7,8 +7,8 @@ import {
   anxietyModelIntro,
   anxietyQuadrants,
 } from "../src/data/anxiety-model.ts";
-import { dichotomyStemBlocks, dichotomyStemHeading, dichotomyStemIntro } from "../src/data/dichotomy-stem.ts";
 import { checks } from "../src/data/checks.ts";
+import { stemSections } from "../src/data/stem-models.ts";
 
 const principlesSrc = readFileSync(
   new URL("../src/data/principles.ts", import.meta.url),
@@ -21,6 +21,7 @@ const enrichmentsSrc = readFileSync(
 
 const anxiety = anxietyQuadrants.find((q) => q.id === "anxiety");
 const neglect = anxietyQuadrants.find((q) => q.id === "neglect");
+const stem = stemSections["dichotomy-of-control"];
 
 test("弹窗主 check 保持发牌出牌", () => {
   assert.equal(
@@ -36,7 +37,7 @@ test("essence 不改，深层表达进入详情而不是卡面", () => {
   );
   assert.match(principlesSrc, /title: "最难的一步是承认"/);
   assert.match(principlesSrc, /title: "把手伸进那个口子"/);
-  assert.match(principlesSrc, /coda: "成熟的标志/);
+  assert.match(principlesSrc, /coda:\s*\n?\s*"成熟的标志/);
 });
 
 test("承认、口子、认命、失职对偶按区块落位", () => {
@@ -53,27 +54,30 @@ test("承认、口子、认命、失职对偶按区块落位", () => {
 });
 
 test("STEM 模型写进详情：函数、无用功、催化、爱比克泰德 MDP", () => {
-  assert.equal(dichotomyStemHeading, "STEM模型：你只能努力改变自变量");
-  assert.match(dichotomyStemIntro, /你只能努力改变自变量/);
-  assert.doesNotMatch(dichotomyStemIntro, /选其中一部分自变量/);
-  const titles = dichotomyStemBlocks.map((block) => block.id);
-  assert.deepEqual(titles, ["math", "epictetus", "physics", "chemistry"]);
-  assert.equal(dichotomyStemBlocks[0].formula, "Y = f(A, W)");
-  assert.match(dichotomyStemBlocks[0].body, /∂Y\/∂A/);
-  assert.match(dichotomyStemBlocks[1].body, /马尔可夫决策/);
-  assert.ok(
-    dichotomyStemBlocks[1].mapping?.some((row) => row.card.includes("烂牌")),
+  assert.equal(stem.heading, "STEM模型：你只能努力改变自变量");
+  assert.match(stem.intro, /你只能努力改变自变量/);
+  assert.doesNotMatch(stem.intro, /选其中一部分自变量/);
+  assert.deepEqual(
+    stem.blocks.map((block) => block.id),
+    ["math", "epictetus", "physics", "chemistry"],
   );
-  assert.match(dichotomyStemBlocks[2].formula, /F/);
-  assert.match(dichotomyStemBlocks[2].body, /推不动的墙/);
-  assert.match(dichotomyStemBlocks[3].body, /炼金/);
+  assert.equal(stem.blocks[0].formula, "Y = f(A, W)");
+  assert.match(stem.blocks[0].body, /∂Y\/∂A/);
+  assert.match(stem.blocks[1].body, /马尔可夫决策/);
+  assert.ok(
+    stem.blocks[1].table?.rows.some(([card]) => card.includes("烂牌")),
+  );
+  assert.match(stem.blocks[2].formula, /F/);
+  assert.match(stem.blocks[2].body, /推不动的墙/);
+  assert.match(stem.blocks[3].body, /炼金/);
   assert.match(enrichmentsSrc, /你永远不选状态/);
+
   const detailSrc = readFileSync(
     new URL("../src/components/principle-detail.tsx", import.meta.url),
     "utf8",
   );
   const corroborationsAt = detailSrc.indexOf("独立来源的印证");
-  const stemAt = detailSrc.indexOf("<DichotomyStemModels");
+  const stemAt = detailSrc.indexOf("<StemModels");
   const practicesAt = detailSrc.indexOf("可以今天就开始做的");
   assert.ok(corroborationsAt > 0 && stemAt > corroborationsAt && practicesAt > stemAt);
 });

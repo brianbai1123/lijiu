@@ -105,6 +105,13 @@ server.on("clientError", (err, socket) => {
   socket.end("HTTP/1.1 400 Bad Request\r\nConnection: close\r\nContent-Length: 0\r\n\r\n");
 });
 
-server.listen(PORT, "0.0.0.0", () => {
+// Bind dual-stack on purpose: omitting the host makes Node listen on `::`
+// with ipv6Only=false, so both 127.0.0.1 and [::1] reach us. Binding
+// "0.0.0.0" is IPv4-only, and anything that resolves localhost to ::1 first
+// then gets ECONNREFUSED — a failure that looks identical no matter which
+// server implementation is running behind the port.
+server.listen(PORT, () => {
+  const addr = server.address();
   log(`static preview (node) on http://127.0.0.1:${PORT}/designs/layouts/`);
+  log(`listening dual-stack on ${addr.address}:${addr.port} (family ${addr.family})`);
 });

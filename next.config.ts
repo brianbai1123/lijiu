@@ -11,8 +11,14 @@ const nextConfig: NextConfig = {
     "127.0.0.1",
     "localhost",
     "0.0.0.0",
+    "cursor.sh",
     "*.cursor.sh",
+    "cursor.com",
     "*.cursor.com",
+    "cursorusercontent.com",
+    "*.cursorusercontent.com",
+    // Cursor 预览 iframe 常带 Origin: null，不写进去 /_next 脚本会被 403。
+    "null",
   ],
   // 静态导出，可部署到 GitHub Pages（与周易读书卡同一种访问方式）
   output: "export",

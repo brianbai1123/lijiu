@@ -104,7 +104,7 @@ export function DichotomyStemModels() {
     <section className="space-y-5">
       <h3 className="flex items-center gap-2 text-sm font-semibold tracking-wide text-foreground">
         <LightbulbIcon className="size-4 text-primary" />
-        模型：你只能选一部分自变量
+        STEM模型：你只能努力改变自变量
       </h3>
       <p className="text-[0.9375rem] leading-7 text-muted-foreground">
         {dichotomyStemIntro}

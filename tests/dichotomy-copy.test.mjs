@@ -54,6 +54,11 @@ test("承认、口子、认命、失职对偶按区块落位", () => {
 
 test("STEM 模型写进详情：函数、无用功、催化、爱比克泰德 MDP", () => {
   assert.match(dichotomyStemIntro, /结果是函数/);
+  const stemUi = readFileSync(
+    new URL("../src/components/dichotomy-stem-models.tsx", import.meta.url),
+    "utf8",
+  );
+  assert.match(stemUi, /STEM模型：你只能努力改变自变量/);
   const titles = dichotomyStemBlocks.map((block) => block.id);
   assert.deepEqual(titles, ["math", "epictetus", "physics", "chemistry"]);
   assert.equal(dichotomyStemBlocks[0].formula, "Y = f(A, W)");

@@ -42,7 +42,13 @@ test("第一性原理：从什么需要花钱推起", () => {
 });
 
 test("四象限四格与假出路", () => {
-  assert.match(model.heading, /兑现度 × 对准度/);
+  assert.equal(model.heading, "激励四象限：给了没有 × 给对了没有");
+  assert.deepEqual(
+    [model.xAxis.name, model.yAxis.name],
+    ["给了没有", "给对了没有"],
+  );
+  assert.deepEqual(model.xAxis.ends, ["只在纸上", "真落到人"]);
+  assert.deepEqual(model.yAxis.ends, ["对着替身", "对着正事"]);
   assert.deepEqual(
     model.quadrants.map((q) => q.name),
     ["墙皮", "画饼", "喂歪", "同一口锅"],
@@ -51,12 +57,24 @@ test("四象限四格与假出路", () => {
     new Set(model.quadrants.map((q) => `${q.y}-${q.x}`)),
     new Set(["high-high", "high-low", "low-high", "low-low"]),
   );
+  assert.equal(byId.get("wallpaper").x, "low");
+  assert.equal(byId.get("wallpaper").y, "low");
+  assert.equal(byId.get("pie").x, "low");
+  assert.equal(byId.get("pie").y, "high");
+  assert.equal(byId.get("misfed").x, "high");
+  assert.equal(byId.get("misfed").y, "low");
+  assert.equal(byId.get("samepot").x, "high");
+  assert.equal(byId.get("samepot").y, "high");
   assert.match(byId.get("wallpaper").reminder, /标准不存在/);
   assert.match(byId.get("pie").reminder, /人听的是后者/);
   assert.match(byId.get("samepot").reminder, /整锅就白焊/);
   assert.match(model.transitions.join("\n"), /一条假出路：喂歪退回画饼/);
   assert.match(model.transitions.join("\n"), /第一刀要落在最大受益者身上/);
-  assert.match(model.summary, /软弱的正确激励让人失望/);
+  assert.match(model.summary, /先问给对了没有，再问给了没有/);
+  assert.doesNotMatch(
+    `${model.heading}\n${model.xAxis.name}\n${model.yAxis.name}`,
+    /兑现度|对准度/,
+  );
 });
 
 test("第六卡 STEM 四块避开前五卡", () => {

@@ -42,19 +42,37 @@ test("第一性原理：内容等于排除掉的东西", () => {
 });
 
 test("四象限四格与假出路", () => {
-  assert.match(model.heading, /背了多少 × 错了疼不疼/);
+  assert.equal(model.heading, "剃刀四象限：假设多不多 × 会不会输");
+  assert.deepEqual(
+    [model.xAxis.name, model.yAxis.name],
+    ["假设多不多", "会不会输"],
+  );
+  assert.deepEqual(model.xAxis.ends, ["假设少", "假设多"]);
+  assert.deepEqual(model.yAxis.ends, ["不会输", "会输"]);
   assert.deepEqual(
     model.quadrants.map((q) => q.name),
-    ["赤膊上秤", "背包过河", "缩手藏袖", "浑身暗门"],
+    ["真简单", "真复杂", "假简单", "假复杂"],
   );
   assert.deepEqual(
     new Set(model.quadrants.map((q) => `${q.y}-${q.x}`)),
     new Set(["high-high", "high-low", "low-high", "low-low"]),
   );
+  assert.equal(byId.get("bare").x, "low");
+  assert.equal(byId.get("bare").y, "high");
+  assert.equal(byId.get("backpack").x, "high");
+  assert.equal(byId.get("backpack").y, "high");
+  assert.equal(byId.get("sleeves").x, "low");
+  assert.equal(byId.get("sleeves").y, "low");
+  assert.equal(byId.get("trapdoors").x, "high");
+  assert.equal(byId.get("trapdoors").y, "low");
   assert.match(byId.get("sleeves").reminder, /它不简单，它只是短/);
   assert.match(byId.get("trapdoors").reminder, /没上过场/);
-  assert.match(model.transitions.join("\n"), /最该警惕的假出路/);
-  assert.match(model.summary, /横轴管成本，纵轴管资格/);
+  assert.match(model.transitions.join("\n"), /最该警惕的假出路：假复杂 → 假简单/);
+  assert.match(model.summary, /先问会不会输，再问多了几条/);
+  assert.doesNotMatch(
+    `${model.heading}\n${model.intro}\n${model.quadrants.map((q) => q.name).join("\n")}`,
+    /背了多少|错了疼不疼|赤膊上秤|背包过河|缩手藏袖|浑身暗门/,
+  );
 });
 
 test("第五卡 STEM 四块避开前四卡", () => {

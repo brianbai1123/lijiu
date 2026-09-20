@@ -1,0 +1,686 @@
+/* 开本三版：留白 / 装帧 / 档案。只用于 /designs/spreads，不影响现站。 */
+
+.spread-lab {
+  min-height: 100dvh;
+  color: #1b1149;
+  font-family: var(--font-source-han), "Noto Sans SC", sans-serif;
+}
+
+.spread-lab * {
+  box-sizing: border-box;
+}
+
+/* 每一版的底色不同：质感从这里就开始分岔 */
+.sl-air {
+  background: #faf8f4;
+}
+.sl-bound {
+  background: #e9e2d6;
+}
+.sl-archive {
+  background: #f2f1ee;
+}
+
+/* ── 顶部控制条（三版共用，刻意做轻） ── */
+.sl-bar {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  border-bottom: 1px solid rgba(27, 17, 73, 0.12);
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(12px);
+}
+
+.sl-bar-inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 1rem 1.5rem;
+}
+
+.sl-bar h1 {
+  margin: 0;
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+}
+
+.sl-bar p {
+  margin: 0.3rem 0 0;
+  max-width: 40em;
+  font-size: 0.74rem;
+  line-height: 1.6;
+  color: #6b6478;
+}
+
+.sl-picks {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.sl-picks button {
+  min-width: 6.4rem;
+  padding: 0.45rem 0.8rem;
+  border: 1px solid rgba(27, 17, 73, 0.18);
+  border-radius: 2px;
+  background: transparent;
+  color: #1b1149;
+  cursor: pointer;
+  text-align: left;
+  font: inherit;
+  transition:
+    background 0.18s ease,
+    border-color 0.18s ease;
+}
+
+.sl-picks button:hover {
+  border-color: rgba(27, 17, 73, 0.4);
+}
+
+.sl-picks button[aria-pressed="true"] {
+  border-color: #1b1149;
+  background: #1b1149;
+  color: #fff;
+}
+
+.sl-picks .k {
+  display: block;
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  opacity: 0.6;
+}
+
+.sl-picks .n {
+  display: block;
+  margin-top: 0.1rem;
+  font-size: 0.84rem;
+  font-weight: 600;
+}
+
+.sl-spec {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 1.4rem 1.5rem 0;
+  font-size: 0.82rem;
+  line-height: 1.8;
+  color: #6b6478;
+}
+
+.sl-spec strong {
+  color: #1b1149;
+  font-weight: 600;
+}
+
+.sl-stage {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 1.75rem 1.5rem 4rem;
+}
+
+/* ═══════════════ 甲 · 留白 ═══════════════ */
+.air {
+  display: grid;
+  gap: 3.5rem;
+  background: #fff;
+  padding: 4rem 3.5rem 3rem;
+  border-radius: 2px;
+  box-shadow: 0 1px 2px rgba(27, 17, 73, 0.06);
+}
+
+@media (min-width: 900px) {
+  .air {
+    grid-template-columns: 170px minmax(0, 1fr);
+    gap: 5rem;
+    padding: 5rem 5rem 4rem;
+  }
+}
+
+.air-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+
+.air-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.air-cat {
+  margin: 0 0 0.55rem;
+  font-size: 0.62rem;
+  letter-spacing: 0.22em;
+  color: #b3aec0;
+}
+
+.air-nav button {
+  padding: 0.3rem 0;
+  border: 0;
+  background: transparent;
+  color: #8a8496;
+  text-align: left;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.82rem;
+  line-height: 1.7;
+  transition: color 0.16s ease;
+}
+
+.air-nav button:hover {
+  color: #1b1149;
+}
+
+/* 选中态只靠字色和一个极小的品红点，不用色块 */
+.air-nav button[aria-pressed="true"] {
+  position: relative;
+  color: #1b1149;
+  font-weight: 600;
+}
+
+.air-nav button[aria-pressed="true"]::before {
+  content: "";
+  position: absolute;
+  left: -0.85rem;
+  top: 50%;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: #ff3d7f;
+  transform: translateY(-50%);
+}
+
+.air-page {
+  max-width: 40rem;
+}
+
+.air-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+  font-size: 0.68rem;
+  letter-spacing: 0.2em;
+  color: #8a8496;
+}
+
+.air-eyebrow .dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #ff3d7f;
+}
+
+.air-page h2 {
+  margin: 1.5rem 0 0;
+  font-family: var(--font-noto-serif), "Noto Serif SC", serif;
+  font-size: clamp(1.7rem, 3.1vw, 2.5rem);
+  font-weight: 400;
+  line-height: 1.58;
+  letter-spacing: -0.01em;
+  /* 避免末尾一两个字单独掉行 */
+  text-wrap: pretty;
+}
+
+.air-essence {
+  margin: 2.25rem 0 0;
+  max-width: 34em;
+  color: #57516b;
+  font-size: 0.92rem;
+  line-height: 2;
+}
+
+.air-quote {
+  margin: 3.5rem 0 0;
+  padding-top: 1.75rem;
+  border-top: 1px solid rgba(27, 17, 73, 0.1);
+}
+
+.air-quote blockquote {
+  margin: 0;
+  max-width: 32em;
+  font-family: var(--font-noto-serif), "Noto Serif SC", serif;
+  font-size: 1rem;
+  line-height: 1.95;
+  color: #2c2447;
+}
+
+.air-quote figcaption {
+  margin-top: 1rem;
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  color: #9a94a8;
+}
+
+.air-quote .sep {
+  margin: 0 0.4rem;
+}
+
+.air-foot {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin: 4rem 0 0;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(27, 17, 73, 0.1);
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  color: #9a94a8;
+}
+
+.air-foot .num {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ═══════════════ 乙 · 装帧 ═══════════════ */
+.bound {
+  display: flex;
+  justify-content: center;
+}
+
+.bound-book {
+  display: grid;
+  width: 100%;
+  background: #fdfbf6;
+  box-shadow:
+    0 1px 1px rgba(60, 46, 28, 0.12),
+    0 18px 40px -18px rgba(60, 46, 28, 0.45);
+  border-radius: 3px;
+}
+
+@media (min-width: 900px) {
+  .bound-book {
+    grid-template-columns: 1fr 34px 1.45fr;
+  }
+}
+
+/* 内沟：中间那道让它像一本摊开的书 */
+.bound-gutter {
+  display: none;
+  background:
+    linear-gradient(
+      to right,
+      rgba(60, 46, 28, 0) 0%,
+      rgba(60, 46, 28, 0.09) 34%,
+      rgba(60, 46, 28, 0.22) 50%,
+      rgba(60, 46, 28, 0.09) 66%,
+      rgba(60, 46, 28, 0) 100%
+    );
+}
+
+@media (min-width: 900px) {
+  .bound-gutter {
+    display: block;
+  }
+}
+
+.bound-verso,
+.bound-recto {
+  position: relative;
+  padding: 3.25rem 2.75rem 4rem;
+  font-family: var(--font-noto-serif), "Noto Serif SC", serif;
+}
+
+.bound-verso {
+  background: linear-gradient(to right, #f7f2e7 0%, #fdfbf6 65%);
+}
+
+.bound-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin: 0 0 2rem;
+  padding-bottom: 0.7rem;
+  border-bottom: 1px solid rgba(60, 46, 28, 0.18);
+  font-size: 0.66rem;
+  letter-spacing: 0.24em;
+  color: #9c8f78;
+  font-family: var(--font-source-han), sans-serif;
+}
+
+.bound-group {
+  margin-bottom: 1.6rem;
+}
+
+.bound-cat {
+  margin: 0 0 0.5rem;
+  font-size: 0.64rem;
+  letter-spacing: 0.2em;
+  color: #b3a58c;
+  font-family: var(--font-source-han), sans-serif;
+}
+
+.bound-verso nav button {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.38rem 0;
+  border: 0;
+  background: transparent;
+  color: #5c5343;
+  text-align: left;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.88rem;
+}
+
+.bound-verso nav button:hover {
+  color: #2f2a20;
+}
+
+.bound-verso nav button .leader {
+  flex: 1;
+  border-bottom: 1px dotted rgba(60, 46, 28, 0.3);
+  transform: translateY(-0.25em);
+}
+
+.bound-verso nav button .p {
+  font-variant-numeric: tabular-nums;
+  font-size: 0.76rem;
+  color: #a39a85;
+}
+
+.bound-verso nav button[aria-pressed="true"] {
+  color: #1f1b14;
+  font-weight: 600;
+}
+
+.bound-verso nav button[aria-pressed="true"] .p {
+  color: #1f1b14;
+}
+
+.bound-recto h2 {
+  margin: 1.75rem 0 0;
+  font-size: clamp(1.6rem, 2.9vw, 2.2rem);
+  font-weight: 500;
+  line-height: 1.62;
+  color: #221d15;
+  text-wrap: pretty;
+}
+
+.bound-essence {
+  margin: 2rem 0 0;
+  color: #574e3f;
+  font-size: 0.95rem;
+  line-height: 2.05;
+}
+
+/* 首字下沉 */
+.bound-essence .drop {
+  float: left;
+  margin: 0.24em 0.14em 0 0;
+  font-size: 3.1em;
+  line-height: 0.82;
+  color: #b8452f;
+}
+
+.bound-quote {
+  clear: both;
+  margin: 2.5rem 0 0;
+  padding: 1.5rem 1.6rem;
+  background: rgba(60, 46, 28, 0.045);
+  border-left: 2px solid #b8452f;
+}
+
+.bound-quote blockquote {
+  margin: 0;
+  font-size: 0.98rem;
+  line-height: 1.95;
+  color: #2f2a20;
+}
+
+.bound-quote figcaption {
+  margin-top: 0.9rem;
+  font-size: 0.72rem;
+  line-height: 1.7;
+  color: #968a74;
+  font-family: var(--font-source-han), sans-serif;
+}
+
+.bound-rule {
+  margin: 2.5rem 0 0;
+  border-top: 1px solid rgba(60, 46, 28, 0.16);
+}
+
+.bound-title {
+  margin: 0.9rem 0 0;
+  font-size: 0.78rem;
+  letter-spacing: 0.14em;
+  color: #968a74;
+  font-family: var(--font-source-han), sans-serif;
+}
+
+.bound-folio {
+  position: absolute;
+  bottom: 1.5rem;
+  margin: 0;
+  font-size: 0.72rem;
+  font-variant-numeric: tabular-nums;
+  color: #b3a58c;
+}
+
+.bound-verso .bound-folio {
+  left: 2.75rem;
+}
+
+.bound-recto .bound-folio {
+  right: 2.75rem;
+}
+
+/* ═══════════════ 丙 · 档案 ═══════════════ */
+.archive {
+  display: grid;
+  gap: 0;
+  min-height: 66dvh;
+  background: #fff;
+  border: 1px solid #1b1149;
+}
+
+@media (min-width: 900px) {
+  .archive {
+    grid-template-columns: 236px minmax(0, 1fr);
+  }
+}
+
+.arc-index {
+  border-right: 1px solid #1b1149;
+  padding: 0;
+}
+
+.arc-index-head {
+  display: flex;
+  justify-content: space-between;
+  margin: 0;
+  padding: 0.7rem 1rem;
+  border-bottom: 1px solid #1b1149;
+  background: #1b1149;
+  color: #fff;
+  font-size: 0.64rem;
+  letter-spacing: 0.2em;
+  font-variant-numeric: tabular-nums;
+}
+
+.arc-group {
+  border-bottom: 1px solid rgba(27, 17, 73, 0.16);
+}
+
+.arc-cat {
+  margin: 0;
+  padding: 0.6rem 1rem 0.35rem;
+  font-size: 0.6rem;
+  letter-spacing: 0.22em;
+  color: #9691a3;
+}
+
+.arc-index button {
+  display: grid;
+  grid-template-columns: 2rem minmax(0, 1fr);
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.45rem 1rem;
+  border: 0;
+  background: transparent;
+  color: #2c2447;
+  text-align: left;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.82rem;
+  transition: background 0.14s ease;
+}
+
+.arc-index button:hover {
+  background: rgba(27, 17, 73, 0.05);
+}
+
+.arc-index button .n {
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 0.7rem;
+  color: #9691a3;
+  font-variant-numeric: tabular-nums;
+}
+
+.arc-index button[aria-pressed="true"] {
+  background: #ff3d7f;
+  color: #fff;
+  font-weight: 600;
+}
+
+.arc-index button[aria-pressed="true"] .n {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.arc-page {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+}
+
+/* 让两栏吃掉剩余高度，页脚压到底，避免整块显得空 */
+.arc-page .arc-cols {
+  flex: 1;
+}
+
+.arc-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 1.5rem;
+  padding: 0.7rem 1.75rem;
+  border-bottom: 1px solid #1b1149;
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 0.66rem;
+  letter-spacing: 0.08em;
+  color: #6b6478;
+  text-transform: uppercase;
+}
+
+.arc-meta .arc-no {
+  color: #ff3d7f;
+  font-weight: 700;
+}
+
+.arc-meta .arc-trig {
+  margin-left: auto;
+  color: #1b1149;
+}
+
+.arc-page h2 {
+  margin: 0;
+  padding: 2.25rem 1.75rem;
+  border-bottom: 1px solid rgba(27, 17, 73, 0.16);
+  font-family: var(--font-noto-serif), "Noto Serif SC", serif;
+  font-size: clamp(1.5rem, 2.8vw, 2.15rem);
+  font-weight: 500;
+  line-height: 1.55;
+  text-wrap: pretty;
+}
+
+.arc-cols {
+  display: grid;
+}
+
+@media (min-width: 820px) {
+  .arc-cols {
+    grid-template-columns: 1fr 1fr;
+  }
+  .arc-cols .arc-col + .arc-col {
+    border-left: 1px solid rgba(27, 17, 73, 0.16);
+  }
+}
+
+.arc-col {
+  padding: 1.5rem 1.75rem 2rem;
+}
+
+.arc-cols .arc-col + .arc-col {
+  border-top: 1px solid rgba(27, 17, 73, 0.16);
+}
+
+@media (min-width: 820px) {
+  .arc-cols .arc-col + .arc-col {
+    border-top: 0;
+  }
+}
+
+.arc-label {
+  margin: 0 0 0.9rem;
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.24em;
+  color: #9691a3;
+}
+
+.arc-body {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.95;
+  color: #3c3555;
+}
+
+.arc-quote {
+  margin: 0;
+  font-family: var(--font-noto-serif), "Noto Serif SC", serif;
+  font-size: 0.95rem;
+  line-height: 1.95;
+  color: #2c2447;
+}
+
+.arc-src {
+  margin: 0.9rem 0 0;
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 0.66rem;
+  line-height: 1.8;
+  color: #9691a3;
+}
+
+.arc-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.85rem 1.75rem;
+  border-top: 1px solid #1b1149;
+}
+
+.arc-title {
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+}
+
+.arc-tags {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.arc-tags span {
+  padding: 0.12rem 0.5rem;
+  border: 1px solid rgba(27, 17, 73, 0.28);
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 0.62rem;
+  color: #6b6478;
+}

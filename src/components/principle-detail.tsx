@@ -24,8 +24,9 @@ import {
   type Principle,
 } from "@/data/principles";
 import { AnxietyDispositionModel } from "@/components/anxiety-disposition-model";
-import { KnowingQuadrantModel } from "@/components/knowing-quadrant-model";
+import { QuadrantModelSection } from "@/components/quadrant-model";
 import { StemModels } from "@/components/stem-models";
+import { quadrantModels } from "@/data/quadrant-models";
 import { stemSections } from "@/data/stem-models";
 
 function Section({
@@ -186,6 +187,19 @@ export function PrincipleDetail({
           <StoryList stories={principle.stories.positive} tone="positive" />
           <StoryList stories={principle.stories.negative} tone="negative" />
         </div>
+        {principle.sourceNote ? (
+          <div className="rounded-lg border border-dashed border-border px-4 py-3">
+            <p className="text-sm font-medium text-foreground">
+              {principle.sourceNote.title}
+            </p>
+            <div className="mt-2">
+              <Prose
+                text={principle.sourceNote.body}
+                className="text-sm leading-7 text-muted-foreground"
+              />
+            </div>
+          </div>
+        ) : null}
       </Section>
 
       <Section icon={CheckCircle2Icon} title="它为什么没有被时间淘汰">
@@ -199,7 +213,9 @@ export function PrincipleDetail({
       ))}
 
       {principle.id === "dichotomy-of-control" && <AnxietyDispositionModel />}
-      {principle.id === "know-what-you-dont-know" && <KnowingQuadrantModel />}
+      {quadrantModels[principle.id] ? (
+        <QuadrantModelSection model={quadrantModels[principle.id]} />
+      ) : null}
 
       <Section icon={GlobeIcon} title="独立来源的印证">
         <Bullets items={principle.corroborations} />

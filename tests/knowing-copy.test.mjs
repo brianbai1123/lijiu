@@ -3,13 +3,15 @@ import { readFileSync } from "node:fs";
 import test from "node:test";
 
 import { checks } from "../src/data/checks.ts";
-import {
-  knowingModelIntro,
-  knowingQuadrants,
-  knowingSummary,
-  knowingTransitions,
-} from "../src/data/knowing-model.ts";
+import { quadrantModels } from "../src/data/quadrant-models.ts";
 import { stemSections } from "../src/data/stem-models.ts";
+
+const {
+  intro: knowingModelIntro,
+  quadrants: knowingQuadrants,
+  summary: knowingSummary,
+  transitions: knowingTransitions,
+} = quadrantModels["know-what-you-dont-know"];
 
 const principlesSrc = readFileSync(
   new URL("../src/data/principles.ts", import.meta.url),
@@ -47,7 +49,7 @@ test("第一性原理：地图推导五步并落到入口", () => {
 test("认知四象限用把握 × 依据，且补上哑掉的知道", () => {
   assert.equal(knowingQuadrants.length, 4);
   assert.deepEqual(
-    new Set(knowingQuadrants.map((q) => `${q.grip}-${q.evidence}`)),
+    new Set(knowingQuadrants.map((q) => `${q.y}-${q.x}`)),
     new Set(["high-high", "high-low", "low-high", "low-low"]),
   );
   assert.match(knowingModelIntro, /被填满的空白/);

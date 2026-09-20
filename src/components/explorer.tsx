@@ -20,7 +20,7 @@ import {
   principles,
   type CategoryId,
 } from "@/data/principles";
-import { knowingHaystack } from "@/data/knowing-model";
+import { quadrantHaystack } from "@/data/quadrant-models";
 import { stemHaystack } from "@/data/stem-models";
 import { cn } from "@/lib/utils";
 
@@ -49,8 +49,9 @@ function haystack(id: string) {
     ...(p.firstPrinciples
       ? [p.firstPrinciples.title, ...p.firstPrinciples.steps, p.firstPrinciples.conclusion]
       : []),
+    ...(p.sourceNote ? [p.sourceNote.title, p.sourceNote.body] : []),
     stemHaystack(id),
-    ...(id === "know-what-you-dont-know" ? [knowingHaystack] : []),
+    quadrantHaystack(id),
   ]
     .join(" ")
     .toLowerCase();

@@ -1,36 +1,31 @@
 import { Grid2X2Icon } from "lucide-react";
 
-import {
-  knowingAxes,
-  knowingModelIntro,
-  knowingQuadrants,
-  knowingSummary,
-  knowingTransitions,
-  type KnowingQuadrant,
-} from "@/data/knowing-model";
+import type { Quadrant, QuadrantModel } from "@/data/quadrant-models";
 
-const quadrantStyles: Record<KnowingQuadrant["id"], string> = {
-  usable: "border-emerald-600/25 bg-emerald-600/8",
-  hollow: "border-rose-600/25 bg-rose-600/8",
-  mute: "border-amber-600/25 bg-amber-600/8",
-  blank: "border-sky-600/25 bg-sky-600/8",
-};
+const quadrantTone = [
+  "border-emerald-600/25 bg-emerald-600/8",
+  "border-rose-600/25 bg-rose-600/8",
+  "border-amber-600/25 bg-amber-600/8",
+  "border-sky-600/25 bg-sky-600/8",
+];
 
-function coordinateLabel(quadrant: KnowingQuadrant) {
-  return `${quadrant.grip === "high" ? "高把握" : "低把握"} · ${
-    quadrant.evidence === "high" ? "有依据" : "无依据"
+function QuadrantCell({
+  quadrant,
+  model,
+  tone,
+}: {
+  quadrant: Quadrant;
+  model: QuadrantModel;
+  tone: string;
+}) {
+  const label = `${model.yAxis.ends[quadrant.y === "high" ? 1 : 0]} · ${
+    model.xAxis.ends[quadrant.x === "high" ? 1 : 0]
   }`;
-}
 
-function QuadrantSummary({ quadrant }: { quadrant: KnowingQuadrant }) {
   return (
-    <div
-      className={`min-h-32 rounded-lg border p-3 ${quadrantStyles[quadrant.id]}`}
-    >
+    <div className={`min-h-32 rounded-lg border p-3 ${tone}`}>
       <p className="text-sm font-semibold text-foreground">{quadrant.name}</p>
-      <p className="mt-1 text-[11px] text-muted-foreground">
-        {coordinateLabel(quadrant)}
-      </p>
+      <p className="mt-1 text-[11px] text-muted-foreground">{label}</p>
       <p className="mt-2 text-xs leading-5 text-foreground/75">
         {quadrant.reminder}
       </p>
@@ -38,29 +33,44 @@ function QuadrantSummary({ quadrant }: { quadrant: KnowingQuadrant }) {
   );
 }
 
-export function KnowingQuadrantModel() {
-  const byCoordinate = new Map(
-    knowingQuadrants.map((quadrant) => [
-      `${quadrant.grip}-${quadrant.evidence}`,
-      quadrant,
+export function QuadrantModelSection({ model }: { model: QuadrantModel }) {
+  const toneById = new Map(
+    model.quadrants.map((quadrant, index) => [
+      quadrant.id,
+      quadrantTone[index % quadrantTone.length],
     ]),
   );
+  const byCoordinate = new Map(
+    model.quadrants.map((quadrant) => [`${quadrant.y}-${quadrant.x}`, quadrant]),
+  );
+
+  const cell = (coordinate: string) => {
+    const quadrant = byCoordinate.get(coordinate);
+    if (!quadrant) return <div />;
+    return (
+      <QuadrantCell
+        quadrant={quadrant}
+        model={model}
+        tone={toneById.get(quadrant.id)!}
+      />
+    );
+  };
 
   return (
     <section className="space-y-5">
       <h3 className="flex items-center gap-2 text-base font-semibold tracking-wide text-foreground">
         <Grid2X2Icon className="size-4 text-primary" />
-        认知四象限：把握 × 依据
+        {model.heading}
       </h3>
 
       <blockquote className="space-y-3 rounded-lg bg-primary/7 px-4 py-3 text-sm leading-7 text-foreground ring-1 ring-primary/15">
-        {knowingModelIntro.split(/\n\n+/).map((paragraph) => (
+        {model.intro.split(/\n\n+/).map((paragraph) => (
           <p key={paragraph}>{paragraph}</p>
         ))}
       </blockquote>
 
       <div className="grid gap-3 sm:grid-cols-2">
-        {Object.values(knowingAxes).map((axis) => (
+        {[model.yAxis, model.xAxis].map((axis) => (
           <div key={axis.name} className="rounded-lg bg-muted/55 px-3.5 py-3">
             <p className="text-sm font-medium text-foreground">{axis.name}</p>
             <p className="mt-1 text-xs leading-5 text-muted-foreground">
@@ -71,43 +81,44 @@ export function KnowingQuadrantModel() {
       </div>
 
       <div
-        className="grid grid-cols-[3.25rem_minmax(0,1fr)_minmax(0,1fr)] gap-2"
-        aria-label="把握感与依据四象限"
+        className="grid grid-cols-[3.75rem_minmax(0,1fr)_minmax(0,1fr)] gap-2"
+        aria-label={`${model.yAxis.name}与${model.xAxis.name}四象限`}
       >
         <div />
         <p className="self-end text-center text-[11px] text-muted-foreground">
-          无依据
+          {model.xAxis.ends[0]}
         </p>
         <p className="self-end text-center text-[11px] text-muted-foreground">
-          有依据 →
+          {model.xAxis.ends[1]} →
         </p>
 
         <p className="flex items-center justify-center text-center text-[11px] leading-4 text-muted-foreground">
-          把握高
+          {model.yAxis.ends[1]}
           <br />↑
         </p>
-        <QuadrantSummary quadrant={byCoordinate.get("high-low")!} />
-        <QuadrantSummary quadrant={byCoordinate.get("high-high")!} />
+        {cell("high-low")}
+        {cell("high-high")}
 
         <p className="flex items-center justify-center text-center text-[11px] leading-4 text-muted-foreground">
-          把握低
+          {model.yAxis.ends[0]}
         </p>
-        <QuadrantSummary quadrant={byCoordinate.get("low-low")!} />
-        <QuadrantSummary quadrant={byCoordinate.get("low-high")!} />
+        {cell("low-low")}
+        {cell("low-high")}
       </div>
 
       <div className="space-y-4">
-        {knowingQuadrants.map((quadrant, index) => (
+        {model.quadrants.map((quadrant, index) => (
           <article
             key={quadrant.id}
-            className={`rounded-xl border p-4 ${quadrantStyles[quadrant.id]}`}
+            className={`rounded-xl border p-4 ${toneById.get(quadrant.id)}`}
           >
             <div className="flex flex-wrap items-baseline justify-between gap-2">
               <h4 className="font-semibold text-foreground">
                 {index + 1}. {quadrant.name}
               </h4>
               <span className="text-xs text-muted-foreground">
-                {coordinateLabel(quadrant)}
+                {model.yAxis.ends[quadrant.y === "high" ? 1 : 0]} ×{" "}
+                {model.xAxis.ends[quadrant.x === "high" ? 1 : 0]}
               </span>
             </div>
             <p className="mt-2 text-sm leading-7 text-foreground/85">
@@ -161,14 +172,14 @@ export function KnowingQuadrantModel() {
       <div className="space-y-2 rounded-xl border border-border p-4">
         <h4 className="font-semibold text-foreground">迁移路径</h4>
         <ul className="space-y-1 text-sm leading-7 text-muted-foreground">
-          {knowingTransitions.map((transition) => (
+          {model.transitions.map((transition) => (
             <li key={transition}>{transition}</li>
           ))}
         </ul>
       </div>
 
       <blockquote className="rounded-lg bg-foreground px-4 py-3 text-sm leading-7 text-background">
-        {knowingSummary}
+        {model.summary}
       </blockquote>
     </section>
   );

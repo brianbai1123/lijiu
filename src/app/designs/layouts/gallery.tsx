@@ -2,19 +2,16 @@
 
 import * as React from "react";
 
-import { categories, principleById, type Principle } from "@/data/principles";
-
-const SAMPLE_IDS = [
-  "dichotomy-of-control",
-  "know-what-you-dont-know",
-  "listen-to-both-sides",
-  "invert",
-  "occams-razor",
-  "incentives",
-  "golden-rule",
-  "know-thyself",
-  "integrity-alone",
-] as const;
+export type LayoutSample = {
+  id: string;
+  title: string;
+  check: string;
+  trigger: string;
+  essence: string;
+  categoryName: string;
+  quoteText: string;
+  quoteSource: string;
+};
 
 type LayoutId = "scroll" | "spread" | "film";
 
@@ -39,20 +36,22 @@ const LAYOUTS: { id: LayoutId; kicker: string; name: string; rec: string }[] = [
   },
 ];
 
-export function LayoutLab() {
+export function LayoutLab({ samples }: { samples: LayoutSample[] }) {
   const [layout, setLayout] = React.useState<LayoutId>("scroll");
-  const [openId, setOpenId] = React.useState<(typeof SAMPLE_IDS)[number]>(
-    "dichotomy-of-control",
-  );
-  const samples = SAMPLE_IDS.map((id) => principleById.get(id)!);
-  const open = principleById.get(openId)!;
+  const [openId, setOpenId] = React.useState(samples[0]?.id ?? "");
+  const open = samples.find((item) => item.id === openId) ?? samples[0];
   const spec = LAYOUTS.find((item) => item.id === layout)!;
-  const filmIndex = samples.findIndex((item) => item.id === openId);
+  const filmIndex = Math.max(
+    0,
+    samples.findIndex((item) => item.id === open.id),
+  );
 
   const goFilm = (delta: number) => {
     const next = samples[(filmIndex + delta + samples.length) % samples.length];
-    setOpenId(next.id as (typeof SAMPLE_IDS)[number]);
+    setOpenId(next.id);
   };
+
+  if (!open) return null;
 
   return (
     <div className="layout-lab">
@@ -61,7 +60,8 @@ export function LayoutLab() {
           <div>
             <h1>历久 · 排版实验室</h1>
             <p>
-              配色沿用丁款。这里只换排版：不用卡片格子。现站未改。选定 A / B / C 后再落地。
+              配色沿用丁款。这里只换排版：不用卡片格子。现站未改。选定 A / B / C
+              后再落地。
             </p>
           </div>
           <div className="layout-picks">
@@ -96,16 +96,13 @@ export function LayoutLab() {
                 type="button"
                 className="scroll-row"
                 aria-pressed={openId === principle.id}
-                onClick={() =>
-                  setOpenId(principle.id as (typeof SAMPLE_IDS)[number])
-                }
+                onClick={() => setOpenId(principle.id)}
               >
                 <span className="no">{String(index + 1).padStart(2, "0")}</span>
                 <div>
                   <h2>{principle.check}</h2>
                   <p className="meta">
-                    {principle.title} ·{" "}
-                    {categories.find((c) => c.id === principle.category)?.name}
+                    {principle.title} · {principle.categoryName}
                   </p>
                 </div>
                 <span className="trig">{principle.trigger}</span>
@@ -120,7 +117,7 @@ export function LayoutLab() {
 
         {layout === "film" ? (
           <div className="film">
-            <p className="trig">{open.trigger.toUpperCase()}</p>
+            <p className="trig">{open.trigger}</p>
             <h2>{open.check}</h2>
             <p className="essence">{open.essence}</p>
             <div className="film-nav">
@@ -146,22 +143,25 @@ function Spread({
   open,
   onOpen,
 }: {
-  samples: Principle[];
-  open: Principle;
-  onOpen: (id: (typeof SAMPLE_IDS)[number]) => void;
+  samples: LayoutSample[];
+  open: LayoutSample;
+  onOpen: (id: string) => void;
 }) {
-  const grouped = categories
-    .map((category) => ({
-      category,
-      items: samples.filter((item) => item.category === category.id),
-    }))
-    .filter((group) => group.items.length > 0);
+  const grouped = React.useMemo(() => {
+    const map = new Map<string, LayoutSample[]>();
+    for (const item of samples) {
+      const list = map.get(item.categoryName) ?? [];
+      list.push(item);
+      map.set(item.categoryName, list);
+    }
+    return [...map.entries()];
+  }, [samples]);
 
   return (
     <div className="spread">
       <nav className="spread-nav" aria-label="领域目录">
-        {grouped.map((group) => (
-          <React.Fragment key={group.category.id}>
+        {grouped.map(([name, items]) => (
+          <React.Fragment key={name}>
             <p
               style={{
                 margin: "0.7rem 0 0.2rem",
@@ -170,14 +170,14 @@ function Spread({
                 color: "#ff3d7f",
               }}
             >
-              {group.category.name}
+              {name}
             </p>
-            {group.items.map((item) => (
+            {items.map((item) => (
               <button
                 key={item.id}
                 type="button"
                 aria-pressed={open.id === item.id}
-                onClick={() => onOpen(item.id as (typeof SAMPLE_IDS)[number])}
+                onClick={() => onOpen(item.id)}
               >
                 {item.title}
               </button>
@@ -190,10 +190,10 @@ function Spread({
         <h2>{open.check}</h2>
         <p className="essence">{open.essence}</p>
         <p className="quote">
-          {open.quotes[0].text}
+          {open.quoteText}
           <br />
           <span style={{ color: "#5a4d8a", fontSize: "0.8rem" }}>
-            {open.quotes[0].source} · {open.quotes[0].era}
+            {open.quoteSource}
           </span>
         </p>
         <p className="foot">{open.title}</p>

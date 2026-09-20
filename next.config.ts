@@ -7,7 +7,13 @@ const isGhPages = process.env.GITHUB_PAGES === "true";
 const nextConfig: NextConfig = {
   // Cloud preview and local Chrome open http://127.0.0.1:<port>/,
   // while `next dev` treats that as a cross-origin host unless listed here.
-  allowedDevOrigins: ["127.0.0.1", "localhost"],
+  allowedDevOrigins: [
+    "127.0.0.1",
+    "localhost",
+    "0.0.0.0",
+    "*.cursor.sh",
+    "*.cursor.com",
+  ],
   // 静态导出，可部署到 GitHub Pages（与周易读书卡同一种访问方式）
   output: "export",
   images: { unoptimized: true },

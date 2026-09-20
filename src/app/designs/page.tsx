@@ -1,6 +1,15 @@
 import type { Metadata } from "next";
+import localFont from "next/font/local";
 
 import { DesignGallery } from "./gallery";
+
+const moeLi = localFont({
+  src: "../../fonts/TW-MOE-Li.ttf",
+  display: "swap",
+  variable: "--font-lishu",
+  weight: "400",
+  adjustFontFallback: "Times New Roman",
+});
 
 export const metadata: Metadata = {
   title: "历久 · 视觉提案",
@@ -9,5 +18,9 @@ export const metadata: Metadata = {
 };
 
 export default function DesignsPage() {
-  return <DesignGallery />;
+  return (
+    <div className={moeLi.variable}>
+      <DesignGallery />
+    </div>
+  );
 }

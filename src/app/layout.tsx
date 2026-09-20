@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
-import { Geist_Mono, Noto_Sans_SC } from "next/font/google";
-import localFont from "next/font/local";
+import { Geist_Mono, Noto_Sans_SC, Noto_Serif_SC } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
 import "./globals.css";
 
@@ -11,12 +10,11 @@ const sourceHanSans = Noto_Sans_SC({
   variable: "--font-source-han",
 });
 
-const moeLi = localFont({
-  src: "../fonts/TW-MOE-Li.ttf",
+const notoSerif = Noto_Serif_SC({
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
   display: "swap",
-  variable: "--font-lishu",
-  weight: "400",
-  adjustFontFallback: "Times New Roman",
+  variable: "--font-noto-serif",
 });
 
 const geistMono = Geist_Mono({
@@ -35,7 +33,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html
       lang="zh-CN"
       suppressHydrationWarning
-      className={`${sourceHanSans.variable} ${sourceHanSans.className} ${moeLi.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${sourceHanSans.variable} ${sourceHanSans.className} ${notoSerif.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col">
         <ThemeProvider

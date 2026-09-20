@@ -120,9 +120,9 @@ export function Explorer() {
         <button
           type="button"
           onClick={() => setOpenId(daily.id)}
-          className="group block w-full rounded-2xl bg-card p-6 text-left font-serif ring-1 ring-foreground/10 transition-all hover:ring-primary/45 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:p-9"
+          className="daily-card group block w-full bg-card p-6 text-left transition-transform hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:p-9"
         >
-          <h2 className="font-serif text-2xl leading-snug font-semibold text-balance transition-colors group-hover:text-primary sm:text-3xl">
+          <h2 className="font-serif text-2xl leading-[1.45] text-balance transition-colors group-hover:text-primary sm:text-3xl">
             {daily.check}
           </h2>
           <p className="mt-4 max-w-3xl text-sm leading-7 text-muted-foreground sm:text-[0.9375rem]">
@@ -130,7 +130,7 @@ export function Explorer() {
             {" · "}
             {daily.essence}
           </p>
-          <figure className="mt-6 border-l-2 border-primary/35 pl-4">
+          <figure className="mt-6 border-l-4 border-mint pl-4">
             <blockquote className="font-serif text-[0.9375rem] leading-8 text-foreground/80">
               {daily.quotes[0].text}
             </blockquote>
@@ -157,7 +157,7 @@ export function Explorer() {
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="搜索原则、出处、关键词，比如「风险」「论语」「习惯」"
-                className="pl-9"
+                className="h-10 rounded-full bg-card pl-9"
                 aria-label="搜索原则"
               />
               {query && (
@@ -171,7 +171,7 @@ export function Explorer() {
                 </button>
               )}
             </div>
-            <Button variant="outline" onClick={openRandom} className="shrink-0">
+            <Button variant="outline" onClick={openRandom} className="h-10 shrink-0 rounded-full">
               <ShuffleIcon />
               <span className="hidden sm:inline">随机一条</span>
             </Button>
@@ -231,7 +231,7 @@ export function Explorer() {
             </Button>
           </div>
         ) : (
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="principle-grid grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {visible.map((p) => (
               <PrincipleCard
                 key={p.id}
@@ -249,11 +249,11 @@ export function Explorer() {
         open={Boolean(open)}
         onOpenChange={(next) => !next && setOpenId(null)}
       >
-        <DialogContent className="max-h-[88dvh] gap-0 overflow-y-auto sm:max-w-2xl">
+        <DialogContent className="max-h-[88dvh] gap-0 overflow-y-auto rounded-[1.35rem] border-2 border-border sm:max-w-2xl">
           {open && (
             <>
               <DialogHeader className="pb-1">
-                <DialogTitle className="font-serif text-xl leading-snug text-balance sm:text-2xl">
+                <DialogTitle className="font-serif text-xl leading-[1.45] text-balance sm:text-2xl">
                   {open.check}
                 </DialogTitle>
                 <DialogDescription>

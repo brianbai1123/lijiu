@@ -10,7 +10,7 @@ export default function Home() {
       <header className="sticky top-0 z-30 border-b border-border bg-background/85 backdrop-blur-md">
         <div className="mx-auto flex w-full max-w-6xl items-center justify-between gap-4 px-5 py-3">
           <div className="flex items-baseline gap-2.5">
-            <span className="text-lg font-semibold">历久</span>
+            <span className="brand-seal">历久</span>
             <span className="hidden text-xs text-muted-foreground sm:inline">
               经时间检验的人生原则
             </span>
@@ -33,7 +33,7 @@ export default function Home() {
             {principles.length} principles · {categories.length} domains ·{" "}
             {oldest}+ years
           </p>
-          <h1 className="mt-5 max-w-3xl text-4xl leading-[1.15] font-semibold text-balance sm:text-6xl">
+          <h1 className="mt-5 max-w-3xl font-serif text-4xl leading-[1.14] font-semibold text-balance sm:text-5xl">
             哪些道理，
             <br className="hidden sm:block" />
             真的扛住了时间
@@ -57,7 +57,7 @@ export default function Home() {
             ].map((s) => (
               <div key={s.k}>
                 <dt className="text-xs text-muted-foreground">{s.k}</dt>
-                <dd className="mt-1 text-3xl font-semibold">
+                <dd className="mt-1 font-serif text-3xl font-semibold text-primary">
                   {s.v}
                   <span className="ml-1 text-sm font-normal text-muted-foreground">
                     {s.u}
@@ -84,7 +84,7 @@ export default function Home() {
             这不是清单的缺陷，恰恰是它诚实的地方：能用一条原则解决的人生，还没开始。
           </p>
           <p className="max-w-3xl text-xs">
-            卡片字型为教育部隶书；其余为思源黑体简体（Noto Sans SC）。教育部隶书由中华民国教育部以创用 CC「姓名标示—禁止改作」3.0 台湾版授权。
+            标题与卡片主句为思源宋体（Noto Serif SC），其余为思源黑体简体（Noto Sans SC）。
           </p>
         </div>
       </footer>

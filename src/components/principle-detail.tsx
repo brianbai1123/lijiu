@@ -162,7 +162,7 @@ export function PrincipleDetail({
           {principle.quotes.map((quote) => (
             <figure
               key={quote.source}
-              className="border-l-2 border-primary/35 py-0.5 pl-4"
+              className="border-l-4 border-mint py-0.5 pl-4"
             >
               <blockquote className="text-[0.9375rem] leading-8 text-foreground/85">
                 {quote.text}
@@ -239,7 +239,7 @@ export function PrincipleDetail({
               </li>
             ))}
           </ol>
-          <p className="border-l-2 border-primary/40 pl-4 text-[0.9375rem] leading-7 font-medium text-foreground">
+          <p className="border-l-4 border-mint pl-4 text-[0.9375rem] leading-7 font-medium text-foreground">
             {principle.firstPrinciples.conclusion}
           </p>
         </Section>

@@ -1,4 +1,9 @@
-import { FlaskConicalIcon, SigmaIcon, SquareFunctionIcon, WeightIcon } from "lucide-react";
+import {
+  BookOpenIcon,
+  LightbulbIcon,
+  QuoteIcon,
+  ScaleIcon,
+} from "lucide-react";
 
 import {
   dichotomyStemBlocks,
@@ -7,11 +12,11 @@ import {
   type StemBlock,
 } from "@/data/dichotomy-stem";
 
-const fieldIcon: Record<StemBlock["id"], typeof SigmaIcon> = {
-  math: SquareFunctionIcon,
-  epictetus: SigmaIcon,
-  physics: WeightIcon,
-  chemistry: FlaskConicalIcon,
+const fieldIcon: Record<StemBlock["id"], typeof LightbulbIcon> = {
+  math: LightbulbIcon,
+  epictetus: QuoteIcon,
+  physics: ScaleIcon,
+  chemistry: BookOpenIcon,
 };
 
 function Formula({ text }: { text: string }) {
@@ -98,7 +103,7 @@ export function DichotomyStemModels() {
   return (
     <section className="space-y-5">
       <h3 className="flex items-center gap-2 text-sm font-semibold tracking-wide text-foreground">
-        <SquareFunctionIcon className="size-4 text-primary" />
+        <LightbulbIcon className="size-4 text-primary" />
         模型：你只能选一部分自变量
       </h3>
       <p className="text-[0.9375rem] leading-7 text-muted-foreground">

@@ -1,0 +1,333 @@
+/* 排版实验室，不影响现站卡片网格 */
+
+.layout-lab {
+  min-height: 100dvh;
+  background: #fff3b0;
+  background-image:
+    radial-gradient(900px 420px at 0% -10%, #ffb3d4 0%, transparent 55%),
+    radial-gradient(720px 380px at 100% 0%, #9effe0 0%, transparent 50%);
+  color: #1b1149;
+  font-family: var(--font-source-han), "Noto Sans SC", sans-serif;
+}
+
+.layout-lab * {
+  box-sizing: border-box;
+}
+
+.layout-bar {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  border-bottom: 2px solid #ffd0e0;
+  background: color-mix(in oklab, #fff3b0 88%, #fff);
+}
+
+.layout-bar-inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 1rem 1.25rem;
+}
+
+.layout-bar h1 {
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.layout-bar p {
+  margin: 0.25rem 0 0;
+  max-width: 36em;
+  font-size: 0.75rem;
+  line-height: 1.6;
+  color: #5a4d8a;
+}
+
+.layout-picks,
+.layout-picks button {
+  font: inherit;
+}
+
+.layout-picks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.layout-picks button {
+  min-width: 8.5rem;
+  padding: 0.5rem 0.75rem;
+  border: 2px solid #ffd0e0;
+  border-radius: 999px;
+  background: #fff;
+  color: #1b1149;
+  cursor: pointer;
+  text-align: left;
+}
+
+.layout-picks button[aria-pressed="true"] {
+  border-color: #ff3d7f;
+  background: #ff3d7f;
+  color: #fff;
+  box-shadow: 0 4px 0 #1b1149;
+}
+
+.layout-picks .k {
+  display: block;
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  opacity: 0.75;
+}
+
+.layout-picks .n {
+  display: block;
+  margin-top: 0.12rem;
+  font-size: 0.88rem;
+  font-weight: 700;
+}
+
+.layout-spec {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 1rem 1.25rem 0;
+  font-size: 0.86rem;
+  line-height: 1.7;
+  color: #5a4d8a;
+}
+
+.layout-spec strong {
+  color: #1b1149;
+}
+
+.layout-stage {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 1rem 1.25rem 3rem;
+}
+
+/* ── 长卷：通栏条目，没有盒子 ── */
+.scroll-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.scroll-row {
+  display: grid;
+  grid-template-columns: 3.6rem minmax(0, 1fr) auto;
+  gap: 0.85rem 1.1rem;
+  align-items: start;
+  width: 100%;
+  padding: 1.15rem 0.2rem;
+  border: 0;
+  border-bottom: 1px solid #1b114922;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+  font: inherit;
+}
+
+.scroll-row:first-child {
+  border-top: 1px solid #1b114922;
+}
+
+.scroll-row[aria-pressed="true"],
+.scroll-row:hover {
+  background: color-mix(in oklab, #fff 70%, transparent);
+}
+
+.scroll-row .no {
+  font-family: var(--font-noto-serif), "Noto Serif SC", serif;
+  font-size: 1.55rem;
+  font-weight: 600;
+  color: #ff3d7f;
+  line-height: 1;
+}
+
+.scroll-row h2 {
+  margin: 0;
+  font-family: var(--font-noto-serif), "Noto Serif SC", serif;
+  font-size: clamp(1.15rem, 2.2vw, 1.45rem);
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+.scroll-row .meta {
+  margin-top: 0.4rem;
+  font-size: 0.75rem;
+  color: #5a4d8a;
+}
+
+.scroll-row .trig {
+  justify-self: end;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  background: #ffe566;
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+@media (max-width: 700px) {
+  .scroll-row {
+    grid-template-columns: 2.4rem minmax(0, 1fr);
+  }
+  .scroll-row .trig {
+    grid-column: 2;
+    justify-self: start;
+  }
+}
+
+/* ── 开本：左目录右引文 ── */
+.spread {
+  display: grid;
+  gap: 1.25rem;
+  min-height: 70dvh;
+  padding: 1.2rem;
+  border: 2px solid #ffd0e0;
+  border-radius: 1.5rem;
+  background: #fff;
+  box-shadow: 0 8px 0 #4d8dff;
+}
+
+@media (min-width: 860px) {
+  .spread {
+    grid-template-columns: 220px minmax(0, 1fr);
+  }
+}
+
+.spread-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding-right: 0.4rem;
+  border-right: 1px solid #ffd0e0;
+}
+
+.spread-nav button {
+  padding: 0.55rem 0.65rem;
+  border: 0;
+  border-radius: 0.7rem;
+  background: transparent;
+  color: #5a4d8a;
+  text-align: left;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.88rem;
+}
+
+.spread-nav button[aria-pressed="true"] {
+  background: #fff3b0;
+  color: #1b1149;
+  font-weight: 700;
+}
+
+.spread-page {
+  padding: 0.4rem 0.6rem 0.8rem;
+}
+
+.spread-page .trig {
+  display: inline-block;
+  padding: 0.15rem 0.55rem;
+  border-radius: 999px;
+  background: #b8ffe6;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.spread-page h2 {
+  margin: 1rem 0 0;
+  font-family: var(--font-noto-serif), "Noto Serif SC", serif;
+  font-size: clamp(1.6rem, 3.4vw, 2.35rem);
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.spread-page .essence {
+  margin: 1.1rem 0 0;
+  max-width: 38em;
+  color: #5a4d8a;
+  font-size: 0.95rem;
+  line-height: 1.8;
+}
+
+.spread-page .quote {
+  margin: 1.4rem 0 0;
+  padding-left: 1rem;
+  border-left: 4px solid #19d4b2;
+  font-family: var(--font-noto-serif), "Noto Serif SC", serif;
+  font-size: 1.05rem;
+  line-height: 1.75;
+}
+
+.spread-page .foot {
+  margin-top: 1.6rem;
+  font-size: 0.78rem;
+  color: #5a4d8a;
+}
+
+/* ── 一条：一次只读一句 ── */
+.film {
+  display: flex;
+  min-height: 72dvh;
+  flex-direction: column;
+  justify-content: center;
+  padding: 2.5rem 1.5rem 2rem;
+  border: 2px solid #ffd0e0;
+  border-radius: 1.6rem;
+  background: #fff;
+  box-shadow: 0 10px 0 #ff3d7f;
+}
+
+.film .trig {
+  color: #ff3d7f;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+}
+
+.film h2 {
+  margin: 1.1rem 0 0;
+  max-width: 14em;
+  font-family: var(--font-noto-serif), "Noto Serif SC", serif;
+  font-size: clamp(1.8rem, 4.4vw, 2.8rem);
+  font-weight: 500;
+  line-height: 1.35;
+}
+
+.film .essence {
+  margin: 1.2rem 0 0;
+  max-width: 36em;
+  color: #5a4d8a;
+  font-size: 1rem;
+  line-height: 1.8;
+}
+
+.film-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 2.4rem;
+}
+
+.film-nav button {
+  padding: 0.55rem 1rem;
+  border: 2px solid #1b1149;
+  border-radius: 999px;
+  background: #ffe566;
+  color: #1b1149;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.88rem;
+  font-weight: 700;
+}
+
+.film-nav .count {
+  font-variant-numeric: tabular-nums;
+  font-size: 0.9rem;
+  color: #5a4d8a;
+}

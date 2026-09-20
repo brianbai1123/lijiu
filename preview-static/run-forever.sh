@@ -4,7 +4,7 @@
 cd /workspace || exit 1
 while true; do
   echo "[$(date -u +%H:%M:%S)] starting static preview server..."
-  python3 /workspace/preview-static/serve.py
+  node /workspace/preview-static/serve.mjs
   echo "[$(date -u +%H:%M:%S)] server exited (code $?), restarting in 1s..."
   sleep 1
 done

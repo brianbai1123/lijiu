@@ -74,6 +74,9 @@ export function SpreadLab({ samples }: { samples: SpreadSample[] }) {
             <h1>历久 · 开本三版</h1>
             <p>
               都是开本：左目录、右一次摊开一条。三版只在质感上分岔。现站未改。
+              <a className="sl-link" href="../spreads-app/">
+                看互联网风三版 →
+              </a>
             </p>
           </div>
           <div className="sl-picks">

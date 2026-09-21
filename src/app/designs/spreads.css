@@ -57,6 +57,12 @@
   color: #6b6478;
 }
 
+.sl-link {
+  margin-left: 0.6rem;
+  color: #1b1149;
+  text-underline-offset: 3px;
+}
+
 .sl-picks {
   display: flex;
   gap: 0.4rem;
@@ -476,7 +482,7 @@
 .archive {
   display: grid;
   gap: 0;
-  min-height: 66dvh;
+  min-height: 33rem;
   background: #fff;
   border: 1px solid #1b1149;
 }

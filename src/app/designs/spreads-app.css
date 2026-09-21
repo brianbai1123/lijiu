@@ -1,0 +1,788 @@
+/* 开本三版 · 互联网风：深色控制台 / 明亮产品页 / 工作台
+   仅用于 /designs/spreads-app，不影响现站。 */
+
+.app-lab {
+  min-height: 100dvh;
+  font-family: var(--font-source-han), "Noto Sans SC", -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.app-lab * {
+  box-sizing: border-box;
+}
+
+.al-console {
+  background: #08080a;
+  color: #f4f4f6;
+}
+.al-product {
+  background: #ffffff;
+  color: #0d0d12;
+}
+.al-workspace {
+  background: #fbfaf9;
+  color: #2f2b28;
+}
+
+/* ── 控制条 ── */
+.al-bar {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+}
+
+.al-console .al-bar {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(8, 8, 10, 0.72);
+  backdrop-filter: blur(16px);
+}
+.al-product .al-bar {
+  border-bottom: 1px solid rgba(13, 13, 18, 0.07);
+  background: rgba(255, 255, 255, 0.78);
+  backdrop-filter: blur(16px);
+}
+.al-workspace .al-bar {
+  border-bottom: 1px solid rgba(47, 43, 40, 0.09);
+  background: rgba(251, 250, 249, 0.82);
+  backdrop-filter: blur(16px);
+}
+
+.al-bar-inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0.95rem 1.5rem;
+}
+
+.al-bar h1 {
+  margin: 0;
+  font-size: 0.86rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.al-bar p {
+  margin: 0.28rem 0 0;
+  font-size: 0.73rem;
+  line-height: 1.6;
+  opacity: 0.6;
+}
+
+.al-bar a {
+  margin-left: 0.6rem;
+  color: inherit;
+  text-underline-offset: 3px;
+}
+
+.al-picks {
+  display: flex;
+  gap: 0.35rem;
+  padding: 0.22rem;
+  border-radius: 10px;
+}
+
+.al-console .al-picks {
+  background: rgba(255, 255, 255, 0.05);
+}
+.al-product .al-picks {
+  background: rgba(13, 13, 18, 0.045);
+}
+.al-workspace .al-picks {
+  background: rgba(47, 43, 40, 0.05);
+}
+
+.al-picks button {
+  min-width: 6.6rem;
+  padding: 0.4rem 0.75rem;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  text-align: left;
+  font: inherit;
+  opacity: 0.62;
+  transition:
+    background 0.16s ease,
+    opacity 0.16s ease,
+    box-shadow 0.16s ease;
+}
+
+.al-picks button:hover {
+  opacity: 0.9;
+}
+
+.al-console .al-picks button[aria-pressed="true"] {
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  opacity: 1;
+}
+.al-product .al-picks button[aria-pressed="true"] {
+  background: #fff;
+  box-shadow:
+    0 1px 2px rgba(13, 13, 18, 0.1),
+    0 4px 12px -4px rgba(13, 13, 18, 0.12);
+  opacity: 1;
+}
+.al-workspace .al-picks button[aria-pressed="true"] {
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(47, 43, 40, 0.14);
+  opacity: 1;
+}
+
+.al-picks .k {
+  display: block;
+  font-size: 0.58rem;
+  letter-spacing: 0.18em;
+  opacity: 0.55;
+}
+
+.al-picks .n {
+  display: block;
+  margin-top: 0.08rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.al-spec {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1.3rem 1.5rem 0;
+  font-size: 0.8rem;
+  line-height: 1.85;
+  opacity: 0.66;
+}
+
+.al-spec strong {
+  margin-right: 0.55rem;
+  font-weight: 600;
+  opacity: 1;
+}
+
+.al-ref {
+  display: inline-block;
+  margin-right: 0.6rem;
+  padding: 0.05rem 0.45rem;
+  border-radius: 5px;
+  font-size: 0.68rem;
+  letter-spacing: 0.02em;
+}
+
+.al-console .al-ref {
+  background: rgba(255, 255, 255, 0.08);
+}
+.al-product .al-ref {
+  background: rgba(13, 13, 18, 0.06);
+}
+.al-workspace .al-ref {
+  background: rgba(47, 43, 40, 0.07);
+}
+
+.al-stage {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1.6rem 1.5rem 4rem;
+}
+
+/* ═══════════ 丁 · 深色控制台 ═══════════ */
+.console {
+  display: grid;
+  min-height: 33rem;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 14px;
+  background:
+    radial-gradient(
+      680px 320px at 82% -8%,
+      rgba(124, 92, 255, 0.16) 0%,
+      transparent 62%
+    ),
+    #0e0e11;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    0 24px 60px -30px rgba(0, 0, 0, 0.9);
+  overflow: hidden;
+}
+
+@media (min-width: 900px) {
+  .console {
+    grid-template-columns: 252px minmax(0, 1fr);
+  }
+}
+
+.con-side {
+  border-right: 1px solid rgba(255, 255, 255, 0.07);
+  padding: 0.85rem 0.7rem 1.2rem;
+}
+
+.con-side-head {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.55rem 0.9rem;
+  font-size: 0.74rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.con-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ff3d7f, #7c5cff);
+  box-shadow: 0 0 10px rgba(255, 61, 127, 0.7);
+}
+
+.con-count {
+  margin-left: auto;
+  padding: 0.05rem 0.38rem;
+  border-radius: 5px;
+  background: rgba(255, 255, 255, 0.07);
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 0.64rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.con-group {
+  margin-top: 0.5rem;
+}
+
+.con-cat {
+  margin: 0 0 0.3rem;
+  padding: 0 0.55rem;
+  font-size: 0.6rem;
+  letter-spacing: 0.16em;
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.con-side nav button {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1.55rem minmax(0, 1fr);
+  align-items: center;
+  gap: 0.3rem;
+  width: 100%;
+  padding: 0.42rem 0.55rem;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.62);
+  text-align: left;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.82rem;
+  transition:
+    background 0.14s ease,
+    color 0.14s ease;
+}
+
+.con-side nav button:hover {
+  background: rgba(255, 255, 255, 0.045);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.con-n {
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 0.66rem;
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.con-side nav button[aria-pressed="true"] {
+  background: rgba(255, 255, 255, 0.075);
+  color: #fff;
+  font-weight: 500;
+}
+
+/* 选中项左侧一道渐变光条 */
+.con-side nav button[aria-pressed="true"]::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 18%;
+  bottom: 18%;
+  width: 2px;
+  border-radius: 2px;
+  background: linear-gradient(to bottom, #ff3d7f, #7c5cff);
+}
+
+.con-side nav button[aria-pressed="true"] .con-n {
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.con-main {
+  display: flex;
+  flex-direction: column;
+}
+
+.con-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.75rem 1.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.con-slash {
+  margin: 0 0.4rem;
+  opacity: 0.4;
+}
+
+.con-kbd {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.68rem;
+}
+
+.con-kbd kbd {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.2rem;
+  height: 1.2rem;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.05);
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 0.64rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.con-body {
+  flex: 1;
+  padding: 2.4rem 1.5rem 2rem;
+}
+
+.con-badge {
+  display: inline-block;
+  padding: 0.18rem 0.55rem;
+  border: 1px solid rgba(255, 61, 127, 0.35);
+  border-radius: 999px;
+  background: rgba(255, 61, 127, 0.1);
+  font-size: 0.68rem;
+  color: #ff9ac2;
+}
+
+.con-body h2 {
+  margin: 1.15rem 0 0;
+  max-width: 22em;
+  font-size: clamp(1.55rem, 2.9vw, 2.3rem);
+  font-weight: 600;
+  line-height: 1.5;
+  letter-spacing: -0.025em;
+  color: #fff;
+  text-wrap: pretty;
+}
+
+.con-essence {
+  margin: 1.35rem 0 0;
+  max-width: 40em;
+  font-size: 0.9rem;
+  line-height: 1.95;
+  color: rgba(255, 255, 255, 0.58);
+}
+
+.con-quote {
+  margin: 2.1rem 0 0;
+  max-width: 44em;
+  padding: 1.15rem 1.3rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.con-quote p {
+  margin: 0;
+  font-size: 0.92rem;
+  line-height: 1.9;
+  color: rgba(255, 255, 255, 0.86);
+}
+
+.con-quote footer {
+  margin-top: 0.85rem;
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 0.66rem;
+  color: rgba(255, 255, 255, 0.34);
+}
+
+.con-sep {
+  margin: 0 0.4rem;
+}
+
+.con-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.7rem 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 0.66rem;
+  color: rgba(255, 255, 255, 0.34);
+}
+
+/* ═══════════ 戊 · 明亮产品页 ═══════════ */
+.product {
+  display: grid;
+  min-height: 33rem;
+  border-radius: 20px;
+  background:
+    radial-gradient(
+      700px 300px at 78% -12%,
+      rgba(255, 61, 127, 0.09) 0%,
+      transparent 60%
+    ),
+    radial-gradient(
+      600px 280px at 12% -6%,
+      rgba(77, 141, 255, 0.09) 0%,
+      transparent 58%
+    ),
+    #fff;
+  border: 1px solid rgba(13, 13, 18, 0.06);
+  box-shadow:
+    0 1px 2px rgba(13, 13, 18, 0.04),
+    0 8px 24px -12px rgba(13, 13, 18, 0.12),
+    0 32px 64px -32px rgba(13, 13, 18, 0.16);
+  overflow: hidden;
+}
+
+@media (min-width: 900px) {
+  .product {
+    grid-template-columns: 232px minmax(0, 1fr);
+  }
+}
+
+.pro-side {
+  padding: 1.75rem 1rem;
+  border-right: 1px solid rgba(13, 13, 18, 0.055);
+}
+
+.pro-group + .pro-group {
+  margin-top: 1.4rem;
+}
+
+.pro-cat {
+  margin: 0 0 0.45rem;
+  padding: 0 0.7rem;
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  color: #a5a3ae;
+}
+
+.pro-side button {
+  display: block;
+  width: 100%;
+  padding: 0.5rem 0.7rem;
+  border: 0;
+  border-radius: 9px;
+  background: transparent;
+  color: #5c5a67;
+  text-align: left;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.85rem;
+  letter-spacing: -0.005em;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease;
+}
+
+.pro-side button:hover {
+  background: rgba(13, 13, 18, 0.04);
+  color: #0d0d12;
+}
+
+.pro-side button[aria-pressed="true"] {
+  background: #0d0d12;
+  color: #fff;
+  font-weight: 500;
+}
+
+.pro-main {
+  padding: 3rem 3rem 2.5rem;
+}
+
+.pro-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin: 0;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: #6f6d7a;
+}
+
+.pro-gdot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ff3d7f, #4d8dff);
+}
+
+.pro-main h2 {
+  margin: 1.1rem 0 0;
+  max-width: 18em;
+  font-size: clamp(1.9rem, 3.7vw, 3rem);
+  font-weight: 650;
+  line-height: 1.38;
+  letter-spacing: -0.035em;
+  color: #0d0d12;
+  text-wrap: pretty;
+}
+
+.pro-essence {
+  margin: 1.5rem 0 0;
+  max-width: 36em;
+  font-size: 1rem;
+  line-height: 1.85;
+  color: #5c5a67;
+}
+
+.pro-card {
+  margin: 2.25rem 0 0;
+  max-width: 44em;
+  padding: 1.5rem 1.6rem;
+  border: 1px solid rgba(13, 13, 18, 0.06);
+  border-radius: 16px;
+  background: #fcfcfd;
+  box-shadow: 0 1px 2px rgba(13, 13, 18, 0.03);
+}
+
+.pro-quote {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.9;
+  color: #24232c;
+}
+
+.pro-src {
+  margin: 0.9rem 0 0;
+  font-size: 0.73rem;
+  color: #8f8d99;
+}
+
+.pro-sep {
+  margin: 0 0.4rem;
+}
+
+.pro-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2.5rem;
+  margin-top: 2.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(13, 13, 18, 0.06);
+}
+
+.pro-k {
+  margin: 0;
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  color: #a5a3ae;
+}
+
+.pro-v {
+  margin: 0.35rem 0 0;
+  font-size: 1.6rem;
+  font-weight: 650;
+  letter-spacing: -0.03em;
+  color: #0d0d12;
+  font-variant-numeric: tabular-nums;
+}
+
+.pro-v.sm {
+  font-size: 1rem;
+  font-weight: 550;
+  letter-spacing: -0.01em;
+}
+
+.pro-u {
+  margin-left: 0.15rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #8f8d99;
+}
+
+/* ═══════════ 己 · 工作台 ═══════════ */
+.workspace {
+  display: grid;
+  min-height: 33rem;
+  border: 1px solid rgba(47, 43, 40, 0.1);
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(47, 43, 40, 0.05);
+  overflow: hidden;
+}
+
+@media (min-width: 900px) {
+  .workspace {
+    grid-template-columns: 224px minmax(0, 1fr);
+  }
+}
+
+.ws-side {
+  display: flex;
+  flex-direction: column;
+  padding: 0.9rem 0.6rem;
+  border-right: 1px solid rgba(47, 43, 40, 0.09);
+  background: #f6f5f3;
+}
+
+.ws-side-head {
+  padding: 0.3rem 0.6rem 0.9rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #4a443f;
+}
+
+.ws-group + .ws-group {
+  margin-top: 1.1rem;
+}
+
+.ws-cat {
+  margin: 0 0 0.25rem;
+  padding: 0 0.6rem;
+  font-size: 0.64rem;
+  font-weight: 500;
+  color: #a8a199;
+}
+
+.ws-side button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.38rem 0.6rem;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: #5e574f;
+  text-align: left;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.83rem;
+  transition: background 0.13s ease;
+}
+
+.ws-side button:hover {
+  background: rgba(47, 43, 40, 0.055);
+}
+
+.ws-side button[aria-pressed="true"] {
+  background: #fff;
+  color: #2f2b28;
+  font-weight: 500;
+  box-shadow: 0 1px 2px rgba(47, 43, 40, 0.1);
+}
+
+.ws-dot {
+  flex: none;
+  width: 6px;
+  height: 6px;
+  border-radius: 2px;
+}
+
+.ws-side-foot {
+  margin: auto 0 0;
+  padding: 0.8rem 0.6rem 0.2rem;
+  font-size: 0.68rem;
+  color: #a8a199;
+}
+
+.ws-main {
+  padding: 2.4rem 2.6rem 2.6rem;
+}
+
+.ws-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.ws-chip {
+  padding: 0.15rem 0.55rem;
+  border-radius: 5px;
+  background: rgba(255, 61, 127, 0.1);
+  font-size: 0.7rem;
+  color: #c72a63;
+}
+
+.ws-chip.ghost {
+  background: rgba(47, 43, 40, 0.06);
+  color: #6f6860;
+}
+
+.ws-main h2 {
+  margin: 1.15rem 0 0;
+  max-width: 20em;
+  font-size: clamp(1.55rem, 2.9vw, 2.15rem);
+  font-weight: 600;
+  line-height: 1.5;
+  letter-spacing: -0.02em;
+  color: #26221f;
+  text-wrap: pretty;
+}
+
+.ws-block {
+  margin-top: 2rem;
+}
+
+.ws-label {
+  margin: 0 0 0.5rem;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: #a8a199;
+}
+
+.ws-body {
+  margin: 0;
+  max-width: 40em;
+  font-size: 0.92rem;
+  line-height: 1.95;
+  color: #4f4841;
+}
+
+.ws-callout {
+  max-width: 44em;
+  padding: 1.1rem 1.25rem;
+  border-left: 3px solid #f5a524;
+  border-radius: 0 8px 8px 0;
+  background: #fdf9f2;
+}
+
+.ws-quote {
+  margin: 0;
+  font-size: 0.92rem;
+  line-height: 1.9;
+  color: #3d372f;
+}
+
+.ws-src {
+  margin: 0.75rem 0 0;
+  font-size: 0.71rem;
+  color: #a1968a;
+}
+
+.ws-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin-top: 2.25rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid rgba(47, 43, 40, 0.08);
+}
+
+.ws-tags span {
+  font-size: 0.73rem;
+  color: #9a9289;
+}

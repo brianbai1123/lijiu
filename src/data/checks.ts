@@ -59,6 +59,11 @@ export const checks: Record<string, CheckFields> = {
     trigger: "还想再多点时",
     check: "欲望是一条会后退的终点线；不先画停止线，赢家也会跑下悬崖。",
   },
+  "seven-habits": {
+    trigger: "想改别人时",
+    check:
+      "七条习惯是台阶不是菜单。自己还站不稳，对人的技巧全是表演。",
+  },
   reciprocity: {
     trigger: "关系变冷时",
     check: "关系像呼吸：只吸不呼会窒息，每一口都计价也活不了。",

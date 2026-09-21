@@ -262,8 +262,8 @@
 @media (min-width: 900px) {
   .workspace {
     grid-template-columns: 240px minmax(0, 1fr);
-    height: min(72vh, 46rem);
-    min-height: 36rem;
+    height: min(84vh, 58rem);
+    min-height: 40rem;
   }
 }
 
@@ -435,34 +435,14 @@
   color: var(--ws-src);
 }
 
-.ws-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.45rem;
-  margin-top: 2.25rem;
-  padding-top: 1.25rem;
+.ws-detail {
+  margin-top: 2rem;
+  padding-top: 1.75rem;
   border-top: 1px solid var(--border);
 }
 
-.ws-tags span {
-  font-size: 0.73rem;
-  color: var(--ws-label);
-}
-
-.ws-more {
-  margin-top: 1.5rem;
-  padding: 0;
-  border: 0;
-  background: transparent;
-  color: var(--muted-foreground);
-  cursor: pointer;
-  font: inherit;
-  font-size: 0.875rem;
-  transition: color 0.13s ease;
-}
-
-.ws-more:hover {
-  color: var(--foreground);
+#workspace {
+  scroll-margin-top: 4.5rem;
 }
 
 /* 手写的印章式序号与竖排引文的公共样式 */

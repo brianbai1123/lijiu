@@ -84,7 +84,7 @@ export default function Home() {
             这不是清单的缺陷，恰恰是它诚实的地方：能用一条原则解决的人生，还没开始。
           </p>
           <p className="max-w-3xl text-xs">
-            检视问题与标题为思源宋体（Noto Serif SC），其余为思源黑体简体（Noto Sans SC）。界面按工作台排：左侧目录、右侧阅读。
+            检视问题与标题为思源宋体（Noto Serif SC），其余为思源黑体简体（Noto Sans SC）。界面按工作台排：左侧目录，右侧直接读完整解读。
           </p>
         </div>
       </footer>

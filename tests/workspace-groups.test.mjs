@@ -48,8 +48,18 @@ test("原则数据覆盖七个领域共 35 条", () => {
   assert.deepEqual([...new Set(assigned)], domains);
 });
 
-test("首页 Explorer 用工作台而不是卡片网格", () => {
+test("首页 Explorer 用工作台内嵌全文，不再弹层", () => {
   assert.match(explorer, /WorkspaceSpread/);
   assert.doesNotMatch(explorer, /PrincipleCard/);
   assert.doesNotMatch(explorer, /principle-grid/);
+  assert.doesNotMatch(explorer, /from "@\/components\/ui\/dialog"/);
+  assert.doesNotMatch(explorer, /展开完整解读/);
+
+  const workspace = readFileSync(
+    new URL("../src/components/workspace-spread.tsx", import.meta.url),
+    "utf8",
+  );
+  assert.match(workspace, /PrincipleDetail/);
+  assert.match(workspace, /showLead=\{false\}/);
+  assert.doesNotMatch(workspace, /展开完整解读/);
 });

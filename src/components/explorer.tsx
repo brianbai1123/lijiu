@@ -3,15 +3,7 @@
 import * as React from "react";
 import { SearchIcon, ShuffleIcon, SparklesIcon, XIcon } from "lucide-react";
 
-import { PrincipleDetail } from "@/components/principle-detail";
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { WorkspaceSpread } from "@/components/workspace-spread";
 import { groupPrinciples } from "@/lib/workspace";
@@ -75,7 +67,6 @@ function useDailyId() {
 export function Explorer() {
   const [query, setQuery] = React.useState("");
   const [filter, setFilter] = React.useState<Filter>("all");
-  const [openId, setOpenId] = React.useState<string | null>(null);
   const [selectedId, setSelectedId] = React.useState<string | null>(null);
   const dailyId = useDailyId();
 
@@ -111,14 +102,31 @@ export function Explorer() {
     return map;
   }, []);
 
-  const openRandom = () => {
-    const pool = visible.length > 0 ? visible : principles;
-    const id = pool[Math.floor(Math.random() * pool.length)].id;
-    setSelectedId(id);
-    setOpenId(id);
+  const selectPrinciple = React.useCallback(
+    (id: string) => {
+      const p = principleById.get(id);
+      if (!p) return;
+      const q = query.trim().toLowerCase();
+      const matchesFilter = filter === "all" || p.category === filter;
+      const matchesQuery = !q || searchIndex.get(id)!.includes(q);
+      if (!matchesFilter) setFilter("all");
+      if (!matchesQuery) setQuery("");
+      setSelectedId(id);
+    },
+    [filter, query],
+  );
+
+  const scrollToWorkspace = () => {
+    document
+      .getElementById("workspace")
+      ?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
-  const open = openId ? principleById.get(openId) : null;
+  const openRandom = () => {
+    const pool = visible.length > 0 ? visible : principles;
+    selectPrinciple(pool[Math.floor(Math.random() * pool.length)].id);
+    scrollToWorkspace();
+  };
 
   return (
     <>
@@ -134,8 +142,10 @@ export function Explorer() {
         <button
           type="button"
           onClick={() => {
+            setQuery("");
+            setFilter("all");
             setSelectedId(daily.id);
-            setOpenId(daily.id);
+            scrollToWorkspace();
           }}
           className="daily-card group block w-full bg-card p-6 text-left sm:p-8"
         >
@@ -153,7 +163,7 @@ export function Explorer() {
               {daily.quotes[0].source} · {daily.quotes[0].era}
             </figcaption>
           </figure>
-          <span className="ws-more-inline">展开完整解读 →</span>
+          <span className="ws-more-inline">到右侧阅读 →</span>
         </button>
       </section>
 
@@ -216,7 +226,7 @@ export function Explorer() {
       </section>
 
       {/* ── 工作台 ─────────────────────────────────────────── */}
-      <section className="mx-auto w-full max-w-6xl px-5 py-8">
+      <section id="workspace" className="mx-auto w-full max-w-6xl px-5 py-8">
         {filter !== "all" && (
           <p className="mb-5 text-sm text-muted-foreground">
             {categories.find((c) => c.id === filter)?.subtitle}
@@ -246,35 +256,10 @@ export function Explorer() {
             selected={selected}
             visibleCount={visible.length}
             totalCount={principles.length}
-            onSelect={setSelectedId}
-            onOpenFull={() => setOpenId(selected.id)}
+            onSelect={selectPrinciple}
           />
         )}
       </section>
-
-      {/* ── 详情 ───────────────────────────────────────────── */}
-      <Dialog
-        open={Boolean(open)}
-        onOpenChange={(next) => !next && setOpenId(null)}
-      >
-        <DialogContent className="max-h-[88dvh] gap-0 overflow-y-auto rounded-xl border border-border sm:max-w-2xl">
-          {open && (
-            <>
-              <DialogHeader className="pb-1">
-                <DialogTitle className="font-serif text-xl leading-[1.45] text-balance sm:text-2xl">
-                  {open.check}
-                </DialogTitle>
-                <DialogDescription>
-                  {open.trigger} · {open.title}
-                </DialogDescription>
-              </DialogHeader>
-              <div className="pt-4">
-                <PrincipleDetail principle={open} onSelect={setOpenId} />
-              </div>
-            </>
-          )}
-        </DialogContent>
-      </Dialog>
     </>
   );
 }

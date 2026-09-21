@@ -2,6 +2,7 @@
 
 import * as React from "react";
 
+import { PrincipleDetail } from "@/components/principle-detail";
 import { categoryById, type Principle } from "@/data/principles";
 import { CATEGORY_DOT, type WorkspaceGroup } from "@/lib/workspace";
 
@@ -11,19 +12,16 @@ export function WorkspaceSpread({
   visibleCount,
   totalCount,
   onSelect,
-  onOpenFull,
 }: {
   groups: WorkspaceGroup[];
   selected: Principle;
   visibleCount: number;
   totalCount: number;
   onSelect: (id: string) => void;
-  onOpenFull: () => void;
 }) {
   const sideRef = React.useRef<HTMLElement>(null);
   const mainRef = React.useRef<HTMLElement>(null);
   const category = categoryById.get(selected.category);
-  const quote = selected.quotes[0];
   const dot = CATEGORY_DOT[selected.category];
 
   React.useEffect(() => {
@@ -92,27 +90,13 @@ export function WorkspaceSpread({
           <p className="ws-body">{selected.essence}</p>
         </div>
 
-        {quote && (
-          <div className="ws-block">
-            <p className="ws-label">原典</p>
-            <div className="ws-callout">
-              <p className="ws-quote">{quote.text}</p>
-              <p className="ws-src">
-                {quote.source} · {quote.era}
-              </p>
-            </div>
-          </div>
-        )}
-
-        <div className="ws-tags">
-          {selected.tags.map((tag) => (
-            <span key={tag}># {tag}</span>
-          ))}
+        <div className="ws-detail">
+          <PrincipleDetail
+            principle={selected}
+            onSelect={onSelect}
+            showLead={false}
+          />
         </div>
-
-        <button type="button" className="ws-more" onClick={onOpenFull}>
-          展开完整解读 →
-        </button>
       </article>
     </div>
   );

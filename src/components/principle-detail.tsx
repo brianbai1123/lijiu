@@ -129,9 +129,12 @@ function StoryList({
 export function PrincipleDetail({
   principle,
   onSelect,
+  showLead = true,
 }: {
   principle: Principle;
   onSelect: (id: string) => void;
+  /** 工作台右侧已展示领域、检视问题和释义时，不再重复一遍开头 */
+  showLead?: boolean;
 }) {
   const category = categoryById.get(principle.category);
   const tensions = (principle.tensions ?? [])
@@ -140,34 +143,37 @@ export function PrincipleDetail({
 
   return (
     <div className="space-y-7">
-      <header className="space-y-4">
-        <div className="flex flex-wrap items-center gap-2">
-          <Badge variant="secondary">{category?.name}</Badge>
-          <Badge variant="outline">{principle.trigger}</Badge>
-          <Badge variant="outline">
-            已被检验约 {principle.ageYears.toLocaleString("zh-CN")} 年
-          </Badge>
-        </div>
-        <p className="text-[0.9375rem] leading-7 text-muted-foreground">
-          <span className="font-medium text-foreground/90">{principle.title}</span>
-          {" · "}
-          {principle.essence}
-        </p>
-      </header>
-
-      <Separator />
+      {showLead ? (
+        <>
+          <header className="space-y-4">
+            <div className="flex flex-wrap items-center gap-2">
+              <Badge variant="secondary">{category?.name}</Badge>
+              <Badge variant="outline">{principle.trigger}</Badge>
+              <Badge variant="outline">
+                已被检验约 {principle.ageYears.toLocaleString("zh-CN")} 年
+              </Badge>
+            </div>
+            <p className="text-[0.9375rem] leading-7 text-muted-foreground">
+              <span className="font-medium text-foreground/90">{principle.title}</span>
+              {" · "}
+              {principle.essence}
+            </p>
+          </header>
+          <Separator />
+        </>
+      ) : null}
 
       <Section icon={QuoteIcon} title="原典">
         <div className="space-y-4">
           {principle.quotes.map((quote) => (
             <figure
               key={quote.source}
-              className="border-l-4 border-mint py-0.5 pl-4"
+              className="ws-callout"
             >
-              <blockquote className="text-[0.9375rem] leading-8 text-foreground/85">
+              <blockquote className="ws-quote">
                 {quote.text}
               </blockquote>
-              <figcaption className="mt-1.5 text-xs text-muted-foreground">
+              <figcaption className="ws-src">
                 {quote.source} · {quote.era}
               </figcaption>
             </figure>

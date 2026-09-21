@@ -29,7 +29,7 @@ export default function Home() {
 
       <main className="flex-1">
         <section className="mx-auto w-full max-w-6xl px-5 pt-16 pb-14 sm:pt-24">
-          <p className="font-mono text-xs tracking-[0.2em] text-primary uppercase">
+          <p className="font-mono text-xs tracking-[0.2em] text-muted-foreground uppercase">
             {principles.length} principles · {categories.length} domains ·{" "}
             {oldest}+ years
           </p>
@@ -84,7 +84,7 @@ export default function Home() {
             这不是清单的缺陷，恰恰是它诚实的地方：能用一条原则解决的人生，还没开始。
           </p>
           <p className="max-w-3xl text-xs">
-            标题与卡片主句为思源宋体（Noto Serif SC），其余为思源黑体简体（Noto Sans SC）。
+            检视问题与标题为思源宋体（Noto Serif SC），其余为思源黑体简体（Noto Sans SC）。界面按工作台排：左侧目录、右侧阅读。
           </p>
         </div>
       </footer>

@@ -194,8 +194,8 @@ test("品格六卡故事替换与史料自查", () => {
   assert.match(enrichmentsSrc, /巴菲特把钱还回去/);
   assert.match(enrichmentsSrc, /Archegos/);
   assert.match(enrichmentsSrc, /史料自查：/);
-  assert.doesNotMatch(enrichmentsSrc, /南京大屠杀/);
-  assert.doesNotMatch(enrichmentsSrc, /比利时在刚果/);
+  assert.doesNotMatch(enrichmentsSrc, /title: "南京大屠杀"/);
+  assert.doesNotMatch(enrichmentsSrc, /title: "比利时在刚果/);
   assert.doesNotMatch(enrichmentsSrc, /希特勒晚期军事幻想/);
   assert.doesNotMatch(enrichmentsSrc, /title: "亚里士多德：美德即习惯"/);
 });

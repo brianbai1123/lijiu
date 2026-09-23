@@ -25,7 +25,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "历久 · 经时间检验的人生原则",
   description:
-    "36 条被不同文明、不同学科反复独立验证的人生原则。每一条都附原典出处、跨文明印证、实践方法、常见误读，以及它的失效边界。",
+    "35 条被不同文明、不同学科反复独立验证的人生原则。每一条都附原典出处、跨文明印证、实践方法、常见误读，以及它的失效边界。",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

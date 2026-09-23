@@ -40,11 +40,11 @@ test("工作台按领域分组，空组丢弃、顺序跟目录走", () => {
   );
 });
 
-test("原则数据覆盖七个领域共 36 条", () => {
+test("原则数据覆盖七个领域共 35 条", () => {
   const assigned = [...principlesSrc.matchAll(/^\s+category: "(\w+)",/gm)].map(
     (m) => m[1],
   );
-  assert.equal(assigned.length, 36);
+  assert.equal(assigned.length, 35);
   assert.deepEqual([...new Set(assigned)], domains);
 });
 

@@ -7,6 +7,7 @@ import {
   GlobeIcon,
   KeyRoundIcon,
   LightbulbIcon,
+  MessageSquareQuoteIcon,
   QuoteIcon,
   ScaleIcon,
   SproutIcon,
@@ -183,6 +184,10 @@ export function PrincipleDetail({
 
       <Section icon={LightbulbIcon} title="背后逻辑">
         <Prose text={principle.logic} />
+      </Section>
+
+      <Section icon={MessageSquareQuoteIcon} title="达利欧说">
+        <Prose text={principle.dalio} />
       </Section>
 
       <Section icon={BookOpenIcon} title="历史故事">

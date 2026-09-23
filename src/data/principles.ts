@@ -1,4 +1,5 @@
 import { checks } from "./checks";
+import { dalioById } from "./dalio";
 import { enrichments, type SourceNote } from "./enrichments";
 
 export type CategoryId =
@@ -93,6 +94,8 @@ export type Principle = {
    * 背后逻辑：用第一性原理，从进化、科学或人性推导驱动力
    */
   logic: string;
+  /** 与达利欧《原则》的对照，排在背后逻辑之后、历史故事之前 */
+  dalio: string;
   /** 何时想起：情境开关，方便大脑在现场被触发 */
   trigger: string;
   /** 第一人称检视问题——原则的本质是问题，不是口号 */
@@ -104,7 +107,7 @@ export type Principle = {
 
 const principlesBase: Omit<
   Principle,
-  "stories" | "logic" | "trigger" | "check"
+  "stories" | "logic" | "dalio" | "trigger" | "check"
 >[] = [
   // ───────────────────────── 认知与判断 ─────────────────────────
   {
@@ -1739,7 +1742,11 @@ export const principles: Principle[] = principlesBase.map((p) => {
   if (!cue) {
     throw new Error(`缺少 check：${p.id}`);
   }
-  return { ...p, ...extra, ...cue };
+  const dalio = dalioById[p.id];
+  if (!dalio) {
+    throw new Error(`缺少达利欧说：${p.id}`);
+  }
+  return { ...p, ...extra, ...cue, dalio };
 });
 
 export const principleById = new Map(principles.map((p) => [p.id, p]));

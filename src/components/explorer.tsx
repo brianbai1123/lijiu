@@ -30,6 +30,7 @@ function haystack(id: string) {
     p.why,
     p.coda,
     p.logic,
+    p.dalio,
     p.misreading,
     p.limits,
     ...(p.readings ?? []).flatMap((reading) => [reading.title, reading.body]),

@@ -69,6 +69,10 @@ export function Explorer() {
   const [query, setQuery] = React.useState("");
   const [filter, setFilter] = React.useState<Filter>("all");
   const [selectedId, setSelectedId] = React.useState<string | null>(null);
+  React.useEffect(() => {
+    const id = window.location.hash.replace(/^#/, "");
+    if (id && id !== "all") setSelectedId(id);
+  }, []);
   const dailyId = useDailyId();
 
   const daily = principleById.get(dailyId) ?? principles[0];

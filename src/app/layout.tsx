@@ -44,7 +44,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         >
           {children}
         </ThemeProvider>
-              <script src="/reading-room.js" defer></script>
+              <script src="/reading-room.js?v=2" defer></script>
       </body>
     </html>
   );

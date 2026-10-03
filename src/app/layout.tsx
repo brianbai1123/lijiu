@@ -1,6 +1,12 @@
 import type { Metadata } from "next";
-import { Geist_Mono, Noto_Sans_SC, Noto_Serif_SC } from "next/font/google";
-import { ThemeProvider } from "@/components/theme-provider";
+import {
+  Cormorant_Garamond,
+  Geist_Mono,
+  Noto_Sans_SC,
+  Noto_Serif_SC,
+} from "next/font/google";
+import { THEME_BOOTSTRAP_SCRIPT } from "@/lib/theme";
+import "lxgw-wenkai-screen-web/lxgwwenkaiscreen/result.css";
 import "./globals.css";
 
 const sourceHanSans = Noto_Sans_SC({
@@ -22,6 +28,14 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const numerals = Cormorant_Garamond({
+  weight: ["500", "600"],
+  style: ["normal", "italic"],
+  subsets: ["latin"],
+  variable: "--font-numerals",
+  display: "swap",
+});
+
 export const metadata: Metadata = {
   title: "历久 · 经时间检验的人生原则",
   description:
@@ -33,18 +47,14 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html
       lang="zh-CN"
       suppressHydrationWarning
-      className={`${sourceHanSans.variable} ${sourceHanSans.className} ${notoSerif.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${sourceHanSans.variable} ${sourceHanSans.className} ${notoSerif.variable} ${geistMono.variable} ${numerals.variable} h-full antialiased`}
     >
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: THEME_BOOTSTRAP_SCRIPT }} />
+      </head>
       <body className="flex min-h-full flex-col">
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="light"
-          enableSystem
-          disableTransitionOnChange
-        >
-          {children}
-        </ThemeProvider>
-              <script src="/reading-room.js?v=2" defer></script>
+        {children}
+        <script src="/reading-room.js?v=2" defer></script>
       </body>
     </html>
   );

@@ -1,0 +1,298 @@
+import assert from "node:assert/strict";
+import { existsSync, readFileSync } from "node:fs";
+import test from "node:test";
+import vm from "node:vm";
+
+import { JSDOM } from "jsdom";
+import React, { act } from "react";
+import { createRoot } from "react-dom/client";
+
+const projectFile = (path) =>
+  readFileSync(new URL(`../${path}`, import.meta.url), "utf8");
+
+async function loadThemeContract() {
+  assert.ok(
+    existsSync(new URL("../src/lib/theme.ts", import.meta.url)),
+    "src/lib/theme.ts must define the shared theme contract",
+  );
+  return import("../src/lib/theme.ts");
+}
+
+function executeBootstrap(script, { url = "https://lijiu.test/", stored = null, throws = false } = {}) {
+  const attributes = new Map();
+  const writes = [];
+  const localStorage = {
+    getItem(key) {
+      if (throws) throw new Error("storage denied");
+      return key === "lijiu:theme" ? stored : null;
+    },
+    setItem(key, value) {
+      if (throws) throw new Error("storage denied");
+      writes.push([key, value]);
+    },
+  };
+  const documentElement = {
+    setAttribute(name, value) {
+      attributes.set(name, value);
+    },
+    removeAttribute(name) {
+      attributes.delete(name);
+    },
+    getAttribute(name) {
+      return attributes.get(name) ?? null;
+    },
+  };
+
+  vm.runInNewContext(script, {
+    URLSearchParams,
+    document: { documentElement },
+    localStorage,
+    location: new URL(url),
+  });
+
+  return { documentElement, writes };
+}
+
+test("theme resolution follows query, stored, then paper priority", async () => {
+  const { resolveTheme } = await loadThemeContract();
+
+  assert.equal(resolveTheme("night", "celadon"), "night");
+  assert.equal(resolveTheme(null, "celadon"), "celadon");
+  assert.equal(resolveTheme("invalid", "night"), "night");
+  assert.equal(resolveTheme(null, "invalid"), "paper");
+});
+
+test("theme contract exposes only the three shared themes and Lijiu identifiers", async () => {
+  const { THEMES, THEME_CHANGE_EVENT, THEME_KEY } = await loadThemeContract();
+
+  assert.deepEqual(
+    THEMES.map(({ id, name }) => ({ id, name })),
+    [
+      { id: "paper", name: "宣纸" },
+      { id: "celadon", name: "青瓷" },
+      { id: "night", name: "夜读" },
+    ],
+  );
+  assert.equal(THEME_KEY, "lijiu:theme");
+  assert.equal(THEME_CHANGE_EVENT, "lijiu-theme-change");
+});
+
+test("bootstrap defaults to paper without persisting an absent preference", async () => {
+  const { THEME_BOOTSTRAP_SCRIPT } = await loadThemeContract();
+  const result = executeBootstrap(THEME_BOOTSTRAP_SCRIPT);
+
+  assert.equal(result.documentElement.getAttribute("data-theme"), null);
+  assert.deepEqual(result.writes, []);
+});
+
+test("bootstrap gives a valid URL theme priority and persists it", async () => {
+  const { THEME_BOOTSTRAP_SCRIPT } = await loadThemeContract();
+  const result = executeBootstrap(THEME_BOOTSTRAP_SCRIPT, {
+    url: "https://lijiu.test/?theme=night",
+    stored: "celadon",
+  });
+
+  assert.equal(result.documentElement.getAttribute("data-theme"), "night");
+  assert.deepEqual(result.writes, [["lijiu:theme", "night"]]);
+});
+
+test("bootstrap applies a valid stored theme when the URL has no theme", async () => {
+  const { THEME_BOOTSTRAP_SCRIPT } = await loadThemeContract();
+  const result = executeBootstrap(THEME_BOOTSTRAP_SCRIPT, { stored: "celadon" });
+
+  assert.equal(result.documentElement.getAttribute("data-theme"), "celadon");
+  assert.deepEqual(result.writes, []);
+});
+
+test("bootstrap ignores an invalid URL theme and keeps valid stored state", async () => {
+  const { THEME_BOOTSTRAP_SCRIPT } = await loadThemeContract();
+  const result = executeBootstrap(THEME_BOOTSTRAP_SCRIPT, {
+    url: "https://lijiu.test/?theme=sepia",
+    stored: "night",
+  });
+
+  assert.equal(result.documentElement.getAttribute("data-theme"), "night");
+  assert.deepEqual(result.writes, []);
+});
+
+test("bootstrap remains safe when storage throws", async () => {
+  const { THEME_BOOTSTRAP_SCRIPT } = await loadThemeContract();
+
+  assert.doesNotThrow(() => executeBootstrap(THEME_BOOTSTRAP_SCRIPT, { throws: true }));
+  const fromQuery = executeBootstrap(THEME_BOOTSTRAP_SCRIPT, {
+    url: "https://lijiu.test/?theme=celadon",
+    throws: true,
+  });
+  assert.equal(fromQuery.documentElement.getAttribute("data-theme"), "celadon");
+});
+
+test("all three rendered radio buttons apply, persist, and announce their theme", async () => {
+  const dom = new JSDOM("<!doctype html><html><body><div id='root'></div></body></html>", {
+    url: "https://lijiu.test/",
+  });
+  const previousGlobals = new Map();
+  for (const [key, value] of Object.entries({
+    window: dom.window,
+    document: dom.window.document,
+    localStorage: dom.window.localStorage,
+    Event: dom.window.Event,
+    HTMLElement: dom.window.HTMLElement,
+    IS_REACT_ACT_ENVIRONMENT: true,
+  })) {
+    previousGlobals.set(key, Object.getOwnPropertyDescriptor(globalThis, key));
+    Object.defineProperty(globalThis, key, {
+      configurable: true,
+      value,
+      writable: true,
+    });
+  }
+
+  const root = createRoot(dom.window.document.querySelector("#root"));
+  try {
+    const { ThemeToggle } = await import("../src/components/theme-toggle.tsx");
+    const { THEME_CHANGE_EVENT } = await loadThemeContract();
+    let eventCount = 0;
+    dom.window.addEventListener(THEME_CHANGE_EVENT, () => eventCount++);
+    dom.window.localStorage.setItem("lijiu:theme", "night");
+
+    await act(async () => root.render(React.createElement(ThemeToggle)));
+    const radios = [...dom.window.document.querySelectorAll('[role="radio"]')];
+    assert.equal(radios.length, 3);
+    assert.deepEqual(
+      radios.map((radio) => radio.textContent.trim()),
+      ["宣纸", "青瓷", "夜读"],
+    );
+    assert.equal(dom.window.document.documentElement.dataset.theme, "night");
+    assert.equal(radios[2].getAttribute("aria-checked"), "true");
+    eventCount = 0;
+
+    for (const [index, expected] of ["paper", "celadon", "night"].entries()) {
+      await act(async () => radios[index].click());
+      assert.equal(
+        dom.window.document.documentElement.getAttribute("data-theme"),
+        expected === "paper" ? null : expected,
+      );
+      assert.equal(dom.window.localStorage.getItem("lijiu:theme"), expected);
+      assert.deepEqual(
+        radios.map((radio) => radio.getAttribute("aria-checked")),
+        ["paper", "celadon", "night"].map((theme) =>
+          theme === expected ? "true" : "false",
+        ),
+      );
+    }
+    assert.equal(eventCount, 3);
+  } finally {
+    await act(async () => root.unmount());
+    dom.window.close();
+    for (const [key, descriptor] of previousGlobals) {
+      if (descriptor === undefined) delete globalThis[key];
+      else Object.defineProperty(globalThis, key, descriptor);
+    }
+  }
+});
+
+test("layout bootstraps before hydration without next-themes", () => {
+  const layout = projectFile("src/app/layout.tsx");
+  const packageJson = JSON.parse(projectFile("package.json"));
+  const bootstrap = layout.indexOf("THEME_BOOTSTRAP_SCRIPT");
+  const body = layout.indexOf("<body");
+
+  assert.match(layout, /<html[^>]*suppressHydrationWarning/);
+  assert.ok(bootstrap !== -1 && bootstrap < body);
+  assert.doesNotMatch(layout, /ThemeProvider|next-themes/);
+  assert.equal(packageJson.dependencies["next-themes"], undefined);
+  assert.equal(
+    existsSync(new URL("../src/components/theme-provider.tsx", import.meta.url)),
+    false,
+  );
+});
+
+test("shared controls contain no class-based dark-mode branch", () => {
+  const legacySources = [
+    "src/components/theme-toggle.tsx",
+    "src/components/ui/badge.tsx",
+    "src/components/ui/button.tsx",
+    "src/components/ui/input.tsx",
+  ].map(projectFile);
+
+  for (const source of legacySources) {
+    assert.doesNotMatch(source, /\bdark:/);
+    assert.doesNotMatch(source, /next-themes/);
+  }
+});
+
+test("each theme explicitly defines readable shadcn and workspace semantics", () => {
+  const css = projectFile("src/app/globals.css");
+  const selectors = [":root", ':root[data-theme="celadon"]', ':root[data-theme="night"]'];
+  const required = [
+    "--background",
+    "--foreground",
+    "--card",
+    "--card-foreground",
+    "--popover",
+    "--popover-foreground",
+    "--primary",
+    "--primary-foreground",
+    "--secondary",
+    "--secondary-foreground",
+    "--muted",
+    "--muted-foreground",
+    "--accent",
+    "--accent-foreground",
+    "--destructive",
+    "--border",
+    "--input",
+    "--ring",
+    "--chart-1",
+    "--chart-2",
+    "--chart-3",
+    "--chart-4",
+    "--chart-5",
+    "--sidebar",
+    "--sidebar-foreground",
+    "--sidebar-primary",
+    "--sidebar-primary-foreground",
+    "--sidebar-accent",
+    "--sidebar-accent-foreground",
+    "--sidebar-border",
+    "--sidebar-ring",
+    "--mint",
+    "--sky",
+    "--ws-sidebar",
+    "--ws-callout",
+    "--ws-amber",
+    "--ws-quote",
+    "--ws-src",
+    "--ws-label",
+    "--ws-body",
+  ];
+
+  for (const selector of selectors) {
+    const start = css.indexOf(`${selector} {`);
+    assert.notEqual(start, -1, `${selector} must exist`);
+    const end = css.indexOf("}", start);
+    const block = css.slice(start, end);
+    for (const variable of required) {
+      assert.match(block, new RegExp(`${variable.replaceAll("-", "\\-")}\\s*:`), `${selector} ${variable}`);
+    }
+  }
+  assert.doesNotMatch(css, /(?:^|\s)\.dark\b/m);
+  assert.doesNotMatch(css, /@custom-variant\s+dark/);
+});
+
+test("font contract adds numerals and kai while preserving local Lishu", () => {
+  const layout = projectFile("src/app/layout.tsx");
+  const css = projectFile("src/app/globals.css");
+  const designs = projectFile("src/app/designs/page.tsx");
+  const packageJson = JSON.parse(projectFile("package.json"));
+
+  assert.match(layout, /Cormorant_Garamond/);
+  assert.match(layout, /Noto_Sans_SC/);
+  assert.match(layout, /Noto_Serif_SC/);
+  assert.match(layout, /lxgw-wenkai-screen-web/);
+  assert.match(css, /\.font-kai/);
+  assert.match(css, /\.font-num/);
+  assert.doesNotMatch(css, /--font-numerals:\s*var\(--font-numerals\)/);
+  assert.match(designs, /TW-MOE-Li\.ttf/);
+  assert.equal(packageJson.dependencies["lxgw-wenkai-screen-web"], "^1.522.0");
+});

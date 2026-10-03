@@ -1,6 +1,8 @@
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import test from "node:test";
+
+import { JSDOM } from "jsdom";
 
 import { groupByCategory } from "../src/lib/group-by-category.ts";
 
@@ -62,4 +64,69 @@ test("首页 Explorer 用工作台内嵌全文，不再弹层", () => {
   assert.match(workspace, /PrincipleDetail/);
   assert.match(workspace, /showLead=\{false\}/);
   assert.doesNotMatch(workspace, /展开完整解读/);
+});
+
+test("URL hash external store exposes initial selection and cleans up its listener", async () => {
+  const moduleUrl = new URL("../src/lib/principle-hash.ts", import.meta.url);
+  assert.ok(existsSync(moduleUrl), "principle hash external store must exist");
+
+  const dom = new JSDOM("<!doctype html><html></html>", {
+    url: "https://lijiu.test/#know-thyself",
+  });
+  const previousWindow = Object.getOwnPropertyDescriptor(globalThis, "window");
+  Object.defineProperty(globalThis, "window", {
+    configurable: true,
+    value: dom.window,
+    writable: true,
+  });
+
+  try {
+    const {
+      getPrincipleHashSnapshot,
+      principleIdFromHash,
+      subscribeToHashChange,
+    } = await import(moduleUrl);
+
+    assert.equal(principleIdFromHash("#all"), null);
+    assert.equal(principleIdFromHash(""), null);
+    assert.equal(principleIdFromHash("#know-thyself"), "know-thyself");
+    const initialSnapshot = getPrincipleHashSnapshot();
+    assert.equal(initialSnapshot.id, "know-thyself");
+    assert.equal(getPrincipleHashSnapshot(), initialSnapshot);
+
+    let notifications = 0;
+    const unsubscribe = subscribeToHashChange(() => notifications++);
+    dom.window.dispatchEvent(new dom.window.HashChangeEvent("hashchange"));
+    assert.equal(notifications, 1);
+    unsubscribe();
+    dom.window.dispatchEvent(new dom.window.HashChangeEvent("hashchange"));
+    assert.equal(notifications, 1);
+  } finally {
+    dom.window.close();
+    if (previousWindow === undefined) delete globalThis.window;
+    else Object.defineProperty(globalThis, "window", previousWindow);
+  }
+});
+
+test("Explorer derives hash selection without effect-driven setState", () => {
+  assert.match(explorer, /subscribeToHashChange/);
+  assert.match(explorer, /getPrincipleHashSnapshot/);
+  assert.match(explorer, /React\.useSyncExternalStore\(/);
+  assert.doesNotMatch(explorer, /location\.hash\.replace/);
+  assert.doesNotMatch(
+    explorer,
+    /React\.useEffect\([\s\S]*?setSelectedId\([\s\S]*?\}, \[\]\)/,
+  );
+});
+
+test("Bound pane omits the unused total parameter from its function signature", () => {
+  const spreads = readFileSync(
+    new URL("../src/app/designs/spreads/gallery.tsx", import.meta.url),
+    "utf8",
+  );
+
+  assert.match(
+    spreads,
+    /function Bound\(\{ grouped, open, onOpen, index \}: PaneProps\)/,
+  );
 });

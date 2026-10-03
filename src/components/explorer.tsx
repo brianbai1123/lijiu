@@ -6,6 +6,12 @@ import { SearchIcon, ShuffleIcon, SparklesIcon, XIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { WorkspaceSpread } from "@/components/workspace-spread";
+import {
+  getPrincipleHashSnapshot,
+  SERVER_PRINCIPLE_HASH_SNAPSHOT,
+  subscribeToHashChange,
+  type PrincipleHashSnapshot,
+} from "@/lib/principle-hash";
 import { groupPrinciples } from "@/lib/workspace";
 import {
   categories,
@@ -68,11 +74,23 @@ function useDailyId() {
 export function Explorer() {
   const [query, setQuery] = React.useState("");
   const [filter, setFilter] = React.useState<Filter>("all");
-  const [selectedId, setSelectedId] = React.useState<string | null>(null);
-  React.useEffect(() => {
-    const id = window.location.hash.replace(/^#/, "");
-    if (id && id !== "all") setSelectedId(id);
-  }, []);
+  const hashSnapshot = React.useSyncExternalStore(
+    subscribeToHashChange,
+    getPrincipleHashSnapshot,
+    () => SERVER_PRINCIPLE_HASH_SNAPSHOT,
+  );
+  const [localSelection, setLocalSelection] = React.useState<{
+    id: string;
+    hashSnapshot: PrincipleHashSnapshot;
+  } | null>(null);
+  const selectedId =
+    localSelection?.hashSnapshot === hashSnapshot
+      ? localSelection.id
+      : hashSnapshot.id;
+  const setSelectedId = React.useCallback(
+    (id: string) => setLocalSelection({ id, hashSnapshot }),
+    [hashSnapshot],
+  );
   const dailyId = useDailyId();
 
   const daily = principleById.get(dailyId) ?? principles[0];
@@ -118,7 +136,7 @@ export function Explorer() {
       if (!matchesQuery) setQuery("");
       setSelectedId(id);
     },
-    [filter, query],
+    [filter, query, setSelectedId],
   );
 
   const scrollToWorkspace = () => {

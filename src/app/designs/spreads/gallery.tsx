@@ -193,7 +193,7 @@ function Air({ grouped, open, onOpen, index, total }: PaneProps) {
 }
 
 /* ───────────────── 乙 · 装帧 ───────────────── */
-function Bound({ grouped, open, onOpen, index, total }: PaneProps) {
+function Bound({ grouped, open, onOpen, index }: PaneProps) {
   const first = open.essence.slice(0, 1);
   const rest = open.essence.slice(1);
 

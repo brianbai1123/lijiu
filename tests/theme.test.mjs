@@ -9,6 +9,51 @@ import { createRoot } from "react-dom/client";
 
 import { CATEGORY_DOT } from "../src/lib/workspace.ts";
 
+const SHARED_THEME_CORE = {
+  ":root": {
+    "--background": "#f3efe6",
+    "--foreground": "#1c1916",
+    "--pine": "#1c3d36",
+    "--pine-soft": "#e5f0eb",
+    "--clay": "#8a4b32",
+    "--band": "#efe4d2",
+    "--line": "#e0d5c4",
+    "--muted": "#5c554c",
+    "--paper": "#f7f3eb",
+    "--ink": "#1c1916",
+    "--on-pine": "#f7f3eb",
+    "--selection": "#d7ebe3",
+  },
+  ':root[data-theme="celadon"]': {
+    "--background": "#e5ede9",
+    "--foreground": "#16201d",
+    "--pine": "#1d4a5c",
+    "--pine-soft": "#dcebf0",
+    "--clay": "#9c5236",
+    "--band": "#d6e4de",
+    "--line": "#c3d4cc",
+    "--muted": "#4c5b55",
+    "--paper": "#f1f6f3",
+    "--ink": "#14201c",
+    "--on-pine": "#f1f6f3",
+    "--selection": "#c7dfe8",
+  },
+  ':root[data-theme="night"]': {
+    "--background": "#161412",
+    "--foreground": "#e9e2d5",
+    "--pine": "#8fc7b0",
+    "--pine-soft": "#1f2e29",
+    "--clay": "#e0a07c",
+    "--band": "#2a251f",
+    "--line": "#38322a",
+    "--muted": "#a69d90",
+    "--paper": "#1f1c18",
+    "--ink": "#efe8db",
+    "--on-pine": "#13201c",
+    "--selection": "#2f4a40",
+  },
+};
+
 const projectFile = (path) =>
   readFileSync(new URL(`../${path}`, import.meta.url), "utf8");
 
@@ -23,6 +68,16 @@ function cssVariable(block, name) {
   const match = block.match(new RegExp(`${name.replaceAll("-", "\\-")}\\s*:\\s*([^;]+)`));
   assert.ok(match, `${name} must exist`);
   return match[1].trim();
+}
+
+function resolvedCssColor(block, name, seen = new Set()) {
+  assert.ok(!seen.has(name), `${name} must not form a variable cycle`);
+  seen.add(name);
+  const value = cssVariable(block, name);
+  const reference = value.match(/^var\((--[^)]+)\)$/);
+  if (reference) return resolvedCssColor(block, reference[1], seen);
+  assert.match(value, /^#[\da-f]{6}$/i, `${name} must resolve to a hex color`);
+  return value;
 }
 
 function rgb(hex) {
@@ -286,6 +341,7 @@ test("each theme explicitly defines readable shadcn and workspace semantics", ()
     "--secondary",
     "--secondary-foreground",
     "--muted",
+    "--surface-muted",
     "--muted-foreground",
     "--accent",
     "--accent-foreground",
@@ -324,8 +380,52 @@ test("each theme explicitly defines readable shadcn and workspace semantics", ()
     }
   }
   assert.equal(cssVariable(cssBlock(css, ":root"), "--radius"), "0.75rem");
+  assert.match(css, /--color-muted:\s*var\(--surface-muted\)/);
   assert.doesNotMatch(css, /(?:^|\s)\.dark\b/m);
   assert.doesNotMatch(css, /@custom-variant\s+dark/);
+});
+
+test("all themes exactly reuse the shared homepage core palette", () => {
+  const css = projectFile("src/app/globals.css");
+
+  for (const [selector, expected] of Object.entries(SHARED_THEME_CORE)) {
+    const block = cssBlock(css, selector);
+    for (const [name, value] of Object.entries(expected)) {
+      assert.equal(cssVariable(block, name), value, `${selector} ${name}`);
+    }
+  }
+});
+
+test("derived text surfaces remain readable in all three themes", () => {
+  const css = projectFile("src/app/globals.css");
+  const pairs = [
+    ["--foreground", "--background"],
+    ["--card-foreground", "--card"],
+    ["--popover-foreground", "--popover"],
+    ["--primary-foreground", "--primary"],
+    ["--secondary-foreground", "--secondary"],
+    ["--muted-foreground", "--surface-muted"],
+    ["--accent-foreground", "--accent"],
+    ["--sidebar-foreground", "--sidebar"],
+    ["--sidebar-primary-foreground", "--sidebar-primary"],
+    ["--sidebar-accent-foreground", "--sidebar-accent"],
+    ["--ws-body", "--card"],
+    ["--ws-label", "--card"],
+    ["--ws-quote", "--ws-callout"],
+    ["--ws-src", "--ws-callout"],
+  ];
+
+  for (const selector of Object.keys(SHARED_THEME_CORE)) {
+    const block = cssBlock(css, selector);
+    for (const [foregroundName, backgroundName] of pairs) {
+      const foreground = resolvedCssColor(block, foregroundName);
+      const background = resolvedCssColor(block, backgroundName);
+      assert.ok(
+        contrast(foreground, background) >= 4.5,
+        `${selector} ${foregroundName} on ${backgroundName} must reach 4.5:1`,
+      );
+    }
+  }
 });
 
 test("workspace category chip text stays readable over every dot in every theme", () => {
@@ -339,8 +439,8 @@ test("workspace category chip text stays readable over every dot in every theme"
 
   for (const selector of themes) {
     const block = cssBlock(css, selector);
-    const foreground = cssVariable(block, "--foreground");
-    const card = cssVariable(block, "--card");
+    const foreground = resolvedCssColor(block, "--foreground");
+    const card = resolvedCssColor(block, "--card");
     for (const dot of new Set(Object.values(CATEGORY_DOT))) {
       const chipBackground = composite(dot, card, 0x1a / 255);
       assert.ok(

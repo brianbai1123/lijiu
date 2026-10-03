@@ -10,7 +10,7 @@ export default function Home() {
       <header className="sticky top-0 z-30 border-b border-border bg-background/85 backdrop-blur-md">
         <div className="mx-auto flex w-full max-w-6xl items-center justify-between gap-4 px-5 py-3">
           <div className="flex items-baseline gap-2.5">
-            <span className="brand-seal">历久</span>
+            <span className="brand-seal font-kai">历久</span>
             <span className="hidden text-xs text-muted-foreground sm:inline">
               经时间检验的人生原则
             </span>
@@ -57,7 +57,7 @@ export default function Home() {
             ].map((s) => (
               <div key={s.k}>
                 <dt className="text-xs text-muted-foreground">{s.k}</dt>
-                <dd className="mt-1 font-serif text-3xl font-semibold text-primary">
+                <dd className="mt-1 font-num text-3xl font-semibold text-primary">
                   {s.v}
                   <span className="ml-1 text-sm font-normal text-muted-foreground">
                     {s.u}
@@ -84,7 +84,8 @@ export default function Home() {
             这不是清单的缺陷，恰恰是它诚实的地方：能用一条原则解决的人生，还没开始。
           </p>
           <p className="max-w-3xl text-xs">
-            检视问题与标题为思源宋体（Noto Serif SC），其余为思源黑体简体（Noto Sans SC）。界面按工作台排：左侧目录，右侧直接读完整解读。
+            检视问题与标题为思源宋体（Noto Serif SC），正文为思源黑体简体（Noto Sans
+            SC），品牌用楷体，数字用 Cormorant Garamond。界面按工作台排：左侧目录，右侧直接读完整解读。
           </p>
         </div>
       </footer>

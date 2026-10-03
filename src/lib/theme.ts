@@ -2,9 +2,9 @@ export const THEME_KEY = "lijiu:theme";
 export const THEME_CHANGE_EVENT = "lijiu-theme-change";
 
 export const THEMES = [
-  { id: "paper", name: "宣纸", swatch: ["#f3efe6", "#2f2b28"] },
+  { id: "paper", name: "宣纸", swatch: ["#f3efe6", "#1c3d36"] },
   { id: "celadon", name: "青瓷", swatch: ["#e5ede9", "#1d4a5c"] },
-  { id: "night", name: "夜读", swatch: ["#1a1714", "#8fc7b0"] },
+  { id: "night", name: "夜读", swatch: ["#161412", "#8fc7b0"] },
 ] as const;
 
 export type ThemeId = (typeof THEMES)[number]["id"];

@@ -7,8 +7,56 @@ import { JSDOM } from "jsdom";
 import React, { act } from "react";
 import { createRoot } from "react-dom/client";
 
+import { CATEGORY_DOT } from "../src/lib/workspace.ts";
+
 const projectFile = (path) =>
   readFileSync(new URL(`../${path}`, import.meta.url), "utf8");
+
+function cssBlock(css, selector) {
+  const start = css.indexOf(`${selector} {`);
+  assert.notEqual(start, -1, `${selector} must exist`);
+  const end = css.indexOf("}", start);
+  return css.slice(start, end);
+}
+
+function cssVariable(block, name) {
+  const match = block.match(new RegExp(`${name.replaceAll("-", "\\-")}\\s*:\\s*([^;]+)`));
+  assert.ok(match, `${name} must exist`);
+  return match[1].trim();
+}
+
+function rgb(hex) {
+  return hex
+    .slice(1)
+    .match(/../g)
+    .map((channel) => Number.parseInt(channel, 16));
+}
+
+function composite(foreground, background, alpha) {
+  const fg = rgb(foreground);
+  const bg = rgb(background);
+  return fg.map((channel, index) =>
+    Math.round(channel * alpha + bg[index] * (1 - alpha)),
+  );
+}
+
+function relativeLuminance(color) {
+  const channels = (Array.isArray(color) ? color : rgb(color)).map((channel) => {
+    const normalized = channel / 255;
+    return normalized <= 0.04045
+      ? normalized / 12.92
+      : ((normalized + 0.055) / 1.055) ** 2.4;
+  });
+  return 0.2126 * channels[0] + 0.7152 * channels[1] + 0.0722 * channels[2];
+}
+
+function contrast(foreground, background) {
+  const values = [
+    relativeLuminance(foreground),
+    relativeLuminance(background),
+  ].sort((a, b) => b - a);
+  return (values[0] + 0.05) / (values[1] + 0.05);
+}
 
 async function loadThemeContract() {
   assert.ok(
@@ -65,14 +113,11 @@ test("theme resolution follows query, stored, then paper priority", async () => 
 test("theme contract exposes only the three shared themes and Lijiu identifiers", async () => {
   const { THEMES, THEME_CHANGE_EVENT, THEME_KEY } = await loadThemeContract();
 
-  assert.deepEqual(
-    THEMES.map(({ id, name }) => ({ id, name })),
-    [
-      { id: "paper", name: "宣纸" },
-      { id: "celadon", name: "青瓷" },
-      { id: "night", name: "夜读" },
-    ],
-  );
+  assert.deepEqual(THEMES, [
+    { id: "paper", name: "宣纸", swatch: ["#f3efe6", "#1c3d36"] },
+    { id: "celadon", name: "青瓷", swatch: ["#e5ede9", "#1d4a5c"] },
+    { id: "night", name: "夜读", swatch: ["#161412", "#8fc7b0"] },
+  ]);
   assert.equal(THEME_KEY, "lijiu:theme");
   assert.equal(THEME_CHANGE_EVENT, "lijiu-theme-change");
 });
@@ -194,11 +239,16 @@ test("all three rendered radio buttons apply, persist, and announce their theme"
 test("layout bootstraps before hydration without next-themes", () => {
   const layout = projectFile("src/app/layout.tsx");
   const packageJson = JSON.parse(projectFile("package.json"));
-  const bootstrap = layout.indexOf("THEME_BOOTSTRAP_SCRIPT");
+  const bootstrapExpression =
+    '<script dangerouslySetInnerHTML={{ __html: THEME_BOOTSTRAP_SCRIPT }} />';
+  const headStart = layout.indexOf("<head>");
+  const headEnd = layout.indexOf("</head>");
+  const bootstrap = layout.indexOf(bootstrapExpression);
   const body = layout.indexOf("<body");
 
   assert.match(layout, /<html[^>]*suppressHydrationWarning/);
-  assert.ok(bootstrap !== -1 && bootstrap < body);
+  assert.ok(headStart !== -1 && headStart < bootstrap);
+  assert.ok(bootstrap < headEnd && headEnd < body);
   assert.doesNotMatch(layout, /ThemeProvider|next-themes/);
   assert.equal(packageJson.dependencies["next-themes"], undefined);
   assert.equal(
@@ -268,31 +318,65 @@ test("each theme explicitly defines readable shadcn and workspace semantics", ()
   ];
 
   for (const selector of selectors) {
-    const start = css.indexOf(`${selector} {`);
-    assert.notEqual(start, -1, `${selector} must exist`);
-    const end = css.indexOf("}", start);
-    const block = css.slice(start, end);
+    const block = cssBlock(css, selector);
     for (const variable of required) {
       assert.match(block, new RegExp(`${variable.replaceAll("-", "\\-")}\\s*:`), `${selector} ${variable}`);
     }
   }
+  assert.equal(cssVariable(cssBlock(css, ":root"), "--radius"), "0.75rem");
   assert.doesNotMatch(css, /(?:^|\s)\.dark\b/m);
   assert.doesNotMatch(css, /@custom-variant\s+dark/);
+});
+
+test("workspace category chip text stays readable over every dot in every theme", () => {
+  const css = projectFile("src/app/globals.css");
+  const workspace = projectFile("src/components/workspace-spread.tsx");
+  const themes = [":root", ':root[data-theme="celadon"]', ':root[data-theme="night"]'];
+
+  assert.doesNotMatch(workspace, /color:\s*dot/);
+  assert.match(workspace, /borderColor:\s*`\$\{dot\}80`/);
+  assert.equal(cssVariable(cssBlock(css, ".ws-chip"), "color"), "var(--foreground)");
+
+  for (const selector of themes) {
+    const block = cssBlock(css, selector);
+    const foreground = cssVariable(block, "--foreground");
+    const card = cssVariable(block, "--card");
+    for (const dot of new Set(Object.values(CATEGORY_DOT))) {
+      const chipBackground = composite(dot, card, 0x1a / 255);
+      assert.ok(
+        contrast(foreground, chipBackground) >= 4.5,
+        `${selector} ${dot} category text must reach 4.5:1`,
+      );
+    }
+  }
 });
 
 test("font contract adds numerals and kai while preserving local Lishu", () => {
   const layout = projectFile("src/app/layout.tsx");
   const css = projectFile("src/app/globals.css");
+  const page = projectFile("src/app/page.tsx");
+  const workspace = projectFile("src/components/workspace-spread.tsx");
   const designs = projectFile("src/app/designs/page.tsx");
   const packageJson = JSON.parse(projectFile("package.json"));
 
+  assert.match(
+    layout,
+    /Noto_Sans_SC\(\{[\s\S]*?weight: \["400", "600", "700"\]/,
+  );
+  assert.match(
+    layout,
+    /Noto_Serif_SC\(\{[\s\S]*?weight: \["600", "700", "900"\]/,
+  );
   assert.match(layout, /Cormorant_Garamond/);
-  assert.match(layout, /Noto_Sans_SC/);
-  assert.match(layout, /Noto_Serif_SC/);
   assert.match(layout, /lxgw-wenkai-screen-web/);
   assert.match(css, /\.font-kai/);
   assert.match(css, /\.font-num/);
   assert.doesNotMatch(css, /--font-numerals:\s*var\(--font-numerals\)/);
+  assert.match(page, /className="brand-seal font-kai"/);
+  assert.match(page, /<dd className="[^"]*\bfont-num\b[^"]*"/);
+  assert.match(page, /品牌用楷体，数字用 Cormorant Garamond/);
+  assert.match(workspace, /className="ws-chip ghost font-num"/);
+  assert.doesNotMatch(cssBlock(css, ".brand-seal"), /font-family/);
   assert.match(designs, /TW-MOE-Li\.ttf/);
   assert.equal(packageJson.dependencies["lxgw-wenkai-screen-web"], "^1.522.0");
 });

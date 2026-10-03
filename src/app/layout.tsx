@@ -11,14 +11,14 @@ import "./globals.css";
 
 const sourceHanSans = Noto_Sans_SC({
   subsets: ["latin"],
-  weight: ["400", "500", "700"],
+  weight: ["400", "600", "700"],
   display: "swap",
   variable: "--font-source-han",
 });
 
 const notoSerif = Noto_Serif_SC({
   subsets: ["latin"],
-  weight: ["400", "500", "600"],
+  weight: ["600", "700", "900"],
   display: "swap",
   variable: "--font-noto-serif",
 });

@@ -76,7 +76,7 @@
   --chart-3: #c17b32;
   --chart-4: #9b5a8a;
   --chart-5: #7a746d;
-  --radius: 0.625rem;
+  --radius: 0.75rem;
   --sidebar: #f6f5f3;
   --sidebar-foreground: #2f2b28;
   --sidebar-primary: #2f2b28;
@@ -223,7 +223,6 @@
 .brand-seal {
   display: inline-flex;
   align-items: center;
-  font-family: var(--font-serif);
   font-size: 1.05rem;
   font-weight: 600;
   letter-spacing: 0.22em;
@@ -381,10 +380,11 @@
 
 .ws-chip {
   padding: 0.15rem 0.55rem;
+  border: 1px solid transparent;
   border-radius: 5px;
   background: rgba(255, 61, 127, 0.1);
   font-size: 0.7rem;
-  color: #c72a63;
+  color: var(--foreground);
 }
 
 .ws-chip.ghost {

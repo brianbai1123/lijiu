@@ -74,13 +74,15 @@ export function WorkspaceSpread({
             className="ws-chip"
             style={{
               background: `${dot}1a`,
-              color: dot,
+              borderColor: `${dot}80`,
             }}
           >
             {category?.name}
           </span>
           <span className="ws-chip ghost">{selected.trigger}</span>
-          <span className="ws-chip ghost">约 {selected.ageYears} 年</span>
+          <span className="ws-chip ghost font-num">
+            约 {selected.ageYears} 年
+          </span>
         </div>
 
         <h2 id="ws-check-heading">{selected.check}</h2>
